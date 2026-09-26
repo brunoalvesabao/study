@@ -242,6 +242,9 @@ svg text{fill:var(--ink); font-family:var(--body)}
 .quiz-top{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
 .icon-btn{width:42px; height:42px; border-radius:12px; border:1px solid var(--line); background:var(--surface); display:grid; place-items:center; cursor:pointer}
 .qnum{font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums}
+.lvl{justify-self:start; width:max-content; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px}
+.lvl-1{background:var(--ok-soft); color:var(--ok)} .lvl-2{background:var(--amber-soft); color:var(--amber)} .lvl-3{background:var(--red-soft); color:var(--red)}
+.lvl-sum{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
 .q{font-family:var(--display); font-size:clamp(20px,5.2vw,26px); font-weight:600; line-height:1.3}
 .opts{display:grid; gap:10px}
 .opt{display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:center; text-align:left; font-size:17px; background:var(--surface); border:2px solid var(--line); border-radius:14px; padding:12px 14px; cursor:pointer; min-height:58px}
@@ -641,157 +644,395 @@ const TOPICS = {
   cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]]
 };
 
+/* Cada questão: [pergunta, [5 alternativas — a certa sempre primeiro, elas são embaralhadas], 0, explicação, nível]
+   nível: 1 = fácil · 2 = média · 3 = difícil. Questões novas entram sempre no FIM da lista do assunto,
+   para não bagunçar o caderno de erros (ele guarda a posição de cada questão). */
 const Q = {
  "mat/base":[
-  ["No número 3,57, quanto vale o algarismo 5?",["5 décimos","5 centésimos","5 unidades","5 milésimos"],0,"A primeira casa depois da vírgula é a dos décimos."],
-  ["Como se escreve 7/10 na forma decimal?",["0,7","7,10","0,07","70"],0,"Dividir por 10 dá uma casa depois da vírgula."],
-  ["Como se escreve 25/100 na forma decimal?",["0,25","2,5","25,100","0,025"],0,"Centésimos são duas casas depois da vírgula."],
-  ["8 × 7 = ?",["56","54","48","63"],0,"Tabuada do 8: 8 × 7 = 56."],
-  ["45 ÷ 5 = ?",["9","8","7","11"],0,"5 × 9 = 45."],
-  ["12 × 10 = ?",["120","1210","22","102"],0,"Multiplicar por 10 acrescenta um zero."],
-  ["Metade de 1 inteiro é:",["1/2 = 0,5","1/5 = 0,2","2/1 = 2","1/4 = 0,25"],0,"1 ÷ 2 = 0,5."]
+  ["No número 3,57, quanto vale o algarismo 5?",["5 décimos","5 centésimos","5 unidades","5 milésimos","5 dezenas"],0,"A primeira casa depois da vírgula é a dos décimos.",1],
+  ["Como se escreve 7/10 na forma decimal?",["0,7","7,10","0,07","70","0,007"],0,"Dividir por 10 dá uma casa depois da vírgula.",1],
+  ["Como se escreve 25/100 na forma decimal?",["0,25","2,5","25,100","0,025","25,0"],0,"Centésimos são duas casas depois da vírgula.",1],
+  ["8 × 7 = ?",["56","54","48","63","58"],0,"Tabuada do 8: 8 × 7 = 56.",1],
+  ["45 ÷ 5 = ?",["9","8","7","11","6"],0,"5 × 9 = 45.",1],
+  ["12 × 10 = ?",["120","1210","22","102","1200"],0,"Multiplicar por 10 acrescenta um zero.",1],
+  ["Metade de 1 inteiro é:",["1/2 = 0,5","1/5 = 0,2","2/1 = 2","1/4 = 0,25","1/10 = 0,1"],0,"1 ÷ 2 = 0,5.",1],
+  ["6 × 9 = ?",["54","56","45","63","48"],0,"Tabuada do 6: 6 × 9 = 54.",1],
+  ["9 × 7 = ?",["63","56","72","49","64"],0,"Tabuada do 9: 9 × 7 = 63.",1],
+  ["72 ÷ 8 = ?",["9","8","7","12","6"],0,"8 × 9 = 72.",1],
+  ["Um quarto de 20 é:",["5","4","10","80","15"],0,"Um quarto é dividir por 4: 20 ÷ 4 = 5.",1],
+  ["Qual é o maior: 1/2, 1/4, 1/10 ou 1/100?",["1/2","1/4","1/10","1/100","São todos iguais"],0,"Quanto menos partes o inteiro é dividido, maior cada parte.",1],
+  ["Quanto vale o algarismo 4 em 12,48?",["4 décimos","4 centésimos","4 unidades","4 dezenas","4 milésimos"],0,"O 4 está na primeira casa depois da vírgula: décimos.",2],
+  ["Como se escreve 3/1000 na forma decimal?",["0,003","0,03","0,3","3,1000","3000"],0,"Milésimos são três casas depois da vírgula.",2],
+  ["5,6 × 100 = ?",["560","56","5,600","0,056","5600"],0,"Vezes 100: a vírgula anda 2 casas para a direita (5,60 → 560).",2],
+  ["34 ÷ 100 = ?",["0,34","3,4","340","0,034","34,00"],0,"Dividir por 100: a vírgula anda 2 casas para a esquerda.",2],
+  ["Qual fração é igual a 0,25?",["1/4","1/25","2/5","25/10","1/2"],0,"0,25 = 25/100 = 1/4.",2],
+  ["Conta armada: 146 × 3 = ?",["438","418","448","428","349"],0,"6 × 3 = 18 (vai 1), 4 × 3 + 1 = 13 (vai 1), 1 × 3 + 1 = 4 → 438.",2],
+  ["Conta armada: 252 ÷ 4 = ?",["63","62","73","53","64"],0,"Confere: 4 × 63 = 252.",2],
+  ["Alice leu 1/4 de um livro de 120 páginas. Quantas páginas ela leu?",["30","40","25","60","12"],0,"1/4 de 120 é 120 ÷ 4 = 30.",2],
+  ["Quantos centésimos cabem em 1 inteiro?",["100","10","1000","1","50"],0,"1 inteiro = 100 centésimos (como 1 real = 100 centavos).",2],
+  ["Um pacote tem 6 balas. Quantas balas há em 15 pacotes?",["90","80","96","21","75"],0,"6 × 15 = 90.",2],
+  ["Qual número é igual a 2 inteiros e 7 centésimos?",["2,07","2,7","2,007","27,0","0,27"],0,"Centésimos são a 2ª casa: o décimo fica 0 → 2,07.",3],
+  ["Numa conta, 8 × ___ = 96. Qual é o número que falta?",["12","11","13","14","88"],0,"96 ÷ 8 = 12. Confere: 8 × 12 = 96.",3],
+  ["4,07 ÷ 1000 = ?",["0,00407","0,0407","4070","0,407","407"],0,"Dividir por 1000: a vírgula anda 3 casas para a esquerda.",3],
+  ["375 ÷ 25 = ?",["15","25","12","17","14"],0,"25 × 15 = 375 (25 × 10 = 250 e 25 × 5 = 125).",3],
+  ["O número 5,308 lido por extenso é:",["cinco inteiros e trezentos e oito milésimos","cinco inteiros e trinta e oito centésimos","cinco inteiros e trezentos e oito centésimos","cinquenta e três inteiros e oito décimos","cinco mil trezentos e oito"],0,"São três casas depois da vírgula: milésimos.",3],
+  ["Quanto é 0,5 + 0,5 + 0,25?",["1,25","1,0","0,75","1,5","0,105"],0,"0,5 + 0,5 = 1. Depois 1 + 0,25 = 1,25.",3]
  ],
  "mat/decimais":[
-  ["Qual número é maior?",["0,5","0,45","São iguais"],0,"Completando com zero: 0,50 e 0,45. 50 centésimos é mais que 45."],
-  ["Qual está em ordem crescente (do menor para o maior)?",["0,25 · 0,3 · 0,4","0,3 · 0,4 · 0,25","0,4 · 0,3 · 0,25","0,3 · 0,25 · 0,4"],0,"Com zeros: 0,25 · 0,30 · 0,40."],
-  ["2,5 + 1,35 = ?",["3,85","1,60","3,40","2,85"],0,"Vírgula embaixo de vírgula: 2,50 + 1,35 = 3,85."],
-  ["5 − 1,8 = ?",["3,2","4,2","3,8","6,8"],0,"5,0 − 1,8 = 3,2."],
-  ["1,2 × 3 = ?",["3,6","36","0,36","3,2"],0,"12 × 3 = 36. Uma casa decimal: 3,6."],
-  ["0,4 × 0,2 = ?",["0,08","0,8","8","0,6"],0,"4 × 2 = 8. Uma casa + uma casa = duas casas: 0,08."],
-  ["3,45 × 10 = ?",["34,5","3,450","345","0,345"],0,"Vezes 10: a vírgula anda uma casa para a direita."],
-  ["48,6 ÷ 10 = ?",["4,86","486","0,486","48,60"],0,"Dividir por 10: a vírgula anda uma casa para a esquerda."],
-  ["7,5 ÷ 3 = ?",["2,5","25","2,05","0,25"],0,"Confere: 3 × 2,5 = 7,5."],
-  ["1,2 ÷ 0,4 = ?",["3","0,3","30","0,03"],0,"Iguala as casas e tira as vírgulas: 12 ÷ 4 = 3."],
-  ["(0,3)² = ?",["0,09","0,9","0,6","9"],0,"0,3 × 0,3: 3 × 3 = 9, com duas casas: 0,09."],
-  ["Alice comprou um caderno de R$ 12,50 e um lápis de R$ 1,75. Pagou com R$ 20,00. Qual o troco?",["R$ 5,75","R$ 6,25","R$ 14,25","R$ 7,75"],0,"12,50 + 1,75 = 14,25. Depois 20,00 − 14,25 = 5,75."],
-  ["Um suco custa R$ 3,50. Quanto custam 4 sucos?",["R$ 14,00","R$ 12,50","R$ 7,50","R$ 13,00"],0,"3,50 × 4 = 14,00."]
+  ["Qual número é maior?",["0,5","0,45","São iguais","Não dá para comparar números decimais","Nenhum dos dois"],0,"Completando com zero: 0,50 e 0,45. 50 centésimos é mais que 45.",1],
+  ["Qual está em ordem crescente (do menor para o maior)?",["0,25 · 0,3 · 0,4","0,3 · 0,4 · 0,25","0,4 · 0,3 · 0,25","0,3 · 0,25 · 0,4","0,25 · 0,4 · 0,3"],0,"Com zeros: 0,25 · 0,30 · 0,40.",2],
+  ["2,5 + 1,35 = ?",["3,85","1,60","3,40","2,85","3,75"],0,"Vírgula embaixo de vírgula: 2,50 + 1,35 = 3,85.",1],
+  ["5 − 1,8 = ?",["3,2","4,2","3,8","6,8","3,3"],0,"5,0 − 1,8 = 3,2.",1],
+  ["1,2 × 3 = ?",["3,6","36","0,36","3,2","4,6"],0,"12 × 3 = 36. Uma casa decimal: 3,6.",1],
+  ["0,4 × 0,2 = ?",["0,08","0,8","8","0,6","0,008"],0,"4 × 2 = 8. Uma casa + uma casa = duas casas: 0,08.",2],
+  ["3,45 × 10 = ?",["34,5","3,450","345","0,345","3,55"],0,"Vezes 10: a vírgula anda uma casa para a direita.",1],
+  ["48,6 ÷ 10 = ?",["4,86","486","0,486","48,60","4,086"],0,"Dividir por 10: a vírgula anda uma casa para a esquerda.",1],
+  ["7,5 ÷ 3 = ?",["2,5","25","2,05","0,25","3,5"],0,"Confere: 3 × 2,5 = 7,5.",2],
+  ["1,2 ÷ 0,4 = ?",["3","0,3","30","0,03","0,48"],0,"Iguala as casas e tira as vírgulas: 12 ÷ 4 = 3.",3],
+  ["(0,3)² = ?",["0,09","0,9","0,6","9","0,03"],0,"0,3 × 0,3: 3 × 3 = 9, com duas casas: 0,09.",3],
+  ["Alice comprou um caderno de R$ 12,50 e um lápis de R$ 1,75. Pagou com R$ 20,00. Qual o troco?",["R$ 5,75","R$ 6,25","R$ 14,25","R$ 7,75","R$ 4,75"],0,"12,50 + 1,75 = 14,25. Depois 20,00 − 14,25 = 5,75.",2],
+  ["Um suco custa R$ 3,50. Quanto custam 4 sucos?",["R$ 14,00","R$ 12,50","R$ 7,50","R$ 13,00","R$ 14,50"],0,"3,50 × 4 = 14,00.",1],
+  ["Qual número é maior: 1,09 ou 1,9?",["1,9","1,09","São iguais","Não dá para saber","Nenhum dos dois"],0,"Com zeros: 1,90 e 1,09. 90 centésimos é mais que 9.",1],
+  ["0,72 × 100 = ?",["72","7,2","720","0,0072","0,720"],0,"Vezes 100: a vírgula anda duas casas para a direita.",1],
+  ["2,5 × 4 = ?",["10","8,5","1,0","100","9,5"],0,"25 × 4 = 100. Uma casa decimal: 10,0 = 10.",1],
+  ["Como se lê 3,475?",["três inteiros e quatrocentos e setenta e cinco milésimos","três inteiros e quatrocentos e setenta e cinco centésimos","trinta e quatro inteiros e setenta e cinco centésimos","três mil quatrocentos e setenta e cinco","três inteiros e quarenta e sete décimos"],0,"Três casas depois da vírgula: milésimos.",2],
+  ["6,3 + 2,48 = ?",["8,78","8,51","6,71","9,11","87,8"],0,"Completa com zero: 6,30 + 2,48 = 8,78.",2],
+  ["10 − 3,75 = ?",["6,25","7,35","6,35","7,25","13,75"],0,"10,00 − 3,75 = 6,25.",2],
+  ["9,6 ÷ 4 = ?",["2,4","24","2,04","0,24","3,4"],0,"Confere: 4 × 2,4 = 9,6.",2],
+  ["Qual número fica entre 2,3 e 2,4?",["2,35","2,5","2,04","2,29","3,35"],0,"2,30 < 2,35 < 2,40.",2],
+  ["Uma garrafa tem 1,5 litro de suco. Alice bebeu 0,35 litro. Quanto sobrou?",["1,15 L","1,25 L","1,85 L","0,15 L","1,2 L"],0,"1,50 − 0,35 = 1,15.",2],
+  ["Um caderno custa R$ 8,90. Quanto custam 3 cadernos?",["R$ 26,70","R$ 24,70","R$ 26,90","R$ 27,00","R$ 11,90"],0,"8,90 × 3 = 26,70.",2],
+  ["Três amigos dividiram igualmente uma conta de R$ 37,50. Quanto cada um pagou?",["R$ 12,50","R$ 13,50","R$ 12,05","R$ 11,50","R$ 125,00"],0,"37,50 ÷ 3 = 12,50. Confere: 3 × 12,50 = 37,50.",2],
+  ["Carlos correu 2,75 km de manhã e 1,6 km à tarde. Quanto correu no dia?",["4,35 km","3,81 km","4,25 km","2,91 km","3,35 km"],0,"2,75 + 1,60 = 4,35.",2],
+  ["Qual é o menor número?",["0,099","0,1","0,11","0,909","0,19"],0,"Com três casas: 0,099 · 0,100 · 0,110 · 0,909 · 0,190.",3],
+  ["0,6 × 0,5 = ?",["0,3","3","0,03","0,11","1,1"],0,"6 × 5 = 30. Duas casas: 0,30 = 0,3.",3],
+  ["1,5² = ?",["2,25","3,0","2,5","1,25","22,5"],0,"1,5 × 1,5: 15 × 15 = 225, duas casas → 2,25.",3],
+  ["2,4 ÷ 0,6 = ?",["4","0,4","40","1,4","0,04"],0,"Iguala as casas e tira as vírgulas: 24 ÷ 6 = 4.",3],
+  ["Uma fita de 4,8 m foi cortada em pedaços de 0,6 m. Quantos pedaços saíram?",["8","6","80","0,8","12"],0,"4,8 ÷ 0,6 → 48 ÷ 6 = 8.",3],
+  ["Qual expressão tem resultado 0,01?",["0,1 × 0,1","0,1 + 0,1","0,1 × 10","1 ÷ 10","0,01 × 10"],0,"1 × 1 = 1, com duas casas: 0,01.",3],
+  ["Qual é o valor de 2 × 1,25 + 0,5?",["3","2,75","3,5","2,5","1,75"],0,"Primeiro a multiplicação: 2 × 1,25 = 2,5. Depois 2,5 + 0,5 = 3.",3],
+  ["(0,2)³ = ?",["0,008","0,6","0,08","0,006","0,8"],0,"0,2 × 0,2 × 0,2: 2 × 2 × 2 = 8, com três casas: 0,008.",3]
  ],
  "mat/porcentagem":[
-  ["10% de 80 = ?",["8","10","80","0,8"],0,"10% é dividir por 10."],
-  ["50% de 36 = ?",["18","50","36","12"],0,"50% é a metade."],
-  ["25% de 200 = ?",["50","25","100","75"],0,"25% é dividir por 4."],
-  ["Um tênis de R$ 150,00 está com 20% de desconto. Quanto vai custar?",["R$ 120,00","R$ 130,00","R$ 30,00","R$ 170,00"],0,"10% de 150 = 15, então 20% = 30. 150 − 30 = 120."],
-  ["30% escrito como número decimal é:",["0,3","3,0","0,03","30,0"],0,"30/100 = 0,30 = 0,3."],
-  ["3/4 corresponde a quantos por cento?",["75%","34%","43%","25%"],0,"3/4 = 75/100."],
-  ["Uma conta de R$ 60,00 teve 5% de multa. Quanto é a multa?",["R$ 3,00","R$ 5,00","R$ 6,00","R$ 0,50"],0,"10% de 60 = 6. 5% é a metade: 3."],
-  ["Loja A: bola por R$ 40 à vista. Loja B: 4 parcelas de R$ 11. Onde é mais barato?",["Loja A","Loja B","É o mesmo preço"],0,"4 × 11 = 44. A loja A sai R$ 4 mais barata."],
-  ["Um salário de R$ 1.000 teve aumento de 5%. Qual o novo valor?",["R$ 1.050","R$ 1.005","R$ 1.500","R$ 950"],0,"5% de 1.000 = 50. 1.000 + 50 = 1.050."]
+  ["10% de 80 = ?",["8","10","80","0,8","800"],0,"10% é dividir por 10.",1],
+  ["50% de 36 = ?",["18","50","36","12","72"],0,"50% é a metade.",1],
+  ["25% de 200 = ?",["50","25","100","75","40"],0,"25% é dividir por 4.",1],
+  ["Um tênis de R$ 150,00 está com 20% de desconto. Quanto vai custar?",["R$ 120,00","R$ 130,00","R$ 30,00","R$ 170,00","R$ 148,00"],0,"10% de 150 = 15, então 20% = 30. 150 − 30 = 120.",2],
+  ["30% escrito como número decimal é:",["0,3","3,0","0,03","30,0","300"],0,"30/100 = 0,30 = 0,3.",1],
+  ["3/4 corresponde a quantos por cento?",["75%","34%","43%","25%","7,5%"],0,"3/4 = 75/100.",2],
+  ["Uma conta de R$ 60,00 teve 5% de multa. Quanto é a multa?",["R$ 3,00","R$ 5,00","R$ 6,00","R$ 0,50","R$ 12,00"],0,"10% de 60 = 6. 5% é a metade: 3.",2],
+  ["Loja A: bola por R$ 40 à vista. Loja B: 4 parcelas de R$ 11. Onde é mais barato?",["Loja A","Loja B","É o mesmo preço","Loja B, porque a parcela é pequena","Não dá para comparar"],0,"4 × 11 = 44. A loja A sai R$ 4 mais barata.",2],
+  ["Um salário de R$ 1.000 teve aumento de 5%. Qual o novo valor?",["R$ 1.050","R$ 1.005","R$ 1.500","R$ 950","R$ 1.100"],0,"5% de 1.000 = 50. 1.000 + 50 = 1.050.",2],
+  ["O símbolo % quer dizer:",["de cada 100","de cada 10","de cada 1000","dividido por 2","vezes 100"],0,"Por cento = por cem.",1],
+  ["1% de 300 = ?",["3","30","0,3","300","1"],0,"1% é dividir por 100.",1],
+  ["20% de 50 = ?",["10","20","5","25","2"],0,"10% de 50 = 5. 20% = 2 × 5 = 10.",1],
+  ["Qual fração corresponde a 50%?",["1/2","1/5","1/50","5/100","2/5"],0,"50% = 50/100 = metade.",1],
+  ["Quanto é 100% de 45?",["45","100","4,5","0","450"],0,"100% é o valor inteiro.",1],
+  ["75% de 40 = ?",["30","10","20","35","75"],0,"25% de 40 = 10. 75% = 3 × 10 = 30.",2],
+  ["5% de 80 = ?",["4","8","5","40","0,4"],0,"10% de 80 = 8. 5% é a metade: 4.",2],
+  ["0,07 corresponde a:",["7%","70%","0,7%","700%","17%"],0,"0,07 = 7/100 = 7%.",2],
+  ["Numa turma de 30 alunos, 40% são meninos. Quantos meninos há?",["12","18","40","10","14"],0,"10% de 30 = 3. 40% = 4 × 3 = 12.",2],
+  ["Uma blusa de R$ 80 teve 25% de desconto. Qual o novo preço?",["R$ 60","R$ 20","R$ 55","R$ 75","R$ 100"],0,"25% de 80 = 20. 80 − 20 = 60.",2],
+  ["Ana tinha R$ 40 e gastou 10%. Quanto sobrou?",["R$ 36","R$ 4","R$ 30","R$ 44","R$ 39"],0,"10% de 40 = 4. 40 − 4 = 36.",2],
+  ["Uma conta de luz de R$ 120 vai ter 10% de multa por atraso. Qual o valor total a pagar?",["R$ 132","R$ 130","R$ 12","R$ 108","R$ 122"],0,"10% de 120 = 12. 120 + 12 = 132.",2],
+  ["Uma mercadoria de R$ 200 teve aumento de 15%. Qual o novo preço?",["R$ 230","R$ 215","R$ 170","R$ 300","R$ 185"],0,"10% = 20 e 5% = 10, então 15% = 30. 200 + 30 = 230.",3],
+  ["Alice acertou 18 de 20 questões. Qual foi a porcentagem de acertos?",["90%","18%","80%","85%","20%"],0,"18/20 = 90/100 = 90%.",3],
+  ["Um celular custa R$ 600 à vista ou 10 × R$ 65. Quanto a mais se paga no parcelado?",["R$ 50","R$ 65","R$ 650","R$ 5","R$ 35"],0,"10 × 65 = 650. 650 − 600 = 50.",3],
+  ["Qual é maior: 30% de 60 ou 60% de 30?",["São iguais","30% de 60","60% de 30","Não dá para comparar","Depende do arredondamento"],0,"30% de 60 = 18 e 60% de 30 = 18.",3],
+  ["Num pacote com 200 balas, 35% são de morango. Quantas são de morango?",["70","35","65","135","75"],0,"10% = 20, 30% = 60, 5% = 10. 60 + 10 = 70.",3],
+  ["Um produto de R$ 50 teve desconto de R$ 10. O desconto foi de:",["20%","10%","25%","40%","5%"],0,"10/50 = 20/100 = 20%.",3],
+  ["Em uma pesquisa, 3 de cada 5 alunos preferem futebol. Isso corresponde a:",["60%","35%","30%","50%","75%"],0,"3/5 = 60/100 = 60%.",3],
+  ["Loja A: bicicleta de R$ 500 com 10% de desconto. Loja B: a mesma bicicleta por R$ 470. Onde é mais barato?",["Loja A, por R$ 450","Loja B, por R$ 470","É o mesmo preço","Loja A, por R$ 490","Loja B, por R$ 450"],0,"10% de 500 = 50. 500 − 50 = 450, que é menos que 470.",3]
  ],
  "mat/probabilidade":[
-  ["Jogando um dado, qual a probabilidade de sair o número 4?",["1/6","4/6","1/4","6/1"],0,"Um caso que eu quero em 6 possíveis."],
-  ["Jogando um dado, qual a probabilidade de sair número par?",["1/2","1/6","2/6","1/3"],0,"Pares: 2, 4, 6. São 3 de 6 = 1/2."],
-  ["Num saco há 3 bolas azuis e 2 vermelhas. Qual a chance de tirar vermelha?",["2/5","2/3","3/5","1/2"],0,"Total: 5 bolas. Vermelhas: 2."],
-  ["Alice tem 3 camisetas e 2 bermudas. Quantas combinações diferentes pode montar?",["6","5","3","9"],0,"Princípio da contagem: 3 × 2 = 6."],
-  ["Uma moeda é lançada 2 vezes. Quantos resultados são possíveis?",["4","2","3","6"],0,"Árvore: cara-cara, cara-coroa, coroa-cara, coroa-coroa."],
-  ["Qual a probabilidade de sair 7 num dado comum?",["0 (impossível)","1/6","1/7","1 (certeza)"],0,"O dado só vai até 6."],
-  ["Um lanche tem 3 tipos de pão, 2 recheios e 2 sucos. Quantos combos diferentes?",["12","7","6","10"],0,"3 × 2 × 2 = 12."],
-  ["Probabilidade de 1/4 é o mesmo que:",["25%","4%","14%","40%"],0,"1/4 = 25/100."]
+  ["Jogando um dado, qual a probabilidade de sair o número 4?",["1/6","4/6","1/4","6/1","1/2"],0,"Um caso que eu quero em 6 possíveis.",1],
+  ["Jogando um dado, qual a probabilidade de sair número par?",["1/2","1/6","2/6","1/3","1/4"],0,"Pares: 2, 4, 6. São 3 de 6 = 1/2.",1],
+  ["Num saco há 3 bolas azuis e 2 vermelhas. Qual a chance de tirar vermelha?",["2/5","2/3","3/5","1/2","1/5"],0,"Total: 5 bolas. Vermelhas: 2.",1],
+  ["Alice tem 3 camisetas e 2 bermudas. Quantas combinações diferentes pode montar?",["6","5","3","9","8"],0,"Princípio da contagem: 3 × 2 = 6.",1],
+  ["Uma moeda é lançada 2 vezes. Quantos resultados são possíveis?",["4","2","3","6","8"],0,"Árvore: cara-cara, cara-coroa, coroa-cara, coroa-coroa.",2],
+  ["Qual a probabilidade de sair 7 num dado comum?",["0 (impossível)","1/6","1/7","1 (certeza)","1/2"],0,"O dado só vai até 6.",1],
+  ["Um lanche tem 3 tipos de pão, 2 recheios e 2 sucos. Quantos combos diferentes?",["12","7","6","10","24"],0,"3 × 2 × 2 = 12.",2],
+  ["Probabilidade de 1/4 é o mesmo que:",["25%","4%","14%","40%","0,4%"],0,"1/4 = 25/100.",1],
+  ["Numa moeda, qual a probabilidade de sair cara?",["1/2","1/3","1/4","2/1","1"],0,"São 2 lados e eu quero 1.",1],
+  ["Uma probabilidade de 50% é o mesmo que:",["1/2","1/50","1/5","2/5","50/10"],0,"50% = 50/100 = 1/2.",1],
+  ["Qual evento é impossível?",["Tirar uma bola azul de um saco só com bolas vermelhas","Sair cara numa moeda","Sair 6 num dado","Chover amanhã","Tirar um número par num dado"],0,"Se não há bola azul, a chance é 0.",1],
+  ["Qual evento é certo?",["Sair um número de 1 a 6 num dado comum","Sair 6 num dado","Sair cara numa moeda","Tirar bola azul num saco com azuis e vermelhas","Ganhar na rifa com 1 bilhete"],0,"Todo resultado do dado está entre 1 e 6: probabilidade 1.",1],
+  ["Qual a probabilidade de sair um número menor que 7 num dado comum?",["1 (certeza)","6/7","0 (impossível)","1/6","1/2"],0,"Todos os 6 números são menores que 7: 6/6 = 1.",2],
+  ["Jogando um dado, qual a chance de sair número maior que 4?",["1/3","1/6","2/3","1/4","1/2"],0,"Maiores que 4: 5 e 6. São 2 de 6 = 1/3.",2],
+  ["Num saco há 4 bolas verdes, 3 amarelas e 1 branca. Qual a chance de tirar amarela?",["3/8","3/7","1/3","3/5","1/8"],0,"Total: 4 + 3 + 1 = 8 bolas. Amarelas: 3.",2],
+  ["Num saco com 4 bolas verdes, 3 amarelas e 1 branca, qual cor tem MAIS chance de sair?",["verde","amarela","branca","todas têm a mesma chance","nenhuma"],0,"A cor com mais bolas tem mais chance: verde (4/8).",2],
+  ["Uma sorveteria tem 4 sabores e 3 tipos de casquinha. Quantas combinações de 1 sabor com 1 casquinha?",["12","7","4","16","9"],0,"4 × 3 = 12.",2],
+  ["Em 20 bilhetes de rifa, Alice comprou 4. Qual a chance de ela ganhar?",["1/5","1/4","4/10","1/20","1/16"],0,"4/20 = 1/5.",2],
+  ["Uma roleta tem 8 partes iguais: 3 azuis, 4 verdes e 1 vermelha. Qual a chance de parar no azul?",["3/8","3/5","1/3","3/4","1/8"],0,"3 partes azuis em 8.",2],
+  ["Com 2 calças, 3 camisetas e 2 tênis, quantos visuais diferentes Alice pode montar?",["12","7","6","10","8"],0,"2 × 3 × 2 = 12.",2],
+  ["Alice escolhe uma letra da palavra BOLA ao acaso. Qual a chance de ser vogal?",["1/2","1/4","2/5","3/4","1/3"],0,"Vogais: O e A. São 2 de 4 letras = 1/2.",2],
+  ["Um dado é lançado. Qual a probabilidade de sair 2, 3 ou 5?",["1/2","1/3","1/6","2/3","3/5"],0,"São 3 casos em 6: 3/6 = 1/2.",3],
+  ["Numa urna com 10 fichas numeradas de 1 a 10, qual a chance de sortear um múltiplo de 3?",["3/10","1/3","1/10","3/7","4/10"],0,"Múltiplos de 3: 3, 6 e 9. São 3 de 10.",3],
+  ["Quantos números de 2 algarismos diferentes podem ser formados com 1, 2 e 3?",["6","9","3","5","8"],0,"12, 13, 21, 23, 31, 32: 3 escolhas para o 1º × 2 para o 2º = 6.",3],
+  ["De quantas formas 3 amigos podem ficar em fila?",["6","3","9","4","8"],0,"3 escolhas para o 1º lugar × 2 para o 2º × 1 para o 3º = 6.",3],
+  ["Uma moeda é lançada 3 vezes. Quantos resultados são possíveis?",["8","6","3","9","4"],0,"2 × 2 × 2 = 8.",3],
+  ["No lançamento de 2 dados, quantos resultados possíveis existem?",["36","12","6","18","24"],0,"6 resultados no 1º dado × 6 no 2º = 36.",3]
  ],
  "mat/plano":[
-  ["Para marcar o ponto A(3, 2), começando na origem, você:",["anda 3 para a direita e sobe 2","anda 2 para a direita e sobe 3","anda 3 para a esquerda e desce 2","anda 5 para a direita"],0,"Primeiro o x (deitado), depois o y (em pé)."],
-  ["O ponto (0, 0) se chama:",["origem","eixo x","quadrante","vértice"],0,"É onde os dois eixos se cruzam."],
-  ["O eixo x é a linha:",["horizontal (deitada)","vertical (em pé)","diagonal"],0,"x deitado, y em pé."],
-  ["O ponto (0, 4) fica:",["em cima do eixo y","em cima do eixo x","na origem","fora do plano"],0,"x = 0: não andou para o lado, só subiu."],
-  ["Um triângulo tem o vértice (1, 3). Ampliando 2 vezes, esse vértice vira:",["(2, 6)","(3, 5)","(1, 6)","(2, 3)"],0,"Multiplica as duas coordenadas por 2."],
-  ["Reduzindo pela metade, o ponto (4, 8) vira:",["(2, 4)","(8, 16)","(4, 4)","(2, 8)"],0,"Divide as duas coordenadas por 2."],
-  ["A planta baixa de uma casa é o desenho visto:",["de cima","de frente","de lado","de baixo"],0,"Mostra os cômodos como se você olhasse do teto."],
-  ["Quando ampliamos uma figura, a forma dela:",["continua igual, só muda o tamanho","fica torta","vira outra figura"],0,"Ampliar e reduzir mantém a forma."]
+  ["Para marcar o ponto A(3, 2), começando na origem, você:",["anda 3 para a direita e sobe 2","anda 2 para a direita e sobe 3","anda 3 para a esquerda e desce 2","anda 5 para a direita","sobe 3 e anda 2 para a direita"],0,"Primeiro o x (deitado), depois o y (em pé).",1],
+  ["O ponto (0, 0) se chama:",["origem","eixo x","quadrante","vértice","eixo y"],0,"É onde os dois eixos se cruzam.",1],
+  ["O eixo x é a linha:",["horizontal (deitada)","vertical (em pé)","diagonal","curva","que não passa pela origem"],0,"x deitado, y em pé.",1],
+  ["O ponto (0, 4) fica:",["em cima do eixo y","em cima do eixo x","na origem","fora do plano","entre os dois eixos, sem tocar em nenhum"],0,"x = 0: não andou para o lado, só subiu.",2],
+  ["Um triângulo tem o vértice (1, 3). Ampliando 2 vezes, esse vértice vira:",["(2, 6)","(3, 5)","(1, 6)","(2, 3)","(1, 5)"],0,"Multiplica as duas coordenadas por 2.",2],
+  ["Reduzindo pela metade, o ponto (4, 8) vira:",["(2, 4)","(8, 16)","(4, 4)","(2, 8)","(3, 7)"],0,"Divide as duas coordenadas por 2.",2],
+  ["A planta baixa de uma casa é o desenho visto:",["de cima","de frente","de lado","de baixo","de dentro de um cômodo"],0,"Mostra os cômodos como se você olhasse do teto.",1],
+  ["Quando ampliamos uma figura, a forma dela:",["continua igual, só muda o tamanho","fica torta","vira outra figura","ganha mais lados","fica sempre menor"],0,"Ampliar e reduzir mantém a forma.",1],
+  ["No par ordenado (5, 1), qual número é o x?",["5","1","6","4","0"],0,"O x é sempre o primeiro número.",1],
+  ["O eixo y é a linha:",["vertical (em pé)","horizontal (deitada)","diagonal","curva","que não passa pela origem"],0,"x deitado, y em pé.",1],
+  ["A vista de frente de uma caixa de sapato é:",["um retângulo","um círculo","um triângulo","um cubo","uma esfera"],0,"De frente só vemos uma face da caixa, que é retangular.",1],
+  ["Em (x, y), o primeiro número indica o movimento:",["para o lado (horizontal)","para cima (vertical)","em diagonal","para trás","para baixo"],0,"Primeiro anda para o lado, depois sobe.",1],
+  ["O ponto (6, 0) fica:",["em cima do eixo x","em cima do eixo y","na origem","acima do eixo x","à esquerda da origem"],0,"y = 0: andou para o lado e não subiu nada.",2],
+  ["Os pontos (2, 5) e (5, 2) são:",["pontos diferentes","o mesmo ponto","os dois na origem","os dois no eixo y","os dois no eixo x"],0,"A ordem importa: trocar x e y muda o ponto.",2],
+  ["Partindo do ponto (2, 3), andei 3 casas para a direita. Cheguei em:",["(5, 3)","(2, 6)","(5, 6)","(3, 5)","(2, 0)"],0,"Andar para a direita muda só o x: 2 + 3 = 5.",2],
+  ["Um quadrado tem o vértice (2, 2). Ampliando 3 vezes, esse vértice vira:",["(6, 6)","(5, 5)","(2, 6)","(6, 2)","(8, 8)"],0,"Multiplica as duas coordenadas por 3.",2],
+  ["Reduzindo um triângulo pela metade, o vértice (6, 10) vira:",["(3, 5)","(12, 20)","(4, 8)","(3, 10)","(6, 5)"],0,"Divide as duas coordenadas por 2.",2],
+  ["A vista de cima de uma lata de refrigerante em pé parece:",["um círculo","um retângulo","um triângulo","um quadrado","um losango"],0,"De cima vemos a tampa redonda.",2],
+  ["Qual ponto fica mais à direita no plano?",["(7, 1)","(1, 7)","(5, 5)","(6, 9)","(0, 10)"],0,"Mais à direita = maior x. O maior x é 7.",2],
+  ["Qual ponto fica mais alto no plano?",["(1, 8)","(8, 1)","(6, 6)","(7, 3)","(9, 0)"],0,"Mais alto = maior y. O maior y é 8.",2],
+  ["Partindo de (4, 1), subi 2 casas e andei 1 para a direita. Cheguei em:",["(5, 3)","(6, 2)","(3, 3)","(5, 1)","(4, 3)"],0,"x: 4 + 1 = 5. y: 1 + 2 = 3.",3],
+  ["Um retângulo tem vértices (0, 0), (4, 0), (4, 2) e (0, 2). Qual é a largura dele no eixo x?",["4 unidades","2 unidades","6 unidades","8 unidades","0 unidade"],0,"No eixo x ele vai de 0 até 4.",3],
+  ["Num mapa, a escola fica em (3, 4) e a casa de Alice em (3, 1). Qual a distância entre elas?",["3 casas, na vertical","3 casas, na horizontal","4 casas","1 casa","7 casas"],0,"O x é igual (3). Só o y muda: 4 − 1 = 3.",3],
+  ["Uma figura foi ampliada: o ponto (2, 1) virou (6, 3). Ela foi ampliada quantas vezes?",["3 vezes","2 vezes","4 vezes","6 vezes","5 vezes"],0,"2 × 3 = 6 e 1 × 3 = 3.",3],
+  ["Quais pontos estão em cima do eixo y?",["(0, 2) e (0, 7)","(2, 0) e (7, 0)","(2, 2) e (7, 7)","(1, 2) e (1, 7)","(2, 1) e (7, 1)"],0,"No eixo y, o x é sempre 0.",3],
+  ["Numa planta baixa, o que NÃO aparece?",["a altura do telhado","os cômodos","as portas","as janelas","as paredes"],0,"Vista de cima não mostra alturas.",3]
  ],
  "port/cap8":[
-  ["Qual o principal objetivo de um cartaz de campanha de conscientização?",["Convencer as pessoas a mudar um comportamento","Vender um produto","Contar uma história inventada","Informar o placar de um jogo"],0,"Campanha quer mudar atitudes, como economizar água."],
-  ["O que diferencia o anúncio publicitário do cartaz de campanha?",["O anúncio quer vender um produto ou serviço","O anúncio não usa imagens","O cartaz sempre vende algo","Não há diferença"],0,"Anúncio vende; campanha conscientiza."],
-  ["Por que o texto de um outdoor costuma ser curto?",["As pessoas leem rápido, de passagem","Falta espaço na rua","É só para crianças","É proibido escrever muito"],0,"Quem passa de carro tem poucos segundos para ler."],
-  ["Em \"Economize água!\", o verbo está no:",["modo imperativo","modo subjuntivo","gerúndio","particípio"],0,"Imperativo dá ordem, conselho ou pedido."],
-  ["Qual frase está no imperativo negativo?",["Não jogue lixo na rua.","Eu não jogo lixo na rua.","Se ele não jogasse lixo...","Jogando lixo na rua."],0,"É uma ordem com \"não\"."],
-  ["\"Girassol\" (gira + sol) é formada por:",["justaposição","aglutinação","não é palavra composta"],0,"As duas palavras ficam inteiras."],
-  ["\"Planalto\" (plano + alto) é formada por:",["aglutinação","justaposição"],0,"O \"o\" de plano sumiu."],
-  ["Qual palavra é formada por justaposição?",["guarda-chuva","embora","aguardente","planalto"],0,"Guarda + chuva, sem perder nada."],
-  ["\"O mecânico fez o ___ do carro\" e \"Fomos ao ___ da orquestra\":",["conserto / concerto","concerto / conserto","conserto / conserto"],0,"Conserto é reparo; concerto é apresentação musical."],
-  ["Palavras homófonas são:",["iguais no som, diferentes na escrita e no sentido","parecidas no som e na escrita","palavras com o mesmo sentido"],0,"Ex.: cela e sela."],
-  ["\"Ela fez um ___ ao professor\" (saudação):",["cumprimento","comprimento"],0,"Comprimento é medida de tamanho."],
-  ["Qual par é de parônimos?",["emigrar / imigrar","cela / sela","cem / sem","acender / ascender"],0,"Os outros pares têm o mesmo som: são homófonos."]
+  ["Qual o principal objetivo de um cartaz de campanha de conscientização?",["Convencer as pessoas a mudar um comportamento","Vender um produto","Contar uma história inventada","Informar o placar de um jogo","Ensinar uma receita"],0,"Campanha quer mudar atitudes, como economizar água.",1],
+  ["O que diferencia o anúncio publicitário do cartaz de campanha?",["O anúncio quer vender um produto ou serviço","O anúncio não usa imagens","O cartaz sempre vende algo","Não há diferença","O anúncio é sempre escrito à mão"],0,"Anúncio vende; campanha conscientiza.",2],
+  ["Por que o texto de um outdoor costuma ser curto?",["As pessoas leem rápido, de passagem","Falta espaço na rua","É só para crianças","É proibido escrever muito","Outdoor é feito para ler em casa"],0,"Quem passa de carro tem poucos segundos para ler.",1],
+  ["Em \"Economize água!\", o verbo está no:",["modo imperativo","modo subjuntivo","gerúndio","particípio","infinitivo"],0,"Imperativo dá ordem, conselho ou pedido.",1],
+  ["Qual frase está no imperativo negativo?",["Não jogue lixo na rua.","Eu não jogo lixo na rua.","Se ele não jogasse lixo...","Jogando lixo na rua.","Eu não jogaria lixo na rua."],0,"É uma ordem com \"não\".",2],
+  ["\"Girassol\" (gira + sol) é formada por:",["justaposição","aglutinação","não é palavra composta","derivação por prefixo","abreviação"],0,"As duas palavras ficam inteiras.",2],
+  ["\"Planalto\" (plano + alto) é formada por:",["aglutinação","justaposição","derivação","abreviação","não é palavra composta"],0,"O \"o\" de plano sumiu.",2],
+  ["Qual palavra é formada por justaposição?",["guarda-chuva","embora","aguardente","planalto","fidalgo"],0,"Guarda + chuva, sem perder nada.",2],
+  ["\"O mecânico fez o ___ do carro\" e \"Fomos ao ___ da orquestra\":",["conserto / concerto","concerto / conserto","conserto / conserto","concerto / concerto","consserto / concerto"],0,"Conserto é reparo; concerto é apresentação musical.",2],
+  ["Palavras homófonas são:",["iguais no som, diferentes na escrita e no sentido","parecidas no som e na escrita","palavras com o mesmo sentido","palavras com sentidos opostos","palavras de outra língua"],0,"Ex.: cela e sela.",2],
+  ["\"Ela fez um ___ ao professor\" (saudação):",["cumprimento","comprimento","cumprimente","comprido","compromisso"],0,"Comprimento é medida de tamanho.",2],
+  ["Qual par é de parônimos?",["emigrar / imigrar","cela / sela","cem / sem","acender / ascender","sessão / seção"],0,"Os outros pares têm o mesmo som: são homófonos.",3],
+  ["Qual destes textos quer VENDER alguma coisa?",["Anúncio publicitário","Cartaz de campanha de vacinação","Carta de reclamação","Reportagem","Poema"],0,"O anúncio mostra vantagens de um produto para vender.",1],
+  ["Um cartaz com a frase \"Vacine seu filho!\" é um exemplo de:",["campanha de conscientização","anúncio de venda","notícia","carta pessoal","receita"],0,"Quer mudar um comportamento, não vender.",1],
+  ["Linguagem não verbal é aquela que usa:",["imagens, cores e símbolos","só palavras escritas","só palavras faladas","apenas números","rimas"],0,"Verbal = palavras. Não verbal = imagens, cores, gestos.",1],
+  ["Em \"Beba mais água!\", qual palavra está no imperativo?",["Beba","mais","água","Beber","Nenhuma"],0,"\"Beba\" é um conselho, uma ordem.",1],
+  ["Um slogan é:",["uma frase curta e fácil de lembrar","um texto longo com vários parágrafos","a assinatura do autor","o preço do produto","uma entrevista"],0,"Ex.: \"Beba com moderação.\"",2],
+  ["Qual é o imperativo afirmativo de \"desligar\" (você)?",["Desligue","Desligar","Desligando","Desligou","Desligaria"],0,"\"Desligue a luz ao sair.\"",2],
+  ["\"Embora\" (em + boa + hora) é formada por:",["aglutinação","justaposição","derivação","abreviação","não é palavra formada"],0,"Juntou e perdeu sons: em boa hora → embora.",2],
+  ["\"Passatempo\" é formada por:",["justaposição","aglutinação","derivação","abreviação","onomatopeia"],0,"Passa + tempo, as duas palavras inteiras.",2],
+  ["\"Acender\" a luz e \"ascender\" (subir) são palavras:",["homófonas","parônimas","sinônimas","antônimas","compostas"],0,"Mesmo som, escrita e sentido diferentes.",2],
+  ["\"O preso ficou na ___\" e \"Coloque a ___ no cavalo\":",["cela / sela","sela / cela","cela / cela","sela / sela","cella / sela"],0,"Cela é prisão; sela é o assento do cavalo.",2],
+  ["\"Paguei ___ reais\" e \"Saí ___ guarda-chuva\":",["cem / sem","sem / cem","cem / cem","sem / sem","sen / cem"],0,"Cem é o número 100; sem indica falta.",1],
+  ["O anúncio de um tênis diz: \"Corra mais longe. Seja livre.\" Qual é a intenção?",["convencer o leitor a comprar o tênis","informar uma notícia","reclamar de um produto","ensinar a correr","contar uma história real"],0,"Anúncio usa imperativo para convencer a comprar.",2],
+  ["Num outdoor, qual recurso é MAIS importante?",["imagem forte e texto curto","texto longo e detalhado","letras pequenas","muitas informações técnicas","nenhuma imagem"],0,"A pessoa vê de passagem, em poucos segundos.",2],
+  ["Transforme em imperativo negativo: \"Desperdice comida.\"",["Não desperdice comida.","Nunca desperdiçou comida.","Não desperdiçar comida.","Não desperdiçando comida.","Desperdice não comida."],0,"Imperativo negativo: \"não\" + verbo (não desperdice).",3],
+  ["O imperativo pode expressar tudo isto, EXCETO:",["uma dúvida sobre o passado","uma ordem","um conselho","um pedido","um convite"],0,"Dúvida e hipótese são do subjuntivo.",3],
+  ["Qual palavra é formada por aglutinação?",["aguardente","girassol","guarda-roupa","passatempo","beija-flor"],0,"Água + ardente: sumiu o \"a\" de água.",3],
+  ["Muitos brasileiros ___ para o Japão (saíram do Brasil). Muitos japoneses ___ para o Brasil (entraram).",["emigraram / imigraram","imigraram / emigraram","emigraram / emigraram","imigraram / imigraram","migraram / migraram"],0,"Emigrar = sair do país. Imigrar = entrar no país.",3],
+  ["\"Ela agiu com muita ___ e ninguém percebeu.\" (ser discreto)",["discrição","descrição","discreção","descripção","discriçao"],0,"Discrição vem de discreto. Descrição vem de descrever.",3]
  ],
  "port/cap9":[
-  ["O que diferencia a reportagem da notícia?",["A reportagem aprofunda o assunto, com entrevistas e dados","A reportagem é inventada","A reportagem é mais curta","A reportagem não tem título"],0,"Reportagem investiga mais a fundo."],
-  ["O que não pode faltar numa carta de reclamação?",["A descrição do problema e o pedido de solução","Uma piada","Palavrões para mostrar raiva","Um poema"],0,"Problema claro + o que você quer que resolvam."],
-  ["A linguagem de uma carta de reclamação deve ser:",["formal, respeitosa e firme","cheia de gírias","agressiva","rimada"],0,"Educação ajuda a resolver o problema."],
-  ["\"Li Monteiro Lobato nas férias.\" Qual figura de linguagem?",["metonímia","personificação"],0,"O autor está no lugar dos livros dele."],
-  ["\"Bebi dois copos de suco.\" Há metonímia porque:",["o copo está no lugar do suco","o copo ganhou vida","há um exagero"],0,"Recipiente no lugar do conteúdo."],
-  ["\"O vento sussurrava nas janelas.\" Qual figura?",["personificação","metonímia"],0,"Sussurrar é ação humana dada ao vento."],
-  ["\"Espero que você estude.\" O verbo \"estude\" está no:",["presente do subjuntivo","presente do indicativo","futuro do subjuntivo","gerúndio"],0,"Pista: \"que\" + desejo."],
-  ["\"Se eu estudasse mais, tiraria nota boa.\" \"Estudasse\" está no:",["pretérito imperfeito do subjuntivo","futuro do subjuntivo","presente do indicativo","infinitivo"],0,"Pista: \"se\" + hipótese."],
-  ["\"Quando eu terminar a tarefa, vou brincar.\" \"Terminar\" está no:",["futuro do subjuntivo","infinitivo","imperativo"],0,"Parece infinitivo, mas o \"quando\" mostra que é futuro do subjuntivo."],
-  ["Qual é o gerúndio de \"correr\"?",["correndo","corrido","correr","corra"],0,"Gerúndio termina em -ndo."],
-  ["As formas nominais do verbo são:",["infinitivo, gerúndio e particípio","presente, passado e futuro","indicativo, subjuntivo e imperativo"],0,"estudar, estudando, estudado."],
-  ["\"Terminado o jogo, todos saíram.\" \"Terminado\" é:",["particípio","gerúndio","infinitivo"],0,"Particípio termina em -ado ou -ido."]
+  ["O que diferencia a reportagem da notícia?",["A reportagem aprofunda o assunto, com entrevistas e dados","A reportagem é inventada","A reportagem é mais curta","A reportagem não tem título","A reportagem nunca tem fotos"],0,"Reportagem investiga mais a fundo.",2],
+  ["O que não pode faltar numa carta de reclamação?",["A descrição do problema e o pedido de solução","Uma piada","Palavrões para mostrar raiva","Um poema","Uma receita de bolo"],0,"Problema claro + o que você quer que resolvam.",1],
+  ["A linguagem de uma carta de reclamação deve ser:",["formal, respeitosa e firme","cheia de gírias","agressiva","rimada","cheia de abreviações de internet"],0,"Educação ajuda a resolver o problema.",1],
+  ["\"Li Monteiro Lobato nas férias.\" Qual figura de linguagem?",["metonímia","personificação","comparação","onomatopeia","rima"],0,"O autor está no lugar dos livros dele.",2],
+  ["\"Bebi dois copos de suco.\" Há metonímia porque:",["o copo está no lugar do suco","o copo ganhou vida","há um exagero","o suco virou copo","há uma comparação com \"como\""],0,"Recipiente no lugar do conteúdo.",2],
+  ["\"O vento sussurrava nas janelas.\" Qual figura?",["personificação","metonímia","comparação","onomatopeia","rima"],0,"Sussurrar é ação humana dada ao vento.",1],
+  ["\"Espero que você estude.\" O verbo \"estude\" está no:",["presente do subjuntivo","presente do indicativo","futuro do subjuntivo","gerúndio","pretérito perfeito"],0,"Pista: \"que\" + desejo.",2],
+  ["\"Se eu estudasse mais, tiraria nota boa.\" \"Estudasse\" está no:",["pretérito imperfeito do subjuntivo","futuro do subjuntivo","presente do indicativo","infinitivo","presente do subjuntivo"],0,"Pista: \"se\" + hipótese.",3],
+  ["\"Quando eu terminar a tarefa, vou brincar.\" \"Terminar\" está no:",["futuro do subjuntivo","infinitivo","imperativo","presente do indicativo","gerúndio"],0,"Parece infinitivo, mas o \"quando\" mostra que é futuro do subjuntivo.",3],
+  ["Qual é o gerúndio de \"correr\"?",["correndo","corrido","correr","corra","corri"],0,"Gerúndio termina em -ndo.",1],
+  ["As formas nominais do verbo são:",["infinitivo, gerúndio e particípio","presente, passado e futuro","indicativo, subjuntivo e imperativo","singular e plural","primeira, segunda e terceira pessoa"],0,"estudar, estudando, estudado.",2],
+  ["\"Terminado o jogo, todos saíram.\" \"Terminado\" é:",["particípio","gerúndio","infinitivo","imperativo","presente do subjuntivo"],0,"Particípio termina em -ado ou -ido.",2],
+  ["Qual texto é jornalístico?",["reportagem","conto de fadas","poema","receita","história em quadrinhos"],0,"Reportagem e notícia são textos jornalísticos.",1],
+  ["\"As árvores dançavam com o vento.\" Qual figura?",["personificação","metonímia","comparação","rima","nenhuma"],0,"Dançar é ação humana dada às árvores.",1],
+  ["O modo subjuntivo expressa:",["dúvida, desejo ou hipótese","uma certeza","uma ordem","só ações do passado","o nome das coisas"],0,"Certeza é do indicativo; ordem é do imperativo.",1],
+  ["Qual é o particípio de \"vender\"?",["vendido","vendendo","vender","venda","vendeu"],0,"Particípio termina em -ado ou -ido.",1],
+  ["\"Estou lendo um livro.\" O verbo \"lendo\" está no:",["gerúndio","particípio","infinitivo","imperativo","subjuntivo"],0,"Termina em -ndo.",1],
+  ["Uma reportagem sobre o lixo nas praias provavelmente vai ter:",["entrevistas, dados e fotos","só a opinião do autor, sem dados","rimas e versos","personagens inventados","instruções de montagem"],0,"Reportagem investiga e ouve várias pessoas.",2],
+  ["Numa carta de reclamação, onde vai o pedido de solução?",["depois da explicação do problema","antes da data","no envelope","não precisa colocar","só na assinatura"],0,"Primeiro explica o problema, depois pede a solução.",2],
+  ["Qual frase é mais adequada para uma carta de reclamação?",["Solicito a troca do produto com defeito.","Vocês são péssimos!","Quero meu dinheiro agora, seus ladrões!","Tanto faz, não precisa resolver.","kkk o produto quebrou"],0,"Formal, respeitosa e firme.",2],
+  ["\"Ouvi Tom Jobim a tarde toda.\" Qual figura?",["metonímia","personificação","comparação","onomatopeia","nenhuma"],0,"O autor no lugar das músicas dele.",2],
+  ["\"O relógio preguiçoso não queria andar.\" Qual palavra dá característica humana ao relógio?",["preguiçoso","relógio","andar","não","o"],0,"Preguiça é característica humana: personificação.",2],
+  ["Qual frase tem personificação?",["O sol espiava pela janela.","Bebi um copo de leite.","Li Machado de Assis.","O céu está azul.","Comprei um caderno."],0,"Espiar é ação humana dada ao sol.",2],
+  ["Complete: \"Quando você ___ (chegar), me avise.\"",["chegar","chega","chegou","chegando","chegaria"],0,"\"Quando\" pede o futuro do subjuntivo: quando você chegar.",2],
+  ["Em \"Estudar é importante\", o verbo está no:",["infinitivo","gerúndio","particípio","imperativo","futuro do subjuntivo"],0,"Terminação -ar, sem \"quando\" ou \"se\": infinitivo.",2],
+  ["Os direitos do consumidor no Brasil estão no:",["Código de Defesa do Consumidor","Código de Justiniano","Estatuto da Criança","Dicionário","Manual do produto"],0,"É a lei que protege quem compra.",3],
+  ["\"A cidade inteira foi ao jogo.\" Há metonímia porque:",["\"cidade\" está no lugar das pessoas da cidade","a cidade ganhou vida de verdade","há uma comparação","há rima","o jogo é uma pessoa"],0,"O lugar está no lugar de quem mora nele.",3],
+  ["Qual frase tem metonímia?",["Comi dois pratos de arroz.","A lua sorriu para mim.","O rio chorava baixinho.","O vento cantava.","A casa é grande."],0,"Prato no lugar da comida. As outras são personificação ou não têm figura.",3],
+  ["Complete: \"Se eu ___ (ter) dinheiro, compraria um livro.\"",["tivesse","tenho","tiver","tenha","tinha"],0,"\"Se\" + hipótese: pretérito imperfeito do subjuntivo.",3],
+  ["Complete: \"Espero que vocês ___ (vencer) o jogo.\"",["vençam","vencem","venceram","vencendo","vencer"],0,"\"Que\" + desejo: presente do subjuntivo.",3]
  ],
  "hist/roma":[
-  ["Quem foi o primeiro imperador romano?",["Otávio Augusto","Júlio César","Constantino","Justiniano"],0,"Júlio César foi ditador, mas não imperador."],
-  ["No Império Romano, quem concentrava o poder?",["O imperador","O Senado","Os plebeus","Os escravizados"],0,"O Senado perdeu força no Império."],
-  ["O que foi a Pax Romana?",["Cerca de 200 anos de relativa paz dentro do Império","Um tratado com os gregos","Uma festa religiosa","A queda de Roma"],0,"Séculos I e II, com comércio e estradas crescendo."],
-  ["A política do pão e circo servia para:",["dar comida e diversão e evitar revoltas da plebe","ensinar a plebe a ler","treinar soldados","cobrar impostos"],0,"Plebe alimentada e distraída não se revolta."],
-  ["Onde aconteciam as lutas de gladiadores?",["No Coliseu","Na Hagia Sofia","No Senado","Em Constantinopla"],0,"O Coliseu fica em Roma."],
-  ["Qual língua romana deu origem ao português?",["Latim","Grego","Árabe","Germânico"],0,"Também deu origem ao espanhol, francês e italiano."],
-  ["Qual destas é uma herança romana?",["O direito (as leis)","A pólvora","O papel","A bússola"],0,"Pólvora, papel e bússola vêm da China."],
-  ["Antes de virar religião oficial, os cristãos em Roma:",["foram perseguidos","eram a maioria","governavam o Império"],0,"Depois vieram a tolerância (313) e a oficialização (380)."],
-  ["Uma causa da crise do Império Romano foi:",["o fim das conquistas, que reduziu riquezas e escravizados","a descoberta da América","a invenção da imprensa"],0,"Sem conquistas, a economia enfraqueceu."],
-  ["Em 395, o Império foi dividido em:",["Ocidente (Roma) e Oriente (Constantinopla)","Norte e Sul","Grécia e Egito"],0,"O Oriente virou o Império Bizantino."],
-  ["O Império Romano do Ocidente caiu em 476 por causa:",["das invasões dos povos germânicos","da chegada dos turcos","de uma peste"],0,"Os turcos derrubaram Constantinopla, bem depois (1453)."]
+  ["Quem foi o primeiro imperador romano?",["Otávio Augusto","Júlio César","Constantino","Justiniano","Nero"],0,"Júlio César foi ditador, mas não imperador.",1],
+  ["No Império Romano, quem concentrava o poder?",["O imperador","O Senado","Os plebeus","Os escravizados","Os gladiadores"],0,"O Senado perdeu força no Império.",1],
+  ["O que foi a Pax Romana?",["Cerca de 200 anos de relativa paz dentro do Império","Um tratado com os gregos","Uma festa religiosa","A queda de Roma","Uma guerra contra os germânicos"],0,"Séculos I e II, com comércio e estradas crescendo.",2],
+  ["A política do pão e circo servia para:",["dar comida e diversão e evitar revoltas da plebe","ensinar a plebe a ler","treinar soldados","cobrar impostos","construir igrejas"],0,"Plebe alimentada e distraída não se revolta.",1],
+  ["Onde aconteciam as lutas de gladiadores?",["No Coliseu","Na Hagia Sofia","No Senado","Em Constantinopla","No Partenon"],0,"O Coliseu fica em Roma.",1],
+  ["Qual língua romana deu origem ao português?",["Latim","Grego","Árabe","Germânico","Inglês"],0,"Também deu origem ao espanhol, francês e italiano.",1],
+  ["Qual destas é uma herança romana?",["O direito (as leis)","A pólvora","O papel","A bússola","A imprensa"],0,"Pólvora, papel e bússola vêm da China.",2],
+  ["Antes de virar religião oficial, os cristãos em Roma:",["foram perseguidos","eram a maioria","governavam o Império","eram protegidos por lei desde o início","escolhiam o imperador"],0,"Depois vieram a tolerância (313) e a oficialização (380).",2],
+  ["Uma causa da crise do Império Romano foi:",["o fim das conquistas, que reduziu riquezas e escravizados","a descoberta da América","a invenção da imprensa","a chegada dos portugueses","o fim do latim"],0,"Sem conquistas, a economia enfraqueceu.",3],
+  ["Em 395, o Império foi dividido em:",["Ocidente (Roma) e Oriente (Constantinopla)","Norte e Sul","Grécia e Egito","Roma e Cartago","Império Grego e Império Persa"],0,"O Oriente virou o Império Bizantino.",2],
+  ["O Império Romano do Ocidente caiu em 476 por causa:",["das invasões dos povos germânicos","da chegada dos turcos","de uma peste","da vitória de Cartago","da morte de Otávio Augusto"],0,"Os turcos derrubaram Constantinopla, bem depois (1453).",2],
+  ["Os romanos ricos, donos de terras, eram os:",["patrícios","plebeus","escravizados","bárbaros","bizantinos"],0,"Patrícios eram a elite.",1],
+  ["A maioria da população livre de Roma, como comerciantes e artesãos, eram os:",["plebeus","patrícios","senadores","imperadores","gladiadores"],0,"Plebeus eram livres, mas sem os privilégios dos patrícios.",1],
+  ["Quem invadiu o Império Romano do Ocidente?",["os povos germânicos","os turcos otomanos","os portugueses","os bizantinos","os egípcios"],0,"As invasões germânicas levaram à queda em 476.",1],
+  ["Em que ano começou o Império Romano?",["27 a.C.","476","395","1453","1054"],0,"Com Otávio Augusto, o primeiro imperador.",2],
+  ["Muitos escravizados em Roma eram:",["prisioneiros de guerra","senadores aposentados","imperadores derrotados","padres cristãos","comerciantes ricos"],0,"As conquistas traziam prisioneiros que eram escravizados.",2],
+  ["Durante a Pax Romana, o que cresceu?",["o comércio e as estradas","as invasões germânicas","a divisão do Império","as perseguições aos imperadores","o uso do grego no Ocidente"],0,"Com paz, o comércio se espalhou pelo Império.",2],
+  ["Antes do cristianismo, a religião romana era:",["politeísta (vários deuses)","monoteísta (um só deus)","sem deuses","islâmica","budista"],0,"Os romanos adoravam vários deuses, como Júpiter.",2],
+  ["Qual obra é uma herança da arquitetura romana?",["aquedutos, que levavam água às cidades","pirâmides do Egito","Grande Muralha da China","Hagia Sofia","castelos medievais"],0,"A Hagia Sofia é bizantina; as pirâmides são egípcias.",2],
+  ["Os espetáculos no Coliseu eram oferecidos principalmente para:",["distrair a plebe","ensinar matemática","eleger o imperador","rezar para um só deus","treinar os senadores"],0,"Era o \"circo\" da política do pão e circo.",2],
+  ["O Senado romano, durante o Império:",["perdeu força para o imperador","passou a mandar em tudo","era formado só por plebeus","virou uma igreja","foi levado para o Egito"],0,"O poder ficou concentrado no imperador.",2],
+  ["Em que ano o cristianismo virou religião oficial do Império?",["380","313","476","27 a.C.","1054"],0,"313: tolerância. 380: religião oficial.",3],
+  ["O que aconteceu em 313?",["Os cristãos passaram a ser tolerados","O Império foi dividido","Roma caiu","O Império começou","Houve o Cisma do Oriente"],0,"Os cristãos deixaram de ser perseguidos.",3],
+  ["Por que o fim das conquistas enfraqueceu Roma?",["Chegavam menos riquezas e menos escravizados","Os romanos pararam de falar latim","O Coliseu foi destruído","Os senadores viraram imperadores","O cristianismo acabou"],0,"A economia dependia do que vinha das conquistas.",3],
+  ["Com a crise, o governo romano:",["aumentou os impostos","acabou com os impostos","deu terras a todos os escravizados","mudou a capital para Atenas","deixou de ter exército"],0,"Mais impostos deixaram o povo mais insatisfeito.",3],
+  ["Coloque em ordem: divisão do Império, início do Império, queda de Roma.",["27 a.C. → 395 → 476","395 → 27 a.C. → 476","476 → 395 → 27 a.C.","27 a.C. → 476 → 395","395 → 476 → 27 a.C."],0,"Início (27 a.C.), divisão (395), queda do Ocidente (476).",3],
+  ["Qual destas línguas NÃO veio do latim?",["inglês","português","espanhol","francês","italiano"],0,"O inglês é de origem germânica.",3],
+  ["Júlio César foi:",["um ditador romano, antes do Império","o primeiro imperador","o último imperador bizantino","um rei germânico","o fundador de Constantinopla"],0,"O primeiro imperador foi Otávio Augusto.",3]
  ],
  "hist/bizancio":[
-  ["O Império Bizantino também é chamado de:",["Império Romano do Oriente","Império Grego Antigo","Império Otomano"],0,"Era a parte oriental do Império Romano."],
-  ["Qual era a capital do Império Bizantino?",["Constantinopla","Roma","Atenas","Alexandria"],0,"Hoje se chama Istambul, na Turquia."],
-  ["Qual imperador bizantino organizou um famoso código de leis?",["Justiniano","Otávio Augusto","Nero","Constantino"],0,"Código de Justiniano."],
-  ["Qual igreja foi construída no governo de Justiniano?",["Hagia Sofia (Santa Sofia)","Coliseu","Panteão","Partenon"],0,"Fica em Istambul até hoje."],
-  ["O imperador bizantino também mandava na Igreja. Isso se chama:",["cesaropapismo","pão e circo","Pax Romana"],0,"César (imperador) + papa."],
-  ["Em 1054, o Cisma do Oriente dividiu o cristianismo em:",["Igreja Católica Romana e Igreja Ortodoxa","Igreja Católica e Protestante","Judaísmo e Islamismo"],0,"Cisma = separação."],
-  ["Uma arte típica bizantina, feita com pedrinhas coloridas, é:",["o mosaico","o grafite","a escultura grega de mármore"],0,"Mosaicos decoravam as igrejas."],
-  ["O Império Bizantino acabou em 1453 quando:",["os turcos otomanos tomaram Constantinopla","os germânicos invadiram Roma","Justiniano morreu"],0,"Essa data marca o fim da Idade Média."],
-  ["Qual língua predominava no Império Bizantino?",["grego","latim","árabe"],0,"Roma falava latim; Bizâncio, grego."]
+  ["O Império Bizantino também é chamado de:",["Império Romano do Oriente","Império Grego Antigo","Império Otomano","Império Romano do Ocidente","Império Germânico"],0,"Era a parte oriental do Império Romano.",1],
+  ["Qual era a capital do Império Bizantino?",["Constantinopla","Roma","Atenas","Alexandria","Cartago"],0,"Hoje se chama Istambul, na Turquia.",1],
+  ["Qual imperador bizantino organizou um famoso código de leis?",["Justiniano","Otávio Augusto","Nero","Constantino","Júlio César"],0,"Código de Justiniano.",1],
+  ["Qual igreja foi construída no governo de Justiniano?",["Hagia Sofia (Santa Sofia)","Coliseu","Panteão","Partenon","Pirâmide de Quéops"],0,"Fica em Istambul até hoje.",1],
+  ["O imperador bizantino também mandava na Igreja. Isso se chama:",["cesaropapismo","pão e circo","Pax Romana","cisma","politeísmo"],0,"César (imperador) + papa.",2],
+  ["Em 1054, o Cisma do Oriente dividiu o cristianismo em:",["Igreja Católica Romana e Igreja Ortodoxa","Igreja Católica e Protestante","Judaísmo e Islamismo","Igreja Romana e Igreja Germânica","Cristianismo e religião romana"],0,"Cisma = separação.",2],
+  ["Uma arte típica bizantina, feita com pedrinhas coloridas, é:",["o mosaico","o grafite","a escultura grega de mármore","a pintura rupestre","o origami"],0,"Mosaicos decoravam as igrejas.",1],
+  ["O Império Bizantino acabou em 1453 quando:",["os turcos otomanos tomaram Constantinopla","os germânicos invadiram Roma","Justiniano morreu","Roma foi dividida","o cristianismo virou religião oficial"],0,"Essa data marca o fim da Idade Média.",2],
+  ["Qual língua predominava no Império Bizantino?",["grego","latim","árabe","inglês","português"],0,"Roma falava latim; Bizâncio, grego.",2],
+  ["Hoje, a antiga Constantinopla se chama:",["Istambul","Roma","Atenas","Cairo","Veneza"],0,"Fica na Turquia.",1],
+  ["O Código de Justiniano era:",["um conjunto organizado de leis","uma igreja","um tipo de mosaico","uma língua","um exército"],0,"Organizou as leis romanas.",1],
+  ["Quem tomou Constantinopla em 1453?",["os turcos otomanos","os povos germânicos","os romanos do Ocidente","os gregos antigos","os portugueses"],0,"Os germânicos derrubaram Roma, em 476.",1],
+  ["Qual era o nome antigo de Constantinopla?",["Bizâncio","Cartago","Esparta","Alexandria","Pompeia"],0,"Por isso o império é chamado de Bizantino.",2],
+  ["Em que país fica Istambul hoje?",["Turquia","Itália","Grécia","Egito","Espanha"],0,"Istambul é a antiga Constantinopla.",2],
+  ["Quanto tempo o Império Bizantino durou depois da queda de Roma?",["quase mil anos","cerca de 10 anos","uns 50 anos","exatamente 200 anos","ele caiu junto com Roma"],0,"De 476 até 1453.",2],
+  ["Os ícones bizantinos eram:",["imagens religiosas","moedas de ouro","navios de guerra","leis","castelos"],0,"Imagens de santos, muito usadas nas igrejas.",2],
+  ["A cultura bizantina misturava influências:",["grega, romana e oriental","só germânica","indígena e africana","chinesa e japonesa","só egípcia"],0,"Era o encontro do mundo romano com o Oriente.",2],
+  ["O que foi o Cisma do Oriente?",["a separação da Igreja em Católica Romana e Ortodoxa","a divisão do Império Romano em 395","a queda de Constantinopla","a invasão germânica de Roma","a construção da Hagia Sofia"],0,"Aconteceu em 1054.",2],
+  ["A Hagia Sofia fica na cidade de:",["Istambul","Roma","Atenas","Paris","Londres"],0,"Istambul, a antiga Constantinopla.",2],
+  ["Justiniano governou no século:",["VI","I","XV","IV a.C.","XI"],0,"Século VI (anos 500).",3],
+  ["A Igreja Ortodoxa ficou com sede em:",["Constantinopla","Roma","Jerusalém","Paris","Cartago"],0,"A Igreja Católica Romana ficou com sede em Roma.",3],
+  ["A queda de Constantinopla, em 1453, marca o fim da:",["Idade Média","Idade Antiga","Pré-História","Idade Contemporânea","Pax Romana"],0,"A queda de Roma (476) marca o início da Idade Média.",3],
+  ["Qual par está CORRETO?",["Roma: latim · Bizâncio: grego","Roma: grego · Bizâncio: latim","Roma: árabe · Bizâncio: latim","Roma: grego · Bizâncio: árabe","Os dois falavam só latim"],0,"Latim no Ocidente, grego no Oriente.",3],
+  ["Qual data está ligada ao Império Bizantino?",["1054, Cisma do Oriente","27 a.C., primeiro imperador romano","476, queda de Roma","313, tolerância aos cristãos","1500, chegada ao Brasil"],0,"As outras datas são do Império Romano ou do Brasil.",3],
+  ["Cesaropapismo quer dizer que:",["o imperador também mandava na Igreja","o papa escolhia o imperador","não havia religião","cada cidade tinha seu imperador","o povo elegia o papa"],0,"O imperador tinha poder político e religioso.",3],
+  ["A posição de Constantinopla era boa porque:",["ficava entre a Europa e a Ásia, ótima para o comércio","ficava no meio do deserto","era uma ilha isolada no oceano","ficava perto do Polo Norte","não tinha vizinhos"],0,"Rotas de comércio passavam por ali.",3]
  ],
  "geo/vegetacao":[
-  ["O que mais influencia o tipo de vegetação de um lugar?",["O clima","A cor do solo","O número de cidades","A língua falada"],0,"Temperatura e chuva decidem o que cresce."],
-  ["Floresta de clima quente e úmido, com enorme biodiversidade:",["Floresta tropical ou equatorial","Tundra","Taiga","Deserto"],0,"Exemplo: Amazônia."],
-  ["Pinheiros (coníferas) em clima frio formam a:",["Taiga","Savana","Caatinga","Floresta tropical"],0,"Também chamada de floresta boreal."],
-  ["Musgos e liquens em regiões polares formam a:",["Tundra","Estepe","Savana","Mata Atlântica"],0,"O solo fica congelado boa parte do ano."],
-  ["Nas florestas temperadas, as árvores:",["perdem as folhas no outono","nunca perdem folhas","só crescem no deserto"],0,"Clima com quatro estações bem definidas."],
-  ["Gramíneas e árvores espalhadas, com estação seca. O Cerrado é um exemplo de:",["Savana","Tundra","Taiga","Floresta temperada"],0,"Savana."],
-  ["O cacto e outras plantas do deserto são adaptadas para:",["guardar água e perder pouca","viver no gelo","ficar embaixo d'água"],0,"Chove muito pouco no deserto."],
-  ["Campos de gramíneas em clima temperado, como o Pampa, são:",["pradarias ou estepes","tundra","floresta tropical"],0,"Quase sem árvores."]
+  ["O que mais influencia o tipo de vegetação de um lugar?",["O clima","A cor do solo","O número de cidades","A língua falada","A altura dos prédios"],0,"Temperatura e chuva decidem o que cresce.",1],
+  ["Floresta de clima quente e úmido, com enorme biodiversidade:",["Floresta tropical ou equatorial","Tundra","Taiga","Deserto","Pradaria"],0,"Exemplo: Amazônia.",1],
+  ["Pinheiros (coníferas) em clima frio formam a:",["Taiga","Savana","Caatinga","Floresta tropical","Tundra"],0,"Também chamada de floresta boreal.",2],
+  ["Musgos e liquens em regiões polares formam a:",["Tundra","Estepe","Savana","Mata Atlântica","Floresta tropical"],0,"O solo fica congelado boa parte do ano.",1],
+  ["Nas florestas temperadas, as árvores:",["perdem as folhas no outono","nunca perdem folhas","só crescem no deserto","são todas cactos","ficam cobertas de gelo o ano todo"],0,"Clima com quatro estações bem definidas.",2],
+  ["Gramíneas e árvores espalhadas, com estação seca. O Cerrado é um exemplo de:",["Savana","Tundra","Taiga","Floresta temperada","Deserto"],0,"Savana.",2],
+  ["O cacto e outras plantas do deserto são adaptadas para:",["guardar água e perder pouca","viver no gelo","ficar embaixo d'água","crescer à sombra de florestas","precisar de chuva todo dia"],0,"Chove muito pouco no deserto.",1],
+  ["Campos de gramíneas em clima temperado, como o Pampa, são:",["pradarias ou estepes","tundra","floresta tropical","taiga","floresta temperada"],0,"Quase sem árvores.",2],
+  ["A Amazônia é um exemplo de:",["floresta equatorial","taiga","tundra","deserto","estepe"],0,"Quente e úmida o ano todo.",1],
+  ["Qual vegetação tem maior biodiversidade?",["floresta tropical","tundra","deserto","taiga","estepe"],0,"Calor e muita chuva permitem muitas espécies.",1],
+  ["Onde encontramos a tundra?",["em regiões polares, muito frias","na linha do Equador","em desertos quentes","no centro do Brasil","em ilhas tropicais"],0,"Perto dos polos.",1],
+  ["Savana é uma vegetação com:",["gramíneas e árvores espalhadas","só pinheiros","só musgos","árvores muito juntas e altas","gelo permanente"],0,"Como o Cerrado.",1],
+  ["A taiga também é chamada de:",["floresta boreal","floresta equatorial","savana","caatinga","pampa"],0,"Boreal = do norte.",2],
+  ["Pinheiros são árvores:",["coníferas","de folhas largas que caem no verão","típicas do deserto","aquáticas","da tundra"],0,"Têm folhas finas como agulhas e frutos em cone.",2],
+  ["A vegetação mediterrânea tem:",["arbustos e verão seco","gelo o ano todo","pinheiros e muito frio","florestas muito úmidas","musgos e liquens"],0,"Clima com verão seco e inverno chuvoso.",2],
+  ["Por que as árvores da floresta tropical são altas e densas?",["porque há muito calor e muita chuva o ano todo","porque faz muito frio","porque quase não chove","porque o solo é congelado","porque não há luz"],0,"Calor + água = crescimento rápido.",2],
+  ["Qual formação vegetal fica em clima muito frio e tem solo congelado boa parte do ano?",["tundra","savana","floresta tropical","caatinga","mediterrânea"],0,"Só musgos e liquens aguentam.",2],
+  ["Numa região com 4 estações bem definidas, a floresta típica é a:",["temperada","equatorial","tundra","savana","desértica"],0,"As folhas caem no outono.",2],
+  ["O Cerrado brasileiro fica principalmente:",["no centro do Brasil","no Rio Grande do Sul","no litoral de Santa Catarina","no Acre","no Polo Sul"],0,"Região Centro-Oeste, como Goiás e Mato Grosso.",3],
+  ["O Pampa brasileiro fica no:",["Rio Grande do Sul","Amazonas","Pará","Bahia","Acre"],0,"Campos no sul do Brasil.",3],
+  ["Qual associação está CORRETA?",["Taiga – pinheiros – clima frio","Tundra – cactos – clima quente","Deserto – muita chuva","Savana – gelo – polar","Floresta tropical – musgos – frio"],0,"As outras misturam características erradas.",3],
+  ["Qual associação está ERRADA?",["Pampa – floresta densa de pinheiros","Cerrado – savana","Amazônia – floresta equatorial","Tundra – musgos e liquens","Deserto – cactos"],0,"O Pampa é um campo, quase sem árvores.",3],
+  ["Se uma região passar a ter muito menos chuva, a vegetação tende a:",["ficar mais baixa e adaptada à seca","ficar mais alta e fechada","virar tundra","ter mais musgos","não mudar nada"],0,"Menos água = plantas menores e resistentes à seca.",3],
+  ["As plantas do deserto costumam ter:",["raízes longas e folhas pequenas ou espinhos","folhas enormes e finas","flores só no gelo","troncos que ficam dentro da água","nenhuma raiz"],0,"Assim buscam água fundo e perdem pouca.",3]
  ],
  "geo/acao":[
-  ["O efeito estufa natural é:",["importante, pois mantém a Terra aquecida","sempre ruim","causado só por carros"],0,"O problema é quando ele fica intensificado."],
-  ["O que intensifica o efeito estufa?",["Queima de combustíveis e queimadas","Plantar árvores","Energia solar","Reciclagem"],0,"Liberam mais CO₂ no ar."],
-  ["Por que o centro das grandes cidades costuma ser mais quente?",["Ilhas de calor: asfalto, concreto e poucas árvores","Fica mais perto do Sol","Por causa dos rios"],0,"Esses materiais acumulam calor."],
-  ["Uma consequência do aquecimento global é:",["derretimento de geleiras e subida do nível do mar","aumento das florestas","fim das chuvas no mundo"],0,"Também aumenta secas e enchentes fortes."],
-  ["O desmatamento pode causar:",["perda de biodiversidade e erosão do solo","mais animais nativos","solo fértil para sempre"],0,"Sem árvores, o solo fica desprotegido."],
-  ["Uma atitude que ajuda a reduzir as mudanças climáticas:",["reflorestar e usar energias renováveis","fazer queimadas","desperdiçar energia"],0,"Solar e eólica poluem menos."],
-  ["A chuva ácida é causada principalmente por:",["poluentes de fábricas e veículos","excesso de árvores","água do mar"],0,"Os gases se misturam à água da chuva."]
+  ["O efeito estufa natural é:",["importante, pois mantém a Terra aquecida","sempre ruim","causado só por carros","inventado pelos humanos","o mesmo que chuva ácida"],0,"O problema é quando ele fica intensificado.",2],
+  ["O que intensifica o efeito estufa?",["Queima de combustíveis e queimadas","Plantar árvores","Energia solar","Reciclagem","Andar de bicicleta"],0,"Liberam mais CO₂ no ar.",1],
+  ["Por que o centro das grandes cidades costuma ser mais quente?",["Ilhas de calor: asfalto, concreto e poucas árvores","Fica mais perto do Sol","Por causa dos rios","Porque há mais vento","Porque chove mais no centro"],0,"Esses materiais acumulam calor.",2],
+  ["Uma consequência do aquecimento global é:",["derretimento de geleiras e subida do nível do mar","aumento das florestas","fim das chuvas no mundo","congelamento dos oceanos","diminuição da temperatura"],0,"Também aumenta secas e enchentes fortes.",2],
+  ["O desmatamento pode causar:",["perda de biodiversidade e erosão do solo","mais animais nativos","solo fértil para sempre","mais chuva sempre","ar mais limpo"],0,"Sem árvores, o solo fica desprotegido.",1],
+  ["Uma atitude que ajuda a reduzir as mudanças climáticas:",["reflorestar e usar energias renováveis","fazer queimadas","desperdiçar energia","usar mais carvão","cortar florestas"],0,"Solar e eólica poluem menos.",1],
+  ["A chuva ácida é causada principalmente por:",["poluentes de fábricas e veículos","excesso de árvores","água do mar","flores","sal de cozinha"],0,"Os gases se misturam à água da chuva.",2],
+  ["Qual é uma fonte de energia renovável?",["solar","carvão mineral","petróleo","gasolina","gás natural"],0,"O Sol não acaba; carvão e petróleo acabam.",1],
+  ["A energia eólica vem:",["do vento","do petróleo","do carvão","das ondas de rádio","do lixo queimado"],0,"Cata-ventos gigantes transformam vento em energia.",1],
+  ["Áreas de conservação servem para:",["proteger a natureza e a biodiversidade","construir fábricas","fazer queimadas","criar novos desertos","aumentar o asfalto"],0,"Parques e reservas protegem plantas e animais.",1],
+  ["Qual gás é o principal ligado ao aumento do efeito estufa?",["gás carbônico (CO₂)","oxigênio","gás hélio","nitrogênio","gás neon"],0,"Liberado pela queima de combustíveis e pelas queimadas.",2],
+  ["Sem o efeito estufa natural, a Terra seria:",["muito fria","muito mais quente","igual","cheia de florestas","sem gravidade"],0,"Os gases seguram o calor que mantém a vida.",2],
+  ["As queimadas contribuem para o aquecimento global porque:",["liberam gás carbônico e destroem árvores","esfriam o ar","produzem oxigênio","aumentam as florestas","limpam a atmosfera"],0,"E as árvores que absorviam CO₂ deixam de existir.",2],
+  ["Uma forma de diminuir as ilhas de calor nas cidades é:",["plantar árvores e criar parques","asfaltar mais ruas","construir mais prédios de concreto","cortar as árvores","aumentar o número de carros"],0,"Árvores fazem sombra e refrescam.",2],
+  ["Usar transporte público ajuda o clima porque:",["diminui a quantidade de carros e de poluição","aumenta o trânsito","gasta mais combustível","produz chuva ácida","não tem relação com o clima"],0,"Um ônibus leva muitas pessoas de uma vez.",2],
+  ["O aumento do nível do mar acontece principalmente por causa:",["do derretimento de geleiras","do aumento das florestas","da chuva ácida","do frio intenso","das ilhas de calor"],0,"O gelo derretido vai para os oceanos.",2],
+  ["Erosão do solo é:",["o desgaste e a retirada do solo pela chuva e pelo vento","o aumento da fertilidade","a formação de geleiras","o plantio de árvores","o congelamento da terra"],0,"Piora muito sem a proteção das plantas.",2],
+  ["Qual atitude NÃO ajuda a combater as mudanças climáticas?",["fazer queimadas para limpar o terreno","reflorestar","economizar energia","usar energia solar","andar de bicicleta"],0,"Queimadas liberam CO₂.",2],
+  ["Qual é uma consequência das mudanças climáticas?",["secas e enchentes mais fortes","fim de todas as chuvas","Terra mais fria em todo lugar","desaparecimento do Sol","mais geleiras no mundo todo"],0,"Eventos extremos ficam mais frequentes.",2],
+  ["A chuva ácida pode causar:",["danos a plantas, rios e construções","aumento de biodiversidade","água mais limpa","solo mais fértil","derretimento de geleiras"],0,"Ela corrói e envenena aos poucos.",3],
+  ["O desmatamento pode diminuir as chuvas porque:",["as árvores devolvem umidade para o ar","as árvores produzem sal","as árvores esquentam o oceano","as árvores atraem vulcões","as árvores bloqueiam o sol no espaço"],0,"As plantas liberam vapor d'água, que forma nuvens.",3],
+  ["Qual é a diferença entre efeito estufa natural e intensificado?",["O natural mantém a Terra habitável; o intensificado aquece demais por causa da ação humana","Não há diferença","O natural é causado por carros","O intensificado esfria a Terra","O natural só existe nas cidades"],0,"O natural é bom; o problema é o excesso.",3],
+  ["Uma cidade com muito asfalto e poucas árvores terá, no centro:",["temperaturas mais altas que nos arredores","temperaturas mais baixas","neve no verão","mais chuva ácida só no campo","o mesmo clima de um deserto polar"],0,"É a ilha de calor.",3],
+  ["Qual combinação de atitudes ajuda MAIS o planeta?",["reflorestar e usar energia solar","queimar lixo e andar de carro","desmatar e plantar soja","usar carvão e reciclar","asfaltar e usar ar-condicionado"],0,"As duas atitudes reduzem o CO₂.",3]
  ],
  "cien/locomotor":[
-  ["Quantos ossos tem, em média, um adulto?",["206","100","350","600"],0,"Cerca de 600 é o número de músculos."],
-  ["Qual é uma função do esqueleto?",["Proteger órgãos, como o crânio protege o cérebro","Digerir alimentos","Bombear sangue","Produzir saliva"],0,"Também sustenta e ajuda no movimento."],
-  ["As costelas protegem principalmente:",["coração e pulmões","estômago e intestino","cérebro","rins"],0,"Formam a caixa torácica."],
-  ["Onde são produzidas as células do sangue?",["Na medula óssea vermelha","No músculo","Na pele","No estômago"],0,"Fica dentro de alguns ossos."],
-  ["O joelho e o cotovelo são articulações:",["móveis","imóveis","semimóveis"],0,"Se movem bastante."],
-  ["Os ossos do crânio adulto são unidos por articulações:",["imóveis","móveis","semimóveis"],0,"Não se mexem."],
-  ["O que liga o músculo ao osso?",["Tendão","Ligamento","Cartilagem","Nervo"],0,"Ligamento liga osso com osso."],
-  ["Qual é o maior osso do corpo?",["Fêmur","Estribo","Úmero","Tíbia"],0,"Fica na coxa. O estribo é o menor."],
-  ["O músculo do coração é:",["cardíaco, involuntário","esquelético, voluntário","liso, voluntário"],0,"Ele bate sem a gente mandar."],
-  ["Músculos que movem os ossos e obedecem à nossa vontade:",["estriados esqueléticos","lisos","cardíacos"],0,"Voluntários."],
-  ["O músculo do estômago e do intestino é:",["liso, involuntário","esquelético, voluntário","cardíaco"],0,"Funciona sozinho."],
-  ["Ao dobrar o braço, o bíceps ___ e o tríceps ___:",["contrai / relaxa","relaxa / contrai","os dois relaxam"],0,"Os músculos trabalham em pares."]
+  ["Quantos ossos tem, em média, um adulto?",["206","100","350","600","150"],0,"Cerca de 600 é o número de músculos.",1],
+  ["Qual é uma função do esqueleto?",["Proteger órgãos, como o crânio protege o cérebro","Digerir alimentos","Bombear sangue","Produzir saliva","Filtrar o sangue"],0,"Também sustenta e ajuda no movimento.",1],
+  ["As costelas protegem principalmente:",["coração e pulmões","estômago e intestino","cérebro","rins","bexiga"],0,"Formam a caixa torácica.",1],
+  ["Onde são produzidas as células do sangue?",["Na medula óssea vermelha","No músculo","Na pele","No estômago","No coração"],0,"Fica dentro de alguns ossos.",2],
+  ["O joelho e o cotovelo são articulações:",["móveis","imóveis","semimóveis","cartilaginosas","musculares"],0,"Se movem bastante.",2],
+  ["Os ossos do crânio adulto são unidos por articulações:",["imóveis","móveis","semimóveis","flexíveis","musculares"],0,"Não se mexem.",2],
+  ["O que liga o músculo ao osso?",["Tendão","Ligamento","Cartilagem","Nervo","Veia"],0,"Ligamento liga osso com osso.",1],
+  ["Qual é o maior osso do corpo?",["Fêmur","Estribo","Úmero","Tíbia","Rádio"],0,"Fica na coxa. O estribo é o menor.",2],
+  ["O músculo do coração é:",["cardíaco, involuntário","esquelético, voluntário","liso, voluntário","liso, involuntário","cardíaco, voluntário"],0,"Ele bate sem a gente mandar.",2],
+  ["Músculos que movem os ossos e obedecem à nossa vontade:",["estriados esqueléticos","lisos","cardíacos","tendões","ligamentos"],0,"Voluntários.",2],
+  ["O músculo do estômago e do intestino é:",["liso, involuntário","esquelético, voluntário","cardíaco","cardíaco, voluntário","esquelético, involuntário"],0,"Funciona sozinho.",2],
+  ["Ao dobrar o braço, o bíceps ___ e o tríceps ___:",["contrai / relaxa","relaxa / contrai","os dois relaxam","os dois contraem","nenhum se mexe"],0,"Os músculos trabalham em pares.",3],
+  ["O menor osso do corpo humano é o:",["estribo","fêmur","úmero","crânio","tíbia"],0,"Fica dentro da orelha.",1],
+  ["O crânio protege:",["o cérebro","o coração","os pulmões","o estômago","os rins"],0,"É como um capacete de osso.",1],
+  ["O ombro é uma articulação:",["móvel","imóvel","semimóvel","que não existe","fixa como o crânio"],0,"Movimenta o braço em várias direções.",1],
+  ["O sistema locomotor é formado por:",["ossos, articulações e músculos","coração e vasos","estômago e intestino","pulmões e traqueia","só pelo cérebro"],0,"É o sistema que permite o movimento.",1],
+  ["Onde fica o estribo?",["na orelha","no pé","na coxa","na mão","no joelho"],0,"É um ossinho da orelha média.",2],
+  ["A coluna vertebral tem articulações:",["semimóveis","imóveis","móveis como o ombro","nenhuma articulação","só cartilagem"],0,"Mexem um pouco, entre as vértebras.",2],
+  ["O ligamento liga:",["osso com osso","músculo com osso","músculo com músculo","nervo com músculo","pele com osso"],0,"Tendão: músculo com osso.",2],
+  ["A cartilagem serve para:",["proteger a ponta dos ossos nas articulações","produzir sangue","ligar músculo com osso","bombear sangue","digerir alimentos"],0,"Evita que um osso gaste o outro.",2],
+  ["Os ossos guardam uma reserva de:",["cálcio","açúcar","gordura","oxigênio","sal de cozinha"],0,"Por isso leite e derivados ajudam os ossos.",2],
+  ["Quantos músculos o corpo humano tem, aproximadamente?",["600","206","50","1 milhão","10"],0,"206 é o número de ossos.",2],
+  ["Qual músculo trabalha SEM a gente mandar?",["o do coração","o bíceps","o da coxa","o da bochecha ao sorrir","o dos dedos"],0,"O cardíaco é involuntário.",2],
+  ["Quando você corre, qual tipo de músculo move suas pernas?",["estriado esquelético","liso","cardíaco","involuntário","tendão"],0,"Você decide correr: é voluntário.",2],
+  ["Ao esticar o braço:",["o tríceps contrai e o bíceps relaxa","o bíceps contrai e o tríceps relaxa","os dois contraem","os dois relaxam","o osso contrai"],0,"É o contrário de dobrar o braço.",3],
+  ["Por que os músculos trabalham em pares?",["porque um músculo só consegue puxar; outro precisa puxar de volta","porque os ossos se movem sozinhos","porque um músculo é de reserva","porque só existem dois músculos","porque os tendões empurram"],0,"Músculo contrai (puxa), não empurra.",3],
+  ["Uma pessoa rompeu o tendão do calcanhar. Isso afeta a ligação entre:",["músculo e osso","osso e osso","nervo e músculo","pele e osso","cartilagem e pele"],0,"Tendão liga músculo com osso.",3],
+  ["Se a medula óssea vermelha não funcionar bem, o que fica prejudicado?",["a produção de células do sangue","a digestão","a visão","a produção de saliva","o olfato"],0,"É ali que o sangue é produzido.",3],
+  ["Qual alternativa relaciona CORRETAMENTE o músculo e o controle?",["liso – involuntário","cardíaco – voluntário","esquelético – involuntário","liso – voluntário","cardíaco – preso aos ossos"],0,"Liso e cardíaco: involuntários. Esquelético: voluntário.",3]
  ],
  "cien/misturas":[
-  ["Matéria é:",["tudo que tem massa e ocupa lugar no espaço","só o que é sólido","só o que dá para ver"],0,"O ar também é matéria."],
-  ["Qual destes é uma substância pura?",["água destilada","água com sal","ar","suco"],0,"Só tem um tipo de material."],
-  ["Mistura homogênea é aquela que:",["tem aspecto uniforme, uma fase só","tem várias fases","nunca se mistura"],0,"Parece uma coisa só."],
-  ["Qual é uma mistura heterogênea?",["água e óleo","água com sal dissolvido","ar filtrado","álcool e água"],0,"Dá para ver as duas partes."],
-  ["Qual é uma mistura homogênea?",["água com açúcar dissolvido","água com areia","granito","água e óleo"],0,"O açúcar some na água."],
-  ["Para separar água e sal e recuperar a água, usamos:",["destilação simples","filtração","catação","peneiração"],0,"A água evapora e é resfriada de volta."],
-  ["Nas salinas, o sal é obtido por:",["evaporação","decantação","imantação","filtração"],0,"O sol evapora a água do mar."],
-  ["Para separar dois líquidos misturados, como água e álcool:",["destilação fracionada","peneiração","catação","imantação"],0,"Cada líquido ferve numa temperatura."],
-  ["Para separar água e areia, podemos usar:",["filtração ou decantação","destilação fracionada","imantação"],0,"É mistura heterogênea."]
+  ["Matéria é:",["tudo que tem massa e ocupa lugar no espaço","só o que é sólido","só o que dá para ver","só o que é líquido","só o que tem cor"],0,"O ar também é matéria.",1],
+  ["Qual destes é uma substância pura?",["água destilada","água com sal","ar","suco","leite"],0,"Só tem um tipo de material.",2],
+  ["Mistura homogênea é aquela que:",["tem aspecto uniforme, uma fase só","tem várias fases","nunca se mistura","sempre tem areia","é sempre um sólido"],0,"Parece uma coisa só.",1],
+  ["Qual é uma mistura heterogênea?",["água e óleo","água com sal dissolvido","ar filtrado","álcool e água","vinagre"],0,"Dá para ver as duas partes.",1],
+  ["Qual é uma mistura homogênea?",["água com açúcar dissolvido","água com areia","granito","água e óleo","feijão com arroz"],0,"O açúcar some na água.",1],
+  ["Para separar água e sal e recuperar a água, usamos:",["destilação simples","filtração","catação","peneiração","imantação"],0,"A água evapora e é resfriada de volta.",2],
+  ["Nas salinas, o sal é obtido por:",["evaporação","decantação","imantação","filtração","catação"],0,"O sol evapora a água do mar.",1],
+  ["Para separar dois líquidos misturados, como água e álcool:",["destilação fracionada","peneiração","catação","imantação","filtração"],0,"Cada líquido ferve numa temperatura.",3],
+  ["Para separar água e areia, podemos usar:",["filtração ou decantação","destilação fracionada","imantação","catação","peneiração"],0,"É mistura heterogênea.",2],
+  ["Mistura é:",["duas ou mais substâncias juntas","uma única substância","sempre um líquido","sempre um sólido","só o que dá para separar com ímã"],0,"Ex.: água com sal.",1],
+  ["Quantas fases tem a mistura de água e óleo?",["2","1","3","4","nenhuma"],0,"Dá para ver o óleo em cima e a água embaixo.",1],
+  ["Para separar feijão das pedrinhas, usamos:",["catação","destilação","evaporação","imantação","destilação fracionada"],0,"Catar com a mão.",1],
+  ["Para separar a farinha dos grãos maiores, usamos:",["peneiração","destilação","imantação","evaporação","decantação"],0,"A peneira deixa passar só o fino.",1],
+  ["O ar é matéria?",["Sim, porque tem massa e ocupa lugar no espaço","Não, porque não dá para ver","Não, porque não é sólido","Só quando está frio","Só quando venta"],0,"Um balão cheio de ar ocupa espaço.",2],
+  ["Qual destes materiais é uma substância pura?",["ouro","granito","ar","água do mar","refrigerante"],0,"Os outros são misturas.",2],
+  ["Água, óleo e areia misturados formam quantas fases?",["3","1","2","4","5"],0,"Cada material forma uma camada.",2],
+  ["O granito é uma mistura:",["heterogênea, pois dá para ver partes diferentes","homogênea","substância pura","gasosa","líquida"],0,"Dá para ver pontinhos de cores diferentes.",2],
+  ["Para separar limalha de ferro misturada com areia:",["imantação","destilação simples","evaporação","destilação fracionada","dissolução em álcool"],0,"O ímã puxa o ferro.",2],
+  ["Decantação é:",["esperar a parte mais pesada assentar no fundo","ferver o líquido","usar um ímã","passar numa peneira","catar com a mão"],0,"Ex.: água barrenta parada.",2],
+  ["O coador de café faz uma:",["filtração","destilação","imantação","evaporação","catação"],0,"O pó fica no filtro e o líquido passa.",2],
+  ["Álcool misturado com água é uma mistura:",["homogênea","heterogênea","substância pura","de duas fases","de três fases"],0,"Eles se misturam totalmente: uma fase só.",2],
+  ["O petróleo é separado nas refinarias por:",["destilação fracionada","catação","peneiração","imantação","filtração com papel"],0,"Cada parte ferve numa temperatura diferente.",3],
+  ["Por que a destilação fracionada separa água e álcool?",["porque cada líquido ferve numa temperatura diferente","porque o álcool é atraído pelo ímã","porque a água é mais escura","porque o álcool é sólido","porque eles não se misturam"],0,"O álcool ferve antes e sai primeiro.",3],
+  ["Na destilação simples de água com sal, o que acontece com o sal?",["fica no recipiente onde a mistura é aquecida","evapora junto com a água","vira água","vai para o condensador","some para sempre"],0,"Só a água vira vapor.",3],
+  ["Uma mistura tem água, areia e sal dissolvido. Qual ordem separa tudo?",["filtração para tirar a areia, depois evaporação para tirar o sal","imantação e depois catação","só peneiração","catação e depois imantação","decantação do sal e filtração da água"],0,"Primeiro sai a parte heterogênea (areia), depois a homogênea (sal).",3],
+  ["Qual método NÃO serve para separar água e areia?",["imantação","filtração","decantação","decantação seguida de filtração","deixar assentar e virar a água com cuidado"],0,"A areia não é atraída pelo ímã.",3]
  ]
 };
 
@@ -848,12 +1089,15 @@ function blockId(date,i){return date+"-"+i}
 function dayOf(date){return DAYS.find(d=>d[0]===date)}
 function examOn(date){const e=EXAM_DAYS.find(x=>x.d===date);return e?e.s:[]}
 function qPool(s,t){
-  const keys = t==="all"||t==="erros" ? TOPICS[s].map(x=>s+"/"+x[0]) : [s+"/"+t];
+  const keys = t==="all"||t==="erros"||t==="dificil" ? TOPICS[s].map(x=>s+"/"+x[0]) : [s+"/"+t];
   let list = keys.flatMap(k=>(Q[k]||[]).map((q,i)=>({id:k+"#"+i,q})));
   if(t==="erros") list=list.filter(x=>S.erros[x.id]);
+  if(t==="dificil") list=list.filter(x=>x.q[4]===3);
   return list;
 }
 function errCount(s){return qPool(s,"erros").length}
+const LVL={1:"Fácil",2:"Média",3:"Difícil"};
+function lvlCount(list){const c={1:0,2:0,3:0}; list.forEach(x=>c[x.q?x.q[4]:x[4]]++); return `${c[1]} fáceis · ${c[2]} médias · ${c[3]} difíceis`}
 function subjLessonsDone(s){const L=LESSONS[s];return [L.filter(l=>S.lessons[lessonKey(s,l.id)]).length,L.length]}
 function badge(pct){if(pct==null) return `<span class="score-badge">novo</span>`;return `<span class="score-badge ${pct>=80?"good":pct>=60?"mid":"low"}">${pct}%</span>`}
 
@@ -1053,23 +1297,24 @@ function vLicao({s,id,i,fin}){
 let pracSubj="mat";
 function vPraticar(){
   const s=pracSubj;
-  return `<div class="hello"><span class="eyebrow">Treino</span><h1>Praticar</h1><p class="muted">Uma questão por vez, com a explicação logo depois. O que ela errar vai para o caderno de erros.</p></div>
+  return `<div class="hello"><span class="eyebrow">Treino</span><h1>Praticar</h1><p class="muted">Uma questão por vez, com a explicação logo depois. As questões começam fáceis e vão ficando mais difíceis. O que ela errar vai para o caderno de erros.</p></div>
     <button class="qcard" data-open="T" style="--c:var(--mat)"><span class="eyebrow">Aquecimento de Matemática</span><b>Tabuada relâmpago</b><span class="muted" style="font-size:14px">60 segundos · recorde: ${S.tabBest} acertos</span></button>
     <div class="chips">${ORDER.filter(x=>TOPICS[x]).map(x=>`<button class="chip" style="--c:${SUBJ[x].c}" aria-pressed="${x===s}" data-psubj="${x}">${SUBJ[x].n}</button>`).join("")}</div>
     <div class="topics" style="--c:${SUBJ[s].c}">
-      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos</span></div>${badge(S.best[s+"/all"])}</button>
-      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões</span></div>${badge(S.best[s+"/"+k])}</button>`).join("")}
+      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span></div>${badge(S.best[s+"/all"])}</button>
+      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span></div>${badge(S.best[s+"/"+k])}</button>`).join("")}
+      <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span></div>${badge(S.best[s+"/dificil"])}</button>
       <button class="topic" data-open="Q:${s}/erros" style="--c:var(--red)"><div style="display:grid"><b>Caderno de erros</b><span>${errCount(s)} questões para refazer</span></div><span class="score-badge ${errCount(s)?"low":"good"}">${errCount(s)}</span></button>
     </div>`;
 }
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 let qz=null;
 function startQuiz(s,t){
-  const list=shuffle(qPool(s,t)).map(x=>({...x,opts:shuffle(x.q[1].map((o,k)=>({o,ok:k===x.q[2]})))}));
-  qz={s,t,list,i:0,score:0,answered:null};
+  const list=shuffle(qPool(s,t)).sort((a,b)=>a.q[4]-b.q[4]).map(x=>({...x,opts:shuffle(x.q[1].map((o,k)=>({o,ok:k===x.q[2]})))}));
+  qz={s,t,list,i:0,score:0,answered:null,lv:{1:[0,0],2:[0,0],3:[0,0]}};
   go("quiz");
 }
-function quizTitle(){const {s,t}=qz; if(t==="all") return `${SUBJ[s].n} · treino completo`; if(t==="erros") return `${SUBJ[s].n} · caderno de erros`; const tp=TOPICS[s].find(x=>x[0]===t); return tp?tp[1]:SUBJ[s].n}
+function quizTitle(){const {s,t}=qz; if(t==="all") return `${SUBJ[s].n} · treino completo`; if(t==="erros") return `${SUBJ[s].n} · caderno de erros`; if(t==="dificil") return `${SUBJ[s].n} · desafio difícil`; const tp=TOPICS[s].find(x=>x[0]===t); return tp?tp[1]:SUBJ[s].n}
 function vQuiz(){
   if(!qz) return vPraticar();
   const c=SUBJ[qz.s].c, N=qz.list.length;
@@ -1082,18 +1327,20 @@ function vQuiz(){
     const msg=pct>=80?"Excelente! Pronta para este assunto.":pct>=60?"Bom! Refaça o caderno de erros amanhã.":"Volte à lição, revise com calma e tente de novo.";
     return top+`<section class="card result" style="display:grid;--c:${c}"><div class="ring" style="--p:${pct}"><div>${pct}%</div></div>
       <h2>${qz.score} de ${N} certas</h2><p class="muted">${msg}</p>
+      <div class="lvl-sum">${[1,2,3].filter(n=>qz.lv[n][1]).map(n=>`<span class="lvl lvl-${n}">${LVL[n]}: ${qz.lv[n][0]} de ${qz.lv[n][1]}</span>`).join("")}</div>
       <div class="row" style="justify-content:center"><button class="btn primary" data-again>Treinar de novo</button>${errCount(qz.s)?`<button class="btn" data-open="Q:${qz.s}/erros">Refazer erros (${errCount(qz.s)})</button>`:""}<button class="btn" data-quit>Sair</button></div></section>`;
   }
   const it=qz.list[qz.i], a=qz.answered;
-  return top+`<p class="q">${it.q[0]}</p>
+  return top+`<span class="lvl lvl-${it.q[4]}">${LVL[it.q[4]]}</span><p class="q">${it.q[0]}</p>
     <div class="opts">${it.opts.map((o,k)=>{
       let cls="opt"; if(a){ if(o.ok) cls+=" right"; else if(a.k===k) cls+=" wrong"; }
-      return `<button class="${cls}" data-opt="${k}" ${a?"disabled":""}><span class="let">${"ABCD"[k]}</span><span>${o.o}</span></button>`}).join("")}</div>
+      return `<button class="${cls}" data-opt="${k}" ${a?"disabled":""}><span class="let">${"ABCDE"[k]}</span><span>${o.o}</span></button>`}).join("")}</div>
     ${a?`<div class="fb ${a.ok?"ok":"no"}"><b>${a.ok?"Acertou!":"Quase! Vai para o caderno de erros."}</b><span>${it.q[3]}</span></div>
       <button class="btn primary block" data-next>${qz.i+1<N?"Próxima questão":"Ver resultado"} ${ICON.arrow}</button>`:""}`;
 }
 function answer(k){
   const it=qz.list[qz.i], ok=it.opts[k].ok; qz.answered={k,ok};
+  const lv=qz.lv[it.q[4]]; lv[1]++; if(ok) lv[0]++;
   if(ok){qz.score++; if(qz.t==="erros") setItem("erros",it.id,null)} else setItem("erros",it.id,1);
   if(qz.i+1>=qz.list.length){
     const key=qz.s+"/"+qz.t, pct=Math.round(100*qz.score/qz.list.length);
@@ -1273,7 +1520,7 @@ function vProgresso(){
       <div class="progress"><i style="width:${100*dn/tot}%"></i></div>
       <div class="plist">${LESSONS[s].map(l=>`<div class="prow"><span>${l.t}</span>${S.lessons[lessonKey(s,l.id)]?`<span class="okmark">✓ estudada</span>`:`<span class="muted" style="font-size:13px">pendente</span>`}</div>`).join("")}</div>
       <span class="eyebrow" style="margin-top:6px">Treinos · melhor nota</span>
-      <div class="plist">${[["all","Treino completo"],...TOPICS[s]].map(([k,n])=>`<div class="prow"><span>${n}</span>${badge(S.best[s+"/"+k])}</div>`).join("")}
+      <div class="plist">${[["all","Treino completo"],...TOPICS[s],["dificil","Desafio: só difíceis"]].map(([k,n])=>`<div class="prow"><span>${n}</span>${badge(S.best[s+"/"+k])}</div>`).join("")}
         <div class="prow"><span>Caderno de erros</span><span class="score-badge ${er?"low":"good"}">${er} para refazer</span></div></div>
     </section>`}).join("");
   return `<div class="hello"><span class="eyebrow">Acompanhamento</span><h1>Progresso da <span class="hl">${nome}</span></h1>
@@ -1385,8 +1632,7 @@ async function afterLogin(user){
     await pickStudent(saved);
   }
   document.body.classList.remove("locked");
-  const h0=(location.hash||"").slice(1);
-  go(ROLE==="tutor"?"progresso":(["agenda","materias","praticar","progresso"].includes(h0)?h0:"inicio"));
+  go("inicio"); // depois do login, sempre começa no Início
   await syncNow();
   clearInterval(pollIv); pollIv=setInterval(()=>{if(document.visibilityState==="visible") syncNow()},30000);
 }
