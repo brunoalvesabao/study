@@ -319,6 +319,7 @@ svg text{fill:var(--ink); font-family:var(--body)}
 .sdot.ok::before{background:var(--ok)} .sdot.err::before{background:var(--red)} .sdot.busy::before{background:var(--amber)}
 .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:clamp(18px,5vw,22px); font-weight:700; letter-spacing:.06em; padding:12px 14px; border-radius:12px; background:var(--surface-2); border:1px dashed var(--line); text-align:center; user-select:all; word-break:break-all}
 .field{display:grid; gap:6px}
+.linkbtn{border:0; background:none; padding:4px; font:inherit; font-weight:600; color:var(--pen); text-decoration:underline; text-underline-offset:3px; cursor:pointer; justify-self:center}
 .field label{font-size:14px; font-weight:600}
 .field input{font:inherit; font-size:17px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
 body.locked .tabbar,body.locked .side,body.locked .pomo{display:none}
@@ -1959,26 +1960,106 @@ function brandHead(){return `<div style="text-align:center;display:grid;gap:10px
   <div style="width:96px;height:96px">${LOGO.replace(/ace-/g,'acel-').replace('class="logo"','class="logo" style="width:96px;height:96px"')}</div>
   <h1 style="font-size:44px;letter-spacing:.04em">ACE</h1><p style="font-weight:600">Aprender. Conquistar. Evoluir.</p>
   <p class="motto">Cada passo de hoje constrói o seu amanhã.</p></div>`}
-function showLogin(err){
-  screen(`${brandHead()}
-    <form class="card" id="login" style="display:grid;gap:14px" novalidate>
-      <div class="field"><label for="lg-user">Usuário ou e-mail</label><input id="lg-user" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
-      <div class="field"><label for="lg-pass">Senha</label><input id="lg-pass" type="password" autocomplete="current-password" required></div>
-      <p class="box warn" id="lg-err" ${err?"":"hidden"}>${err||""}</p>
-      <button class="btn primary block" type="submit" id="lg-btn">Entrar</button>
-    </form>
-    <p class="muted" style="text-align:center;font-size:14px">Esqueceu a senha? Peça para o tutor.</p>`);
+function authMsg(error){ // traduz os erros do Supabase para a tela de login
+  const m=String(error&&error.message||error||"");
+  if(/fetch|network|load failed/i.test(m)) return "Sem conexão com a internet.";
+  if(/invalid login credentials/i.test(m)) return "Usuário ou senha incorretos.";
+  if(/already registered|already exists/i.test(m)) return "Já existe uma conta com esse e-mail. Entre com ela ou use \"Esqueceu a senha?\".";
+  if(/signups? not allowed|signup.*disabled/i.test(m)) return "O cadastro de contas novas está desligado. Peça para o tutor.";
+  if(/email not confirmed/i.test(m)) return "Esta conta ainda não foi confirmada. Peça para o tutor.";
+  if(/password.*(at least|characters|short|weak)/i.test(m)) return "A senha precisa ter pelo menos 6 caracteres.";
+  if(/rate limit|too many|security purposes/i.test(m)) return "Muitas tentativas seguidas. Espere alguns minutos e tente de novo.";
+  if(/invalid.*email|email.*invalid/i.test(m)) return "Esse e-mail não é válido.";
+  return "Não deu certo: "+m;
+}
+const authLinks=(...l)=>`<p style="text-align:center;font-size:14px;display:grid;gap:6px">${l.join("")}</p>`;
+const lnk=(attr,txt)=>`<button type="button" class="linkbtn" ${attr}>${txt}</button>`;
+function authForm(id,fields,btn,err,ok){
+  return `<form class="card" id="${id}" style="display:grid;gap:14px" novalidate>${fields}
+    <p class="box warn" id="au-err" ${err?"":"hidden"}>${err||""}</p><p class="box tip" id="au-ok" ${ok?"":"hidden"}><span>${ok||""}</span></p>
+    <button class="btn primary block" type="submit" id="au-btn">${btn}</button></form>`;
+}
+function authBusy(txt){const b=$("#au-btn"); b.disabled=true; b.textContent=txt}
+function authFail(msg,btn){const x=$("#au-err"); x.hidden=false; x.textContent=msg; const b=$("#au-btn"); b.disabled=false; b.textContent=btn}
+const fld=(id,label,attrs)=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" ${attrs}></div>`;
+
+function showLogin(err,ok){
+  screen(`${brandHead()}${authForm("login",
+    fld("lg-user","Usuário ou e-mail",`autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required`)+
+    fld("lg-pass","Senha",`type="password" autocomplete="current-password" required`),"Entrar",err,ok)}
+    ${authLinks(lnk("data-auth=\"forgot\"","Esqueceu a senha?"),`<span class="muted">Ainda não tem conta? ${lnk("data-auth=\"signup\"","Criar conta")}</span>`)}`);
   $("#login").addEventListener("submit",async e=>{
     e.preventDefault();
     const u=$("#lg-user").value.trim(), p=$("#lg-pass").value;
-    if(!u||!p){$("#lg-err").hidden=false; $("#lg-err").textContent="Preencha usuário e senha."; return}
-    $("#lg-btn").disabled=true; $("#lg-btn").textContent="Entrando…";
+    if(!u||!p) return authFail("Preencha usuário e senha.","Entrar");
+    authBusy("Entrando…");
     const email=u.includes("@")?u.toLowerCase():`${u.toLowerCase()}@${EMAIL_DOMAIN}`;
     const {data,error}=await SB.auth.signInWithPassword({email,password:p});
-    if(error) return showLogin(/fetch|network/i.test(error.message)?"Sem conexão com a internet.":"Usuário ou senha incorretos.");
+    if(error) return authFail(authMsg(error),"Entrar");
     afterLogin(data.user);
   });
 }
+function showSignup(){
+  screen(`${brandHead()}<h2 style="text-align:center">Criar conta</h2>${authForm("signup",
+    fld("su-nome","Seu nome",`autocomplete="given-name" required`)+
+    fld("su-email","E-mail",`type="email" autocomplete="email" autocapitalize="none" spellcheck="false" required`)+
+    fld("su-pass","Senha (mínimo 6 caracteres)",`type="password" autocomplete="new-password" minlength="6" required`)+
+    fld("su-pass2","Repita a senha",`type="password" autocomplete="new-password" required`),"Criar conta")}
+    ${authLinks(`<span class="muted">Já tem conta? ${lnk("data-auth=\"login\"","Entrar")}</span>`)}`);
+  $("#signup").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const nome=$("#su-nome").value.trim(), email=$("#su-email").value.trim().toLowerCase(), p=$("#su-pass").value, p2=$("#su-pass2").value;
+    if(!nome||!email||!p) return authFail("Preencha todos os campos.","Criar conta");
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authFail("Digite um e-mail válido. Ele é usado para recuperar a senha.","Criar conta");
+    if(p.length<6) return authFail("A senha precisa ter pelo menos 6 caracteres.","Criar conta");
+    if(p!==p2) return authFail("As duas senhas estão diferentes.","Criar conta");
+    authBusy("Criando conta…");
+    const {data,error}=await SB.auth.signUp({email,password:p,options:{data:{nome}}});
+    if(error) return authFail(authMsg(error),"Criar conta");
+    // Com "Confirm email" desligado no Supabase, a conta já volta logada.
+    if(data.session) return afterLogin(data.user);
+    // Supabase não diz se o e-mail já existia (por segurança): tenta entrar direto.
+    const r=await SB.auth.signInWithPassword({email,password:p});
+    if(!r.error) return afterLogin(r.data.user);
+    authFail(/not confirmed/i.test(r.error.message)
+      ? "A conta foi criada, mas o Supabase está pedindo confirmação por e-mail. Peça para o tutor desligar \"Confirm email\"."
+      : authMsg(r.error),"Criar conta");
+  });
+}
+function showForgot(){
+  screen(`${brandHead()}<h2 style="text-align:center">Esqueceu a senha?</h2>
+    <p class="muted" style="text-align:center">Digite o e-mail da sua conta. Vamos mandar um link para você criar uma senha nova.</p>${authForm("forgot",
+    fld("fg-email","E-mail",`type="email" autocomplete="email" autocapitalize="none" spellcheck="false" required`),"Enviar link")}
+    ${authLinks(lnk("data-auth=\"login\"","Voltar para o login"))}`);
+  $("#forgot").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const email=$("#fg-email").value.trim().toLowerCase();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authFail("Digite um e-mail válido.","Enviar link");
+    authBusy("Enviando…");
+    const {error}=await SB.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+    if(error) return authFail(authMsg(error),"Enviar link");
+    showLogin(null,`Se <b>${email.replace(/</g,"&lt;")}</b> tiver uma conta, o link para criar uma senha nova chega em alguns minutos. Olhe também a caixa de spam.`);
+  });
+}
+function showNewPassword(){ // aberto pelo link do e-mail de recuperação
+  screen(`${brandHead()}<h2 style="text-align:center">Criar senha nova</h2>${authForm("newpass",
+    fld("np-pass","Senha nova (mínimo 6 caracteres)",`type="password" autocomplete="new-password" minlength="6" required`)+
+    fld("np-pass2","Repita a senha nova",`type="password" autocomplete="new-password" required`),"Salvar senha")}`);
+  $("#newpass").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const p=$("#np-pass").value, p2=$("#np-pass2").value;
+    if(p.length<6) return authFail("A senha precisa ter pelo menos 6 caracteres.","Salvar senha");
+    if(p!==p2) return authFail("As duas senhas estão diferentes.","Salvar senha");
+    authBusy("Salvando…");
+    const {data,error}=await SB.auth.updateUser({password:p});
+    if(error) return authFail(/different from the old|same.*password/i.test(error.message)?"A senha nova precisa ser diferente da antiga.":authMsg(error),"Salvar senha");
+    toast("Senha nova salva!"); afterLogin(data.user);
+  });
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-auth]"); if(!b) return;
+  ({login:()=>showLogin(),signup:showSignup,forgot:showForgot})[b.dataset.auth]();
+});
 function showProblem(title,msg){
   screen(`${brandHead()}<section class="card" style="display:grid;gap:10px"><h2>${title}</h2><p class="muted">${msg}</p>
     ${SB?`<button class="btn" data-logout>Sair e entrar com outra conta</button>`:""}</section>`);
@@ -1992,7 +2073,7 @@ async function afterLogin(user){
   USER=user; screen(`${brandHead()}<p class="muted" style="text-align:center">Carregando…</p>`);
   const {data:prof,error}=await SB.from("profiles").select("id,nome,papel").eq("id",user.id).maybeSingle();
   if(error) return showProblem("Não foi possível carregar","Verifique a internet e tente de novo.");
-  if(!prof) return showProblem("Conta ainda não configurada","Esta conta existe, mas não foi marcada como aluna ou tutor. Rode o passo 4 do arquivo supabase.sql.");
+  if(!prof) return showProblem("Conta ainda não configurada","Esta conta existe, mas não foi marcada como aluna ou tutor. Peça para o tutor rodar o arquivo cadastro.sql no Supabase.");
   ROLE=prof.papel;
   if(ROLE==="aluno"){ STUDENT={id:prof.id,nome:prof.nome}; NS=`estudos:${prof.id}:`; migrateLegacy(); loadState() }
   else {
@@ -2027,8 +2108,13 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
   const h0=(location.hash||"").slice(1);
   if(!CONFIGURED) return go(["agenda","materias","praticar","progresso"].includes(h0)?h0:"inicio");
   if(!window.supabase) return showProblem("Sem conexão","Não foi possível carregar o sistema de login. Verifique a internet e recarregue a página.");
+  const hs=new URLSearchParams((location.hash||"").slice(1)), recovery=hs.get("type")==="recovery", linkErr=hs.get("error_description");
   SB=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  SB.auth.onAuthStateChange(ev=>{ if(ev==="PASSWORD_RECOVERY") setTimeout(showNewPassword) });
   const {data}=await SB.auth.getSession();
+  if(recovery||linkErr) try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  if(recovery && data&&data.session) return showNewPassword();
+  if(linkErr) return showLogin("Esse link não vale mais (ele expira depois de um tempo ou de ser usado). Peça um novo em \"Esqueceu a senha?\".");
   if(data&&data.session) afterLogin(data.session.user); else showLogin();
 })();
 </script>
