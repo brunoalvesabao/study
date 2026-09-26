@@ -2017,12 +2017,23 @@ function showSignup(){
     authBusy("Criando conta…");
     const {data,error}=await SB.auth.signUp({email,password:p,options:{data:{nome},emailRedirectTo:SITE}});
     if(error) return authFail(authMsg(error),"Criar conta");
-    if(data.session) return afterLogin(data.user); // confirmação desligada no Supabase: já entra
-    showConfirmSent(email,nome);
+    if(data.session) return showWelcome(data.user,nome); // "Confirm email" desligado no Supabase: já entra
+    showConfirmSent(email,nome); // só acontece se a confirmação por e-mail estiver ligada no Supabase
   });
 }
 const SITE=location.origin+location.pathname;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+function showWelcome(user,nome){ // conta criada com sucesso
+  const first=esc(String(nome||"").trim().split(/\s+/)[0]);
+  screen(`${brandHead()}<section class="card welcome" style="display:grid;gap:12px;text-align:center;justify-items:center">
+      <span class="big-check">${ICON.check}</span>
+      <span class="eyebrow">Conta criada com sucesso</span>
+      <h2>Bem-vindo(a) ao ACE${first?`, ${first}`:""}!</h2>
+      <p>Sua jornada começa agora. Aqui cada lição estudada, cada exercício resolvido e cada erro corrigido é um passo a mais rumo às suas conquistas.</p>
+      <p class="muted" style="font-style:italic">Estamos juntos nessa. Bons estudos!</p>
+      <button class="btn primary block" id="wl-go">Começar minha jornada ${ICON.arrow}</button></section>`);
+  $("#wl-go").onclick=()=>afterLogin(user);
+}
 function showConfirmSent(email,nome){ // depois do cadastro, quando o Supabase pede confirmação
   screen(`${brandHead()}<section class="card" style="display:grid;gap:12px;text-align:center;justify-items:center">
       <span class="big-check">${ICON.check}</span>
