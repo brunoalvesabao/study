@@ -1,0 +1,35 @@
+<!--
+  E-mail de confirmação de cadastro · ACE
+  Onde colar: Supabase → Authentication → Emails → Templates → "Confirm signup"
+  Assunto (Subject): Bem-vindo(a) ao ACE! Confirme seu e-mail para começar
+  Cole tudo abaixo desta linha de comentário no campo "Message body" (aba Source).
+-->
+<!doctype html>
+<html lang="pt-BR">
+<body style="margin:0;padding:0;background:#F2F5FA;font-family:Arial,Helvetica,sans-serif;color:#172033;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F2F5FA;padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 6px 20px rgba(23,32,51,.08);">
+        <tr><td align="center" style="background:linear-gradient(135deg,#B46CFF,#5236F6 55%,#2F7BFF);background-color:#5236F6;padding:32px 24px;">
+          <img src="{{ .SiteURL }}/icons/icon-192.png" width="72" height="72" alt="ACE" style="display:block;border:0;border-radius:18px;">
+          <div style="margin-top:12px;font-size:30px;font-weight:800;letter-spacing:2px;color:#FFFFFF;">ACE</div>
+          <div style="margin-top:4px;font-size:14px;color:#E6E0FF;">Aprender. Conquistar. Evoluir.</div>
+        </td></tr>
+        <tr><td style="padding:32px 32px 8px;">
+          <p style="margin:0 0 16px;font-size:20px;font-weight:700;">Olá, {{ if .Data.nome }}{{ .Data.nome }}{{ else }}tudo bem{{ end }}!</p>
+          <p style="margin:0 0 16px;font-size:16px;line-height:1.6;">Obrigado por criar sua conta no <b>ACE</b>! Para garantir que este e-mail é realmente seu e ativar seu acesso, clique no botão abaixo:</p>
+        </td></tr>
+        <tr><td align="center" style="padding:8px 32px 24px;">
+          <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#5236F6;color:#FFFFFF;text-decoration:none;font-size:16px;font-weight:700;padding:14px 32px;border-radius:12px;">Confirmar meu e-mail</a>
+        </td></tr>
+        <tr><td style="padding:0 32px 8px;">
+          <p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#5B6680;">Se o botão não funcionar, copie e cole este endereço no navegador:<br><a href="{{ .ConfirmationURL }}" style="color:#5236F6;word-break:break-all;">{{ .ConfirmationURL }}</a></p>
+          <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#5B6680;">Se você não fez este cadastro, pode ignorar esta mensagem com segurança.</p>
+          <p style="margin:0 0 32px;font-size:15px;line-height:1.6;">Atenciosamente,<br><b>Equipe ACE</b></p>
+        </td></tr>
+        <tr><td align="center" style="background:#F6F8FC;padding:16px 24px;font-size:12px;color:#5B6680;font-style:italic;">Cada passo de hoje constrói o seu amanhã.</td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
