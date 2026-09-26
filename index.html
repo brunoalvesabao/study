@@ -539,7 +539,7 @@ const SUBJ = {
 const ORDER = ["mat","port","hist","geo","cien","ing"];
 const EXAM_DAYS = [
   {d:"2026-09-28",s:["port"]},{d:"2026-09-30",s:["mat"]},{d:"2026-10-02",s:["hist"]},
-  {d:"2026-10-06",s:["geo","ing"]},{d:"2026-10-08",s:["cien"]}
+  {d:"2026-10-06",s:["geo"]},{d:"2026-10-08",s:["cien"]},{d:"2026-10-13",s:["ing"]}
 ];
 const EXAM_HOUR_END = 9; // a prova vai das 7h às 8h40
 
@@ -601,25 +601,21 @@ const DAYS = [
   ["geo","Cap. 9: ação humana no clima e na vegetação","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.",[
    ["Lição: ação humana no clima e na vegetação","L:geo/acao",30],["Treino: ação humana","Q:geo/acao",20]]],
   ["cien","Cap. 8: sistema muscular","Três tipos de músculo. Tendão e ligamento. Bíceps e tríceps.",[
-   ["Lição: sistema muscular","L:cien/musculos",25],["Treino: sistema locomotor","Q:cien/locomotor",25]]],
-  ["ing","Inglês","Conteúdo da escola ou revisão do caderno.",[["Revisar o caderno de Inglês",null,50]]]]],
+   ["Lição: sistema muscular","L:cien/musculos",25],["Treino: sistema locomotor","Q:cien/locomotor",25]]]]],
  ["2026-10-03",13,[
   ["geo","Treino de Geografia","Treino completo e depois o caderno de erros.",[
    ["Treino completo de Geografia","Q:geo/all",35],["Caderno de erros de Geografia","Q:geo/erros",15]]],
   ["cien","Cap. 9: matéria e misturas","Homogênea e heterogênea com coisas da cozinha.",[
    ["Lição: matéria e misturas","L:cien/materia",20],["Na cozinha: água com sal e água com óleo",null,10],["Treino: misturas","Q:cien/misturas",20]]],
-  ["ing","Inglês","Conteúdo informado pela escola.",[["Estudar o conteúdo de Inglês",null,50]]],
   ["cien","Separação de misturas","Destilação, evaporação, destilação fracionada.",[
    ["Lição: separação de misturas","L:cien/separacao",30],["Treino: misturas","Q:cien/misturas",20]]]]],
  ["2026-10-04",16,[
   ["geo","Revisão de Geografia","Refazer os erros e explicar o efeito estufa com as próprias palavras.",[
-   ["Caderno de erros de Geografia","Q:geo/erros",30],["Explicar em voz alta o efeito estufa",null,10],["Rever a lição: ação humana","L:geo/acao",10]]],
-  ["ing","Inglês","Revisão do conteúdo.",[["Revisar o caderno de Inglês",null,50]]]]],
+   ["Caderno de erros de Geografia","Q:geo/erros",30],["Explicar em voz alta o efeito estufa",null,10],["Rever a lição: ação humana","L:geo/acao",10]]],]],
  ["2026-10-05",15,[
   ["geo","Treino final de Geografia","Último treino antes da prova de amanhã.",[
    ["Treino completo de Geografia","Q:geo/all",50]]],
-  ["ing","Revisão de Inglês","Vocabulário e exercícios do caderno.",[["Vocabulário e exercícios do caderno",null,50]]],
-  ["cien","Treino do cap. 8 de Ciências","Esqueleto e músculos. Dormir cedo: amanhã são duas provas.",[
+  ["cien","Treino do cap. 8 de Ciências","Esqueleto e músculos. Dormir cedo: amanhã tem prova de Geografia.",[
    ["Treino: sistema locomotor","Q:cien/locomotor",50]]]]],
  ["2026-10-06",15,[
   ["cien","Cap. 9: revisão de misturas","Refazer os tipos de mistura e as separações.",[
@@ -631,7 +627,30 @@ const DAYS = [
    ["Rever a lição: sistema esquelético","L:cien/esqueleto",20],["Rever a lição: sistema muscular","L:cien/musculos",15],["Ela explica para você o que aprendeu",null,15]]],
   ["cien","Revisão final: misturas","Ela ensina para você: tipos de mistura e como separar.",[
    ["Rever a lição: matéria e misturas","L:cien/materia",15],["Rever a lição: separação de misturas","L:cien/separacao",20],["Ela explica para você o que aprendeu",null,15]]],
-  ["rev","Bloco leve","Treino rápido e descanso. Dormir cedo.",[["Treino completo de Ciências","Q:cien/all",30],["Descansar",null,20]]]]]
+  ["rev","Bloco leve","Treino rápido e descanso. Dormir cedo.",[["Treino completo de Ciências","Q:cien/all",30],["Descansar",null,20]]]]],
+ ["2026-10-08",15,[
+  ["ing","Ch. 14: To infinity and beyond!","Como os cientistas observam e se comunicam com o espaço. Either… or.",[
+   ["Lição: To infinity and beyond!","L:ing/cap14",30],["Treino: capítulo 14","Q:ing/cap14",20]]]]],
+ ["2026-10-09",15,[
+  ["ing","Ch. 15: A picture is worth a thousand words","Elementos da comunicação e o artista Eduardo Kobra.",[
+   ["Lição: A picture is worth a thousand words","L:ing/cap15",30],["Treino: capítulo 15","Q:ing/cap15",20]]],
+  ["ing","LANGUAGE: capítulos 13 a 15","Estudar no livro LANGUAGE e refazer os exercícios dos capítulos 13, 14 e 15.",[
+   ["Ler e refazer os exercícios do livro LANGUAGE (caps. 13 a 15)",null,50]]]]],
+ ["2026-10-10",13,[
+  ["ing","Ch. 16: Spread the word!","Como a comunicação mudou, por que é importante e as barreiras.",[
+   ["Lição: Spread the word!","L:ing/cap16",30],["Treino: capítulo 16","Q:ing/cap16",20]]],
+  ["ing","Vocabulário e expressões","Revisar as palavras dos três capítulos e as três estruturas.",[
+   ["Lição: vocabulário e expressões","L:ing/revisao",20],["Treino: vocabulário e expressões","Q:ing/lang",30]]]]],
+ ["2026-10-11",16,[
+  ["ing","LANGUAGE: revisão","Revisar no livro LANGUAGE o que ela mais errou.",[
+   ["Revisar o livro LANGUAGE (caps. 13 a 15)",null,50]]],
+  ["ing","Simulado de Inglês","Ela resolve sozinha e você só confere no fim.",[
+   ["Treino completo de Inglês","Q:ing/all",50]]]]],
+ ["2026-10-12",15,[
+  ["ing","Caderno de erros de Inglês","Refazer o que errou e rever o vocabulário.",[
+   ["Caderno de erros de Inglês","Q:ing/erros",30],["Rever a lição: vocabulário e expressões","L:ing/revisao",20]]],
+  ["rev","Bloco leve","Última revisão da maratona. Dormir cedo: amanhã tem prova de Inglês.",[
+   ["Ela explica para você, em português, o que aprendeu de cada capítulo",null,20],["Descansar",null,30]]]]]
 ];
 
 /* ---------- conteúdo das lições ---------- */
@@ -1175,7 +1194,115 @@ const LESSONS = {
     <div class="ex"><b>Água + areia + sal dissolvido</b><br>1º filtração → tira a areia<br>2º evaporação (ou destilação) → separa o sal da água</div>
     <details class="try"><summary>Tente você: ímã serve para separar água e areia?</summary><p><b>Não</b>: a areia não é atraída pelo ímã. Use filtração ou decantação.</p></details>`]]}
  ],
- ing:[]
+ ing:[
+  {id:"cap14",cap:"CLIL · Ch. 14 · Science",t:"To infinity and beyond!",q:"ing/cap14",steps:[
+   ["Do que fala o capítulo",`<p>O capítulo 14 é sobre <b>como os cientistas observam o espaço e se comunicam com ele</b>. A pergunta de abertura é: <i>"Are astronauts on the International Space Station isolated from their families?"</i> (Os astronautas da Estação Espacial Internacional ficam isolados das famílias?)</p>
+    <p>A resposta é <b>não</b>: da <b>ISS</b> (International Space Station) eles fazem vídeos, conversam e até fazem transmissões ao vivo. Eles se comunicam usando a <b>Deep Space Network (DSN)</b>, um conjunto de <b>grandes antenas de rádio</b>.</p>
+    <div class="tbl"><table><tr><th>English</th><th>Português</th></tr>
+     <tr><td>astronomer</td><td>astrônomo</td></tr><tr><td>telescope</td><td>telescópio</td></tr>
+     <tr><td>satellite</td><td>satélite</td></tr><tr><td>spacecraft</td><td>nave espacial</td></tr>
+     <tr><td>antenna / antennas</td><td>antena / antenas</td></tr><tr><td>radio frequency</td><td>frequência de rádio</td></tr>
+     <tr><td>space station</td><td>estação espacial</td></tr><tr><td>stargazing</td><td>observar as estrelas</td></tr>
+     <tr><td>comet · asteroid</td><td>cometa · asteroide</td></tr><tr><td>galaxy · constellation</td><td>galáxia · constelação</td></tr></table></div>`],
+   ["Why do astronomers study the universe?",`<p>Os <b>astronomers</b> usam muitas ferramentas para analisar, coletar dados, observar e se comunicar com o espaço. O texto dá três motivos para estudar o universo:</p>
+    <ol><li>Their studies can <b>generate important data</b> for new technology, the cure for diseases and how our body works. (Geram dados para tecnologia, cura de doenças e para entender o corpo.)</li>
+    <li>They can better <b>protect the Earth</b> from global warming, pollution and other threats. (Proteger a Terra.)</li>
+    <li>Space research can help countries <b>share data</b>, resources and ideas. (Colaboração entre países.)</li></ol>
+    <div class="box warn"><span class="lbl">Não é motivo</span><p>"Because there is nothing to study on Earth" e "Because the universe is beautiful" <b>não</b> aparecem no texto como motivos.</p></div>
+    <details class="try"><summary>Tente você: "They can help protect the Earth" é um motivo do texto?</summary><p><b>Sim.</b> Proteger a Terra do aquecimento global e da poluição é um dos motivos.</p></details>`],
+   ["Observation tools: Hubble e Spitzer",`<p>A ferramenta de observação mais comum é o <b>telescope</b>. Os telescópios espaciais são muito maiores que os que usamos na Terra. Dois famosos:</p>
+    <div class="tbl"><table><tr><th>Hubble Space Telescope</th><th>Spitzer Space Telescope</th></tr>
+     <tr><td>recebe comandos pela <b>NASA's Space Network</b>, formada por muitos <b>satellites</b></td><td><b>stayed in space for 6000 days</b> (16 anos)</td></tr>
+     <tr><td>transmite numa <b>radio frequency range (S-band)</b></td><td><b>ended its mission</b> em 30 de janeiro de 2020</td></tr>
+     <tr><td>coleta <b>more than 3 DVDs of data per day</b></td><td>estudou <b>comets</b> e <b>asteroids</b></td></tr>
+     <tr><td><b>average of 18 GB of data per week</b></td><td><b>found a new ring around Saturn</b> (novo anel em Saturno)</td></tr></table></div>
+    <details class="try"><summary>Tente você: qual telescópio encontrou um novo anel em Saturno?</summary><p>O <b>Spitzer</b>.</p></details>`],
+   ["Communication tools",`<p>As <b>spacecrafts</b> (naves) mandam informações para a Terra através das grandes <b>antennas</b> da <b>Deep Space Network (DSN)</b>. Elas enviam a sua localização e detalhes da nave. Os cientistas também usam a DSN para <b>mandar comandos e instruções</b>.</p>
+    <p><b>If the spacecraft is too far away, the antennas have to be bigger.</b> (Quanto mais longe a nave, maiores precisam ser as antenas.) Os dados recebidos pela NASA são processados e compartilhados com laboratórios.</p>
+    <div class="ex"><b>Spacecraft</b> → nave espacial · <b>Antennas</b> → antenas (DSN) · <b>Satellites</b> → satélites · <b>Radio frequency</b> → frequência de rádio</div>
+    <details class="try"><summary>Tente você: what kinds of tools do astronomers use to observe and communicate with space?</summary><p><b>Space telescopes</b> (Hubble, Spitzer), <b>satellites</b> and the big <b>antennas of the DSN</b>.</p></details>`],
+   ["Stargazing: observar o céu de casa",`<p>Mesmo sem ser astronauta, dá para ver estrelas, constelações, a Lua, alguns planetas e partes da galáxia. Isso se chama <b>stargazing</b>.</p>
+    <ul><li><b>Binoculars</b> (binóculos) são recomendados para quem está começando.</li><li><b>Telescopes</b> são mais difíceis de usar. O <b>refractor telescope</b> usa uma lente de vidro para focar a luz e formar a imagem.</li></ul>
+    <p><b>Tips for stargazing</b> (dicas):</p>
+    <ul><li>Normalmente é à noite, mas de dia dá para ver o Sol <b>com filtro e proteção para os olhos</b>. Logo depois do <b>sunset</b> (pôr do sol) já dá para ver coisas interessantes.</li>
+    <li>Leve: <b>binoculars or telescopes, a notebook</b> (para desenhar), <b>a flashlight</b> (lanterna), <b>a chair, some snacks</b>.</li>
+    <li>Evite a <b>light pollution</b> (poluição luminosa): procure um lugar escuro e um céu sem nuvens. <b>Winter is the best time</b>.</li>
+    <li>Na cidade grande, use <b>apps</b> ou visite um <b>observatory</b> ou <b>planetarium</b>.</li></ul>`],
+   ["Useful language: either... or",`<p>Para apresentar <b>opções</b>, usamos <b>either ... or</b> (ou ... ou). Para dizer que são <b>todas</b> as coisas, usamos <b>and</b> (e).</p>
+    <div class="ex">You can take <b>a star map, a flashlight and a chair</b>. → leva tudo<br>You can take <b>either binoculars or a telescope</b>. → leva um <b>ou</b> outro</div>
+    <div class="ex">You can stargaze <b>either</b> during the day <b>or</b> at night.<br>You can <b>either</b> go to the Moon <b>or</b> to Mars.<br>In a spaceship, you can <b>either</b> eat dehydrated <b>or</b> canned food.</div>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p><b>either</b> vem antes da primeira opção e <b>or</b> antes da segunda.</p></div>
+    <details class="try"><summary>Tente você: una as opções com either... or: "watch a video / read a book".</summary><p>You can <b>either</b> watch a video <b>or</b> read a book.</p></details>`]]},
+  {id:"cap15",cap:"CLIL · Ch. 15 · Arts",t:"A picture is worth a thousand words",q:"ing/cap15",steps:[
+   ["Do que fala o capítulo",`<p>O título quer dizer "<b>uma imagem vale mais que mil palavras</b>". A pergunta do capítulo é: <i>"Can art communicate?"</i> (A arte comunica?) A resposta é <b>sim</b>: a arte é uma forma de comunicação, um jeito de expressar sentimentos e o que as pessoas pensam sobre a vida.</p>
+    <p><b>What is art?</b> Art is how humans express and represent <b>creativity</b> and <b>imagination</b>. A arte <b>visual</b> inclui:</p>
+    <div class="ex"><b>painting</b> (pintura) · <b>cartoon</b> (desenho/charge) · <b>photography</b> (fotografia) · <b>sculpture</b> (escultura) · também <b>installation</b> (instalação) e <b>illustration</b> (ilustração)</div>
+    <p>A arte também <b>influences local, regional and national cultures</b> e é apreciada pela beleza ou pelo poder emocional.</p>`],
+   ["Elements of communication",`<p><b>Communication is how people transmit and share ideas in a meaningful way.</b> Todo processo de comunicação tem estes elementos:</p>
+    <div class="tbl"><table><tr><th>Element</th><th>O que é</th></tr>
+     <tr><td><b>Transmitter</b></td><td>quem quer comunicar algo (emissor)</td></tr>
+     <tr><td><b>Message</b></td><td>o conteúdo que vai ser compartilhado</td></tr>
+     <tr><td><b>Code</b></td><td>o sistema de sinais usado (a língua, as cores, os gestos); quem recebe precisa conhecer</td></tr>
+     <tr><td><b>Means</b></td><td>o meio que leva a mensagem (telefone, e-mail, rede social, carta)</td></tr>
+     <tr><td><b>Receptor</b></td><td>quem recebe a mensagem</td></tr>
+     <tr><td><b>Context</b></td><td>a situação em que a comunicação se baseia</td></tr>
+     <tr><td><b>Function</b></td><td>o objetivo da comunicação</td></tr></table></div>
+    <details class="try"><summary>Tente você: "It is the system of signs that people use to communicate." Qual elemento?</summary><p><b>Code</b>.</p></details>`],
+   ["Art as communication",`<p>Palavras <b>não são o único código</b>: a comunicação também acontece por <b>imagens</b>, <b>colours</b> (cores), <b>forms</b> (formas) e outros <b>elements</b> artísticos.</p>
+    <p>A arte convida as pessoas a <b>refletir</b>, pode <b>criticar</b> algo ou mostrar beleza. Assim, os artistas comunicam o que <b>veem, sentem e sonham</b>, e quem vê a obra pode ficar <b>reflective, confused or happy</b>.</p>
+    <div class="ex">"Art doesn't communicate." → <b>False</b><br>"Artists are observers of the world." → <b>True</b><br>"Communicating is to convey and share ideas in a meaningful way." → <b>True</b></div>`],
+   ["Eduardo Kobra",`<p><b>Kobra is a Brazilian artist from São Paulo.</b> É um dos <b>muralists</b> (muralistas) mais famosos do mundo, reconhecido em cinco continentes.</p>
+    <ul><li>He <b>spray-painted</b> two of the largest murals in the world: <b>Etnias</b> (2,500 m², Praça Mauá, Rio de Janeiro) and <b>Chocolate</b> (5,742 m², Rodovia Castello Branco, São Paulo). O maior é o <b>Chocolate</b>.</li>
+    <li>Começou a grafitar <b>observando</b> artistas que admira, como Banksy e Diego Rivera.</li>
+    <li>His work <b>protests against</b> animal exploitation, predatory fishing, <b>global warming</b>, pollution and <b>deforestation</b>.</li>
+    <li>He depicts historical personalities who fought against violence: <b>Gandhi, Anne Frank, Malala, Einstein</b>.</li>
+    <li>In 2009, he started <b>three-dimensional</b> street art, first on <b>Paulista Avenue</b>.</li>
+    <li>His images are <b>hyper-realistic</b>, based on photographs, with <b>strong and contrasting colours</b>.</li></ul>
+    <p>Obras famosas: <i>The kiss</i> (New York), <i>Fight for street art</i> (Brooklyn), <i>Maya Plisetskaya</i> (Moscow), <i>Etnias</i> (Rio).</p>
+    <details class="try"><summary>Tente você: "Kobra's works of art are all in São Paulo." True or false?</summary><p><b>False.</b> Ele tem obras em vários países: Estados Unidos, Rússia, Itália, Japão…</p></details>`],
+   ["Useful language: depicts, shows, has",`<p>Para falar de uma obra de arte, o livro usa estes verbos:</p>
+    <div class="ex">Kobra's art <b>depicts</b> historical personalities. (retrata)<br>Kobra's art <b>shows</b> situations in different cultures. (mostra)<br>Kobra's art <b>has</b> strong and contrasting colours. (tem)</div>
+    <p><b>Palavras do estilo do Kobra</b> (atividade de completar do livro):</p>
+    <div class="ex"><b>THREE-DIMENSIONAL</b> (tridimensional, 3D)<br><b>CONTRASTING COLOURS</b> (cores contrastantes)<br><b>HYPER-REALISTIC</b> (hiper-realista)</div>
+    <details class="try"><summary>Tente você: complete "C _ NTR _ ST _ NG C _ L _ _ RS".</summary><p><b>CONTRASTING COLOURS</b>.</p></details>`]]},
+  {id:"cap16",cap:"CLIL · Ch. 16 · Geography",t:"Spread the word!",q:"ing/cap16",steps:[
+   ["Como a comunicação mudou",`<p>A pergunta do capítulo: <i>"Communication: How has it changed?"</i> As pessoas <b>sempre</b> criaram jeitos de se comunicar:</p>
+    <ul><li><b>30,000 BC:</b> antes da escrita, os humanos se comunicavam <b>drawing on cave walls</b> (desenhando nas paredes das cavernas): animais e mãos.</li>
+    <li><b>3500 BC:</b> a primeira língua escrita, a <b>Sumerian language</b>, com provas encontradas no <b>Iraq</b>.</li>
+    <li>Antes dos correios, <b>pigeons</b> (pombos) levavam mensagens. Foram usados na <b>First World War</b>.</li>
+    <li><b>Nowadays</b> (hoje): mobile phones, instant messages, e-mails, TV, radio.</li></ul>
+    <div class="box tip"><span class="lbl">BC</span><p><b>BC</b> = <i>Before Christ</i>, o nosso "a.C." (antes de Cristo).</p></div>`],
+   ["Why is communication important?",`<p>Segundo o Cambridge Dictionary, <b>communication means to share information with others by speaking, writing, moving your body or using other signals</b>.</p>
+    <p>Comunicamos até sem querer: as <b>facial expressions</b> (expressões do rosto) mostram <b>feelings</b>. Uma pessoa <b>talkative</b> (que fala muito) que fica <b>quieter</b> (mais quieta) pode estar tendo um dia ruim.</p>
+    <p>Três motivos para a comunicação ser importante:</p>
+    <ol><li>It forms <b>relationships</b>: começamos a conversar e <b>interact</b> com um <b>stranger</b> (desconhecido) e viramos amigos.</li>
+    <li>People can <b>express</b> themselves and <b>inform</b> others about needs, preferences, opinions and ideas.</li>
+    <li>It helps us <b>access and share knowledge</b>: <b>newspapers</b>, <b>books</b> and <b>magazines spread knowledge</b>.</li></ol>
+    <div class="tbl"><table><tr><th>My words</th><th>Significado</th></tr><tr><td>talkative</td><td>a person who talks a lot</td></tr><tr><td>quieter</td><td>talking less than usual</td></tr><tr><td>stranger</td><td>someone you don't know</td></tr><tr><td>knowledge</td><td>what we know</td></tr></table></div>`],
+   ["Barriers to communication",`<p>Às vezes é difícil se comunicar. Essas dificuldades são as <b>barriers</b> (barreiras):</p>
+    <ul><li><b>Noise</b> (barulho): shows, rua movimentada, <b>thunderstorm</b> (tempestade com trovões). Uma saída é <b>read their lips</b> (ler os lábios). Pelo telefone é ainda mais difícil.</li>
+    <li><b>Temperature:</b> se está <b>too hot or too cold</b>, fica difícil se concentrar na mensagem.</li>
+    <li><b>Technical and technological problems:</b> bad internet connection, low Wi-Fi signal, computer viruses, <b>low battery</b>.</li>
+    <li><b>Language:</b> pessoas que não falam a mesma língua. E mesmo falando a mesma língua podem acontecer <b>misunderstandings</b> por causa de <b>accents</b> (sotaques), <b>slang</b> (gírias) e <b>word choice</b> (escolha de palavras).</li>
+    <li><b>Distance</b> também é uma barreira.</li></ul>
+    <details class="try"><summary>Tente você: "It's not possible to have barriers because of technical problems." True or false?</summary><p><b>False.</b> Internet ruim, bateria fraca e vírus são barreiras técnicas.</p></details>`],
+   ["Means of communication and preferences",`<p><b>Means of communication</b> (meios de comunicação) podem ser <b>written</b> (escritos) ou <b>spoken</b> (falados):</p>
+    <div class="ex"><b>Written:</b> e-mail, letter, instant text messages, social media posts, newspapers, books, magazines<br><b>Spoken:</b> talking on the phone, video call, face to face, radio, TV</div>
+    <p>Para dizer como as pessoas <b>preferem</b> se comunicar, o livro usa verbo de gosto + <b>verbo com -ing</b>:</p>
+    <div class="ex"><b>Teenagers love</b> texting their friends.<br><b>Older people prefer</b> talking to family members on the phone.<br><b>Some people don't like</b> writing e-mails.<br><b>Young people enjoy</b> interacting on social media.</div>
+    <div class="box warn"><span class="lbl">Atenção</span><p>Depois de <b>enjoy, love, prefer, don't like</b>, o verbo vai com <b>-ing</b>: <i>enjoy talking</i>, não <i>enjoy talk</i>.</p></div>`]]},
+  {id:"revisao",cap:"CLIL · Revisão",t:"Vocabulário e expressões",q:"ing/lang",steps:[
+   ["Vocabulário dos três capítulos",`<div class="tbl"><table><tr><th>Ch. 14 · Science</th><th>Ch. 15 · Arts</th><th>Ch. 16 · Geography</th></tr>
+     <tr><td>astronomer</td><td>painting</td><td>relationship</td></tr><tr><td>telescope</td><td>sculpture</td><td>knowledge</td></tr>
+     <tr><td>satellite</td><td>photography</td><td>stranger</td></tr><tr><td>spacecraft</td><td>muralist</td><td>talkative</td></tr>
+     <tr><td>antennas</td><td>spray-painting</td><td>barrier</td></tr><tr><td>stargazing</td><td>transmitter</td><td>noise</td></tr>
+     <tr><td>binoculars</td><td>receptor</td><td>accent · slang</td></tr><tr><td>light pollution</td><td>message · code</td><td>means of communication</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Como estudar</span><p>Cubra a coluna e diga o significado em português. Depois faça o contrário.</p></div>`],
+   ["As três estruturas que caem",`<p><b>1. either ... or</b> (opções):</p><div class="ex">You can take <b>either</b> binoculars <b>or</b> a telescope.</div>
+    <p><b>2. depicts / shows / has</b> (falar de arte):</p><div class="ex">Kobra's art <b>depicts</b> historical personalities.</div>
+    <p><b>3. enjoy / love / prefer / don't like + -ing</b> (preferências):</p><div class="ex">Teenagers <b>love texting</b> their friends.</div>
+    <details class="try"><summary>Tente você: corrija "My mom prefer talk on the phone".</summary><p>My mom <b>prefers talking</b> on the phone. (Com he/she, o verbo ganha <b>-s</b>: prefers.)</p></details>`]]}
+ ]
 
 };
 
@@ -1184,7 +1311,8 @@ const TOPICS = {
   port:[["cap8","Cap. 8 · Para convencer"],["cap9","Cap. 9 · O consumidor atento"]],
   hist:[["roma","Cap. 8 · Império Romano"],["bizancio","Cap. 9 · Império Bizantino"]],
   geo:[["vegetacao","Cap. 8 · Formações vegetais"],["acao","Cap. 9 · Ação humana no clima e na vegetação"]],
-  cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]]
+  cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]],
+  ing:[["cap14","Ch. 14 · To infinity and beyond!"],["cap15","Ch. 15 · A picture is worth a thousand words"],["cap16","Ch. 16 · Spread the word!"],["lang","Vocabulário e expressões"]]
 };
 
 /* Cada questão: [pergunta, [5 alternativas — a certa sempre primeiro, elas são embaralhadas], 0, explicação, nível]
@@ -1587,6 +1715,79 @@ const Q = {
   ["Qual método NÃO serve para separar água e areia?",["imantação","filtração","decantação","decantação seguida de filtração","deixar assentar e virar a água com cuidado"],0,"A areia não é atraída pelo ímã.",3],
   ["A água (H₂O) é uma substância:",["composta, pois tem mais de um tipo de átomo","simples, pois tem um só tipo de átomo","mistura heterogênea","mistura homogênea","que não é matéria"],0,"H (hidrogênio) e O (oxigênio): dois tipos de átomo.",3],
   ["Qual destas é uma substância simples?",["gás oxigênio (O₂)","água (H₂O)","gás carbônico (CO₂)","sal de cozinha (NaCl)","água com sal"],0,"O₂ tem um só tipo de átomo: oxigênio.",3]
+ ],
+ "ing/cap14":[
+  ["What does DSN stand for?",["Deep Space Network","Digital Satellite News","Deep Sea Navigation","Data Space Number","Distant Star Network"],0,"DSN é a Deep Space Network, um conjunto de grandes antenas de rádio.",1],
+  ["\"Spacecraft\" means:",["nave espacial","estação de rádio","estrela cadente","satélite natural","telescópio"],0,"Spacecraft = nave espacial.",1],
+  ["\"Astronomer\" means:",["astrônomo","astronauta","astrólogo","astro","asteroide"],0,"Astronomer é o cientista que estuda o universo (astrônomo).",1],
+  ["What is the most common observation tool of the universe?",["the telescope","the flashlight","the notebook","the radio","the chair"],0,"The most common observation tool of the universe is the telescope.",1],
+  ["Are astronauts on the ISS isolated from their families?",["No, they can make videos and chat with them","Yes, they can't talk to anyone","Yes, only NASA can talk to them","No, they come back home every week","Yes, there is no internet in space"],0,"Eles fazem vídeos, conversam e até fazem transmissões ao vivo.",1],
+  ["\"Binoculars\" means:",["binóculos","óculos escuros","lanterna","mapa de estrelas","telescópio"],0,"Binoculars = binóculos, recomendados para iniciantes.",1],
+  ["Which telescope found a new ring around Saturn?",["Spitzer","Hubble","Galileo","DSN","ISS"],0,"O Spitzer estudou cometas e asteroides e achou um novo anel em Saturno.",2],
+  ["The Hubble Space Telescope collects…",["more than 3 DVDs of data per day","one photo per year","only sounds from space","data only on Sundays","nothing, it ended its mission"],0,"Hubble collects more than 3 DVDs of data per day (average of 18 GB per week).",2],
+  ["The Spitzer Space Telescope stayed in space for…",["6000 days (16 years)","6 days","60 years","600 days","16 days"],0,"Spitzer stayed in space for 6000 days and ended its mission in 2020.",2],
+  ["Which is a reason why astronomers study the universe?",["Because they can help protect the Earth","Because there is nothing to study on Earth","Because they don't like the Earth","Because space is always cold","Because it is easy"],0,"O texto cita proteger a Terra, gerar dados e ajudar países a compartilhar informações.",2],
+  ["If the spacecraft is too far away, the antennas have to be…",["bigger","smaller","turned off","painted","closer to the Moon"],0,"Quanto mais longe a nave, maiores as antenas.",2],
+  ["Which item is useful for stargazing?",["a flashlight","a hair dryer","an umbrella","a skateboard","a pillow fight"],0,"O livro sugere binoculars, telescope, notebook, flashlight, chair and snacks.",1],
+  ["What should you avoid when stargazing?",["light pollution","a dark place","a clear sky","winter nights","a notebook"],0,"Avoid light pollution: procure um lugar escuro.",2],
+  ["\"You can take ___ binoculars ___ a telescope.\"",["either / or","and / and","both / or","either / and","or / either"],0,"Either ... or apresenta duas opções: uma ou outra.",2],
+  ["Which sentence uses \"either… or\" correctly?",["You can either go to the Moon or to Mars.","You can either go to the Moon and to Mars.","You can go either to the Moon either to Mars.","You can or go to the Moon either to Mars.","You either can or go to Mars."],0,"Either antes da primeira opção, or antes da segunda.",3],
+  ["What is a refractor telescope?",["a telescope that uses a glass lens to focus light","a telescope made of paper","a radio antenna","a satellite in space","a kind of binoculars without lenses"],0,"Refractor telescope: a kind of telescope that uses a glass lens to focus light and form an image.",3],
+  ["When is the best time to stargaze, according to the text?",["Winter","Summer at noon","Rainy days","Cloudy nights","Any time with lights on"],0,"Winter is the best time to stargaze, with a sky that isn't cloudy.",3],
+  ["In a big city it may be hard to find a dark place. What can you do?",["use apps or visit an observatory or a planetarium","stop stargazing forever","turn on all the lights","look only at the street","use a hair dryer"],0,"Apps, observatory ou planetarium ajudam a ver o céu.",3],
+  ["The Hubble Space Telescope transmissions are done in a specific…",["radio frequency range (S-band)","TV channel","phone call","letter","cave drawing"],0,"Hubble uses a radio frequency range called S-band.",3]
+ ],
+ "ing/cap15":[
+  ["What is the question of chapter 15?",["Can art communicate?","Can astronauts talk?","What is a telescope?","Why do we eat?","Where is Mars?"],0,"O capítulo discute se a arte comunica. A resposta é sim.",1],
+  ["\"A picture is worth a thousand words\" means:",["uma imagem vale mais que mil palavras","uma foto custa mil reais","mil palavras fazem uma foto","desenhar é difícil","palavras são melhores que imagens"],0,"Uma imagem pode comunicar muito.",1],
+  ["Which of these is a visual art?",["painting","singing","running","cooking","sleeping"],0,"Visual arts: painting, cartoon, photography, sculpture.",1],
+  ["Eduardo Kobra is from…",["São Paulo, Brazil","New York, USA","Moscow, Russia","Paris, France","Rio de Janeiro only"],0,"Kobra is a Brazilian artist from São Paulo.",1],
+  ["\"Sculpture\" means:",["escultura","pintura","fotografia","desenho","música"],0,"Sculpture = escultura.",1],
+  ["Kobra is a famous…",["muralist","astronaut","singer","football player","scientist"],0,"Muralist: artista que pinta murais.",1],
+  ["\"It is the content to be shared.\" Which element of communication is it?",["Message","Code","Receptor","Means","Context"],0,"Message é o conteúdo.",2],
+  ["\"This is the person who wants to communicate something.\"",["Transmitter","Receptor","Means","Function","Code"],0,"Transmitter é quem transmite a mensagem.",2],
+  ["\"This is who receives the message.\"",["Receptor","Transmitter","Message","Context","Code"],0,"Receptor é quem recebe.",2],
+  ["\"It is what allows the transmission of the message (telephone, e-mail…).\"",["Means","Function","Code","Message","Transmitter"],0,"Means é o meio de comunicação.",2],
+  ["What is Kobra's largest mural?",["Chocolate","Etnias","The kiss","Salvador Dalí","Maya Plisetskaya"],0,"Chocolate tem 5,742 m², maior que Etnias (2,500 m²).",2],
+  ["Kobra's art protests against…",["deforestation and global warming","books and schools","music and dance","sports","vacations"],0,"Ele protesta contra deforestation, global warming, pollution, animal exploitation.",2],
+  ["\"It is the objective of the communication.\"",["Function","Context","Means","Code","Receptor"],0,"Function = objetivo.",3],
+  ["\"It is the system of signs that people use to communicate.\"",["Code","Means","Message","Function","Transmitter"],0,"Code é o sistema de sinais (a língua, as cores…).",3],
+  ["Complete: \"Kobra's art ___ strong and contrasting colours.\"",["has","depicts","shows","paints","draws"],0,"Kobra's art HAS strong and contrasting colours.",3],
+  ["Which words describe Kobra's artistic style?",["three-dimensional, contrasting colours, hyper-realistic","black and white, small, simple","invisible, quiet, empty","only pencil drawings","abstract lines without colour"],0,"Os três termos da atividade do livro.",3],
+  ["\"Kobra's works of art are all in São Paulo.\" True or false?",["False","True","It is not in the text","Only in Rio","Only in New York"],0,"Ele tem obras em vários países (Estados Unidos, Rússia, Japão…).",3],
+  ["Where was Kobra's first three-dimensional street art?",["Paulista Avenue","Castello Branco Road","Brooklyn","Moscow","Praça Mauá"],0,"In 2009, his first 3D art was at Paulista Avenue.",3]
+ ],
+ "ing/cap16":[
+  ["Around 30,000 BC, how did humans communicate?",["by drawing on cave walls","by sending e-mails","by phone","by writing letters","by radio"],0,"Antes da escrita, eles desenhavam nas cavernas (animais e mãos).",1],
+  ["What was the first written language?",["Sumerian","English","Portuguese","Latin","Chinese"],0,"Around 3500 BC, the Sumerian language (found in Iraq).",1],
+  ["Before post offices existed, messages were delivered by…",["pigeons","cars","drones","e-mails","satellites"],0,"Pigeons (pombos), used in the First World War.",1],
+  ["\"Stranger\" means:",["someone you don't know","a person who talks a lot","what we know","a family member","a teacher"],0,"Stranger = desconhecido.",1],
+  ["\"Talkative\" means:",["a person who talks a lot","a person who doesn't talk","a noisy place","a phone","a book"],0,"Talkative = que fala muito.",1],
+  ["\"Knowledge\" means:",["what we know","a type of phone","someone you don't know","a noise","a letter"],0,"Knowledge = conhecimento.",1],
+  ["Which is a barrier to communication?",["noise","a good connection","a quiet room","the same language","a clear message"],0,"Noise, temperature, technical problems, language and distance are barriers.",2],
+  ["A low battery is a…",["technological barrier","language barrier","temperature barrier","noise barrier","good means of communication"],0,"Problemas técnicos: internet ruim, Wi-Fi fraco, vírus, bateria fraca.",2],
+  ["When it's difficult to communicate in a noisy place, an alternative is to…",["read the speaker's lips","shout louder forever","turn off the phone","stop talking","write on the wall"],0,"Try to read their lips.",2],
+  ["Which is a written means of communication?",["e-mail","video call","face to face","phone call","radio"],0,"E-mail, letters and text messages are written.",2],
+  ["Which is a spoken means of communication?",["talking on the phone","e-mail","letter","newspaper","text message"],0,"Phone, video call and face to face are spoken.",2],
+  ["Communication helps us form…",["relationships","noise","barriers","viruses","storms"],0,"It forms relationships: we interact with a stranger and become friends.",2],
+  ["\"Teenagers love ___ their friends.\"",["texting","text","texts","to texting","texted"],0,"Depois de love/enjoy/prefer/don't like, usamos o verbo com -ing.",3],
+  ["\"Older people prefer ___ on the phone.\"",["talking","talk","talks","talked","to talking"],0,"Prefer + verbo com -ing: prefer talking.",3],
+  ["\"Even when two people speak the same language, other linguistic issues may cause problems.\" True or false?",["True","False","It is not in the text","Only on the phone","Only in winter"],0,"Sotaques, gírias e escolha de palavras podem causar misunderstandings.",3],
+  ["Which is an example of a language barrier?",["different accents and slang","a thunderstorm","a low Wi-Fi signal","a very hot day","a computer virus"],0,"Accents, slang e word choice são barreiras de linguagem.",3],
+  ["According to the Cambridge Dictionary, communication means…",["to share information by speaking, writing, moving your body or using other signals","to watch TV all day","to stay quiet","to draw on walls only","to travel to space"],0,"Definição do texto.",3],
+  ["Newspapers, books and magazines…",["spread knowledge","cause noise","are barriers","are strangers","stop communication"],0,"They spread knowledge (espalham conhecimento).",3]
+ ],
+ "ing/lang":[
+  ["\"You can take a star map, a flashlight ___ a chair.\" (all of them)",["and","or","either","but","because"],0,"Quando é tudo, usamos and.",1],
+  ["\"Telescope\" in Portuguese is:",["telescópio","televisão","telefone","microscópio","satélite"],0,"Telescope = telescópio.",1],
+  ["\"Noise\" in Portuguese is:",["barulho","nariz","notícia","noite","neve"],0,"Noise = barulho.",1],
+  ["\"Painting\" in Portuguese is:",["pintura","escultura","música","fotografia","caneta"],0,"Painting = pintura.",1],
+  ["Which sentence is correct?",["I enjoy reading books.","I enjoy read books.","I enjoy to reading books.","I enjoys reading books.","I reading enjoy books."],0,"Enjoy + verbo com -ing.",2],
+  ["\"Kobra's art ___ historical personalities.\" (retrata)",["depicts","has","eats","listens","prefers"],0,"Depicts = retrata.",2],
+  ["\"You can either watch a movie ___ play a game.\"",["or","and","either","but","so"],0,"Either … or.",2],
+  ["\"My sister ___ texting her friends.\"",["loves","love","loving","to love","loved to"],0,"Com he/she, o verbo ganha -s: loves.",3],
+  ["\"My grandparents don't like ___ e-mails.\"",["writing","write","writes","to writing","wrote"],0,"Don't like + verbo com -ing.",3],
+  ["Which sentence gives two options?",["You can stargaze either during the day or at night.","You can take a map and a chair.","Kobra's art has colours.","Teenagers love texting.","Communication is important."],0,"Either … or apresenta opções.",3]
  ]
 };
 
@@ -1737,7 +1938,6 @@ function vInicio(){
       ${tot?`<div style="display:grid;gap:8px"><div class="row between"><span class="eyebrow">O que cai</span><span class="muted" style="font-size:13px">${dn} de ${tot} lições estudadas</span></div>
       <div class="lesson-chips">${L.map(l=>`<span class="lchip${S.lessons[lessonKey(s0,l.id)]?" done":""}">${S.lessons[lessonKey(s0,l.id)]?"✓ ":""}${l.t}</span>`).join("")}</div>
       <div class="progress" style="--c:${SUBJ[s0].c}"><i style="width:${100*dn/tot}%"></i></div></div>`:""}
-      ${nx.s.includes("ing")&&nx.s.length>1?`<p class="muted" style="font-size:14px">O conteúdo de Inglês ainda vai ser informado pela escola.</p>`:""}
       <button class="btn primary" style="background:${SUBJ[s0].c};border-color:${SUBJ[s0].c};color:var(--surface)" data-subj="${s0}">Estudar ${SUBJ[s0].n} ${ICON.arrow}</button>
     </section>`;
   } else hero=`<section class="hero" style="--c:var(--ok)"><span class="eyebrow">Provas</span><h2>Todas as provas foram feitas!</h2><p>Parabéns pelo esforço, ${STUDENT.nome}.</p></section>`;
@@ -1841,7 +2041,7 @@ function vAgenda(){
   const last=EXAM_DAYS[EXAM_DAYS.length-1];
   return `<div class="hello"><span class="eyebrow">Cronograma</span><h1>Agenda de estudos</h1><p class="muted">Toque em um dia para ver os blocos e na seta para abrir o roteiro. Todo bloco de Matemática começa com 5 a 10 minutos de aquecimento: tabuada ou um jogo do Laboratório.</p></div>
     ${items}
-    <div class="card"><span class="flag">${dLong(last.d)}: prova de Ciências</span><p style="margin-top:8px" class="muted">Última prova. Fim da maratona!</p></div>
+    <div class="card"><span class="flag">${dLong(last.d)}: prova de ${last.s.map(s=>SUBJ[s].n).join(" e ")}</span><p style="margin-top:8px" class="muted">Última prova. Fim da maratona!</p></div>
     <details class="day"><summary style="grid-template-columns:1fr auto"><b>Combinados para ajudar na atenção</b><span class="muted">+</span></summary>
       <div class="day-body"><ul style="margin:0;padding-left:20px;display:grid;gap:6px">
         <li>Uma questão por vez, na tela ou no papel.</li><li>Na pausa: água, lanche, levantar e andar. Sem celular.</li>
