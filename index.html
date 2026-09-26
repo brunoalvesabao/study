@@ -562,8 +562,8 @@ const DAYS = [
    ["Lição: formação de palavras","L:port/formacao",20],["Lição: ortografia (homófonas e parônimos)","L:port/ortografia",20],["Treino do capítulo 8","Q:port/cap8",10]]],
   ["mat","Decimais: multiplicar, dividir e potência","Multiplicar e contar as casas. Dividir igualando as casas.",[
    ["Aquecimento: tabuada do 9","T:9",5],["Lição: multiplicar, dividir, potência e problemas","L:mat/decimais@3-6",25],["Treino: números decimais","Q:mat/decimais",20]]],
-  ["port","Cap. 9: reportagem, carta e figuras","Partes da carta de reclamação. Metonímia e personificação.",[
-   ["Lição: reportagem e carta de reclamação","L:port/reclamacao",20],["Lição: metonímia e personificação","L:port/figuras",15],["Escrever no caderno uma carta de reclamação curta",null,15]]]]],
+  ["port","Cap. 9: reportagem, reclamação e figuras","Carta e postagem de reclamação. Metonímia e personificação.",[
+   ["Lição: reportagem e textos de reclamação","L:port/reclamacao",20],["Lição: metonímia e personificação","L:port/figuras",15],["Escrever no caderno uma carta de reclamação curta",null,15]]]]],
  ["2026-09-27",16,[
   ["port","Subjuntivo, formas nominais e treino geral","Última revisão antes da prova de amanhã.",[
    ["Lição: subjuntivo e formas nominais","L:port/verbos",20],["Treino completo de Português","Q:port/all",30]]],
@@ -598,8 +598,8 @@ const DAYS = [
   ["cien","Cap. 8: leitura leve do esqueleto","Funções dos ossos e tipos de articulação. Dormir cedo: amanhã tem prova.",[
    ["Lição: sistema esquelético","L:cien/esqueleto",35],["Ler o capítulo 8 no livro",null,15]]]]],
  ["2026-10-02",15,[
-  ["geo","Cap. 9: ação humana e clima","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.",[
-   ["Lição: ação humana e clima","L:geo/acao",30],["Treino: ação humana","Q:geo/acao",20]]],
+  ["geo","Cap. 9: ação humana no clima e na vegetação","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.",[
+   ["Lição: ação humana no clima e na vegetação","L:geo/acao",30],["Treino: ação humana","Q:geo/acao",20]]],
   ["cien","Cap. 8: sistema muscular","Três tipos de músculo. Tendão e ligamento. Bíceps e tríceps.",[
    ["Lição: sistema muscular","L:cien/musculos",25],["Treino: sistema locomotor","Q:cien/locomotor",25]]],
   ["ing","Inglês","Conteúdo da escola ou revisão do caderno.",[["Revisar o caderno de Inglês",null,50]]]]],
@@ -927,7 +927,7 @@ const LESSONS = {
     <div class="box warn"><span class="lbl">Homófona ou parônimo?</span><p>Leia em voz alta. Se o som for <b>exatamente igual</b> (cela/sela), é homófona. Se for só <b>parecido</b> (emigrar/imigrar), é parônimo.</p></div>
     <details class="try"><summary>Tente você: complete: "Ela agiu com ___ e ninguém percebeu" (descrição ou discrição).</summary><p><b>Discrição</b>, de discreto.</p></details>
     <details class="try"><summary>Tente você: "acender" e "ascender" são homófonas ou parônimos?</summary><p><b>Homófonas</b>: o som é igual.</p></details>`]]},
-  {id:"reclamacao",cap:"Cap. 9",t:"Reportagem e carta de reclamação",q:"port/cap9",steps:[
+  {id:"reclamacao",cap:"Cap. 9",t:"Reportagem e textos de reclamação",q:"port/cap9",steps:[
    ["Notícia e reportagem",`<p>As duas são textos <b>jornalísticos</b>: contam fatos reais. A diferença está na <b>profundidade</b>.</p>
     <div class="tbl"><table><tr><th>Notícia</th><th>Reportagem</th></tr>
      <tr><td>conta um fato de forma rápida</td><td><b>aprofunda</b> um assunto</td></tr>
@@ -941,6 +941,16 @@ const LESSONS = {
     <ol><li>Local e data</li><li>Destinatário (a empresa)</li><li>Explicação do problema, com detalhes: o que comprou, quando, o que aconteceu</li><li>Pedido de solução: troca, conserto ou devolução do dinheiro</li><li>Despedida e assinatura</li></ol>
     <div class="ex">São Paulo, 20 de setembro de 2026.<br>À Loja Bom Preço,<br>No dia 10/09 comprei um fone de ouvido, e depois de três dias o lado esquerdo parou de funcionar.<br><b>Solicito a troca do produto</b> ou a devolução do valor pago.<br>Atenciosamente, Alice.</div>
     <p>Quem compra tem seus direitos garantidos pelo <b>Código de Defesa do Consumidor</b>.</p>`],
+   ["Reclamação em postagens",`<p>Hoje muita gente reclama <b>pela internet</b>: nas redes sociais da empresa, nos comentários de uma loja on-line ou em sites próprios para reclamações de consumidores.</p>
+    <p>A <b>postagem de reclamação</b> tem o mesmo objetivo da carta (explicar o problema e pedir uma solução), mas muda o formato:</p>
+    <div class="tbl"><table><tr><th></th><th>Carta</th><th>Postagem</th></tr>
+     <tr><td><b>Tamanho</b></td><td>mais longa</td><td>curta e direta</td></tr>
+     <tr><td><b>Partes</b></td><td>local, data, destinatário, assinatura</td><td>título, texto e, às vezes, foto do problema</td></tr>
+     <tr><td><b>Quem lê</b></td><td>só a empresa</td><td>a empresa <b>e outras pessoas</b> (é pública)</td></tr>
+     <tr><td><b>Linguagem</b></td><td>formal</td><td>clara e respeitosa, um pouco menos formal</td></tr></table></div>
+    <div class="ex"><b>Título:</b> Fone parou de funcionar em 3 dias<br>Comprei o fone no dia 10/09 no site da Loja Bom Preço. No dia 13, o lado esquerdo parou de funcionar. Já tentei contato pelo telefone, sem resposta. <b>Peço a troca do produto ou a devolução do dinheiro.</b></div>
+    <div class="box warn"><span class="lbl">Cuidado</span><p>Por ser pública, a postagem precisa ser <b>verdadeira e educada</b>. Xingar ou exagerar tira a razão de quem reclama.</p></div>
+    <details class="try"><summary>Tente você: o que a postagem e a carta de reclamação têm em comum?</summary><p>As duas <b>explicam o problema</b> e <b>pedem uma solução</b>.</p></details>`],
    ["A linguagem certa",`<p>A carta de reclamação usa linguagem <b>formal, respeitosa e firme</b>. Educação e clareza aumentam a chance de resolver.</p>
     <div class="ex">✓ "Solicito a troca do produto com defeito."<br>✓ "Aguardo retorno no prazo de 7 dias."<br>✗ "Vocês são péssimos!"<br>✗ "kkk o produto quebrou"</div>
     <details class="try"><summary>Tente você: o que não pode faltar numa carta de reclamação?</summary><p>A <b>descrição do problema</b> e o <b>pedido de solução</b>.</p></details>`]]},
@@ -1030,9 +1040,13 @@ const LESSONS = {
    ["Constantinopla",`<p>Constantinopla ficava num lugar <b>estratégico</b>: entre a <b>Europa e a Ásia</b>, junto ao mar. Por ali passavam as rotas de comércio de seda, especiarias e ouro.</p>
     <p>Por isso ela era rica, cheia de gente e bem protegida por muralhas.</p>
     <details class="try"><summary>Tente você: por que a localização de Constantinopla era boa?</summary><p>Ficava <b>entre a Europa e a Ásia</b>, ótima para o comércio.</p></details>`],
+   ["Estrutura política",`<p>O Império Bizantino era governado por um <b>imperador com poder absoluto</b>: ele fazia as leis, comandava o exército, cobrava impostos e era considerado escolhido por Deus.</p>
+    <ul><li><b>Poder centralizado:</b> tudo era decidido na capital, Constantinopla.</li><li><b>Muitos funcionários</b> (burocracia) cuidavam dos impostos, das leis e das províncias.</li><li><b>Exército forte</b> para defender as fronteiras.</li><li>O imperador mandava <b>também na Igreja</b>: nomeava o patriarca (o chefe da Igreja de Constantinopla). Isso se chama <b>cesaropapismo</b>.</li></ul>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p>Cesaropapismo = <b>César</b> (imperador) + <b>papa</b> (chefe religioso) na mesma pessoa.</p></div>
+    <details class="try"><summary>Tente você: quem mandava na Igreja no Império Bizantino?</summary><p>O <b>imperador</b>. Isso é o cesaropapismo.</p></details>`],
    ["Justiniano",`<p>O imperador mais famoso foi <b>Justiniano</b>, no <b>século VI</b>. Ele:</p>
-    <ul><li>organizou as leis romanas no <b>Código de Justiniano</b>;</li><li>construiu a igreja de <b>Hagia Sofia</b> (Santa Sofia), em Constantinopla;</li><li>tentou reconquistar terras do antigo Império do Ocidente.</li></ul>
-    <p>O imperador bizantino tinha poder total, <b>inclusive sobre a Igreja</b>. Isso se chama <b>cesaropapismo</b> (César = imperador + papa).</p>`],
+    <ul><li>organizou as leis romanas no <b>Código de Justiniano</b>;</li><li>construiu a igreja de <b>Hagia Sofia</b> (Santa Sofia), em Constantinopla;</li><li>tentou reconquistar terras do antigo Império do Ocidente, como a Itália e o norte da África.</li></ul>
+    <p>Ele governou junto com a imperatriz <b>Teodora</b>, que teve grande influência nas decisões.</p>`],
    ["Religião e o Cisma",`<p>Os bizantinos eram cristãos, mas com o tempo surgiram muitas diferenças em relação à Igreja de Roma.</p>
     <p>Em <b>1054</b> aconteceu o <b>Cisma do Oriente</b> (cisma = separação). O cristianismo se dividiu em:</p>
     <div class="ex"><b>Igreja Católica Romana</b>, com sede em Roma, liderada pelo papa<br><b>Igreja Ortodoxa</b>, com sede em Constantinopla</div>`],
@@ -1068,7 +1082,7 @@ const LESSONS = {
      <tr><td>Deserto</td><td>muito seco</td><td>cactos</td></tr>
      <tr><td>Tundra</td><td>polar</td><td>musgos e liquens</td></tr></table></div>
     <div class="box tip"><span class="lbl">Atividade</span><p>Copie esta tabela no caderno e acrescente um exemplo de lugar para cada vegetação.</p></div>`]]},
-  {id:"acao",cap:"Cap. 9",t:"Ação humana no clima",q:"geo/acao",steps:[
+  {id:"acao",cap:"Cap. 9",t:"Ação humana no clima e na vegetação",q:"geo/acao",steps:[
    ["Efeito estufa natural",`<p>A Terra é envolvida por gases, como o <b>gás carbônico (CO₂)</b> e o vapor d'água. Eles funcionam como o vidro de uma estufa: deixam o calor do Sol entrar e <b>seguram uma parte</b> dele.</p>
     <p>Esse é o <b>efeito estufa natural</b>, e ele é <b>bom</b>: sem ele, a Terra seria gelada demais para a vida.</p>`],
    ["Efeito estufa intensificado",`<p>O problema começa quando o ser humano joga <b>gás carbônico demais</b> no ar. Aí a camada fica mais "grossa", segura calor demais e o planeta esquenta: é o <b>aquecimento global</b>.</p>
@@ -1081,6 +1095,12 @@ const LESSONS = {
    ["Desmatamento e chuva ácida",`<p><b>Desmatamento</b> é a retirada da vegetação. Consequências:</p>
     <ul><li><b>perda de biodiversidade</b> (plantas e animais somem);</li><li><b>erosão:</b> sem raízes, a chuva e o vento levam o solo embora;</li><li><b>menos chuva:</b> as árvores devolvem umidade para o ar, que forma nuvens.</li></ul>
     <p><b>Chuva ácida:</b> poluentes de fábricas e veículos se misturam à água das nuvens. Ela danifica plantas, rios, estátuas e construções.</p>`],
+   ["Vegetação e ação humana",`<p>O ser humano muda a vegetação para usar a terra. As principais causas da <b>destruição da vegetação</b> são:</p>
+    <ul><li><b>Agropecuária:</b> derrubar a mata para plantar (soja, milho, cana) ou criar gado.</li><li><b>Extração de madeira</b>, muitas vezes ilegal.</li><li><b>Queimadas</b> para "limpar" o terreno.</li><li><b>Mineração.</b></li><li><b>Crescimento das cidades</b> (urbanização) e construção de estradas.</li></ul>
+    <p><b>No Brasil:</b></p>
+    <div class="ex"><b>Mata Atlântica:</b> a mais devastada; restam pouco mais de 10% da mata original, porque foi a primeira ocupada pelos portugueses e é onde estão as grandes cidades.<br><b>Cerrado:</b> muito desmatado para a plantação de soja e a criação de gado.<br><b>Amazônia:</b> sofre com queimadas, garimpo e extração ilegal de madeira.</div>
+    <p>Quando a vegetação some, somem também os animais que viviam nela, o solo sofre <b>erosão</b> e o clima da região muda.</p>
+    <details class="try"><summary>Tente você: cite duas causas do desmatamento.</summary><p>Por exemplo: <b>agropecuária</b> e <b>extração de madeira</b> (também valem queimadas, mineração e urbanização).</p></details>`],
    ["Consequências das mudanças climáticas",`<ul><li><b>Derretimento de geleiras</b> e <b>aumento do nível do mar</b>, ameaçando cidades do litoral.</li><li><b>Secas e enchentes</b> mais fortes e frequentes.</li><li><b>Ondas de calor.</b></li><li>Espécies de animais e plantas ameaçadas.</li></ul>
     <details class="try"><summary>Tente você: por que o nível do mar sobe?</summary><p>Por causa do <b>derretimento das geleiras</b>: a água vai para os oceanos.</p></details>`],
    ["O que fazer",`<ul><li><b>Reflorestar</b> e proteger as florestas.</li><li>Usar <b>energias renováveis</b>: <b>solar</b> (do Sol) e <b>eólica</b> (do vento).</li><li>Usar <b>transporte público</b> e bicicleta.</li><li>Economizar energia e água.</li><li>Criar e proteger <b>áreas de conservação</b>.</li></ul>
@@ -1128,6 +1148,8 @@ const LESSONS = {
     <div class="ex">água destilada · ouro · gás oxigênio · sal de cozinha puro</div>
     <p><b>Mistura:</b> duas ou mais substâncias juntas. Quase tudo à nossa volta é mistura.</p>
     <div class="ex">água com sal · ar · leite · suco · água do mar · refrigerante</div>
+    <p>As substâncias puras ainda se dividem em dois tipos:</p>
+    <div class="ex"><b>Simples:</b> formada por um só tipo de átomo (elemento químico). Ex.: gás oxigênio (O₂), ouro (Au), ferro (Fe)<br><b>Composta:</b> formada por dois ou mais tipos de átomos. Ex.: água (H₂O), gás carbônico (CO₂), sal de cozinha (NaCl)</div>
     <details class="try"><summary>Tente você: a água do mar é substância pura ou mistura?</summary><p><b>Mistura</b>: tem água, sal e outras substâncias.</p></details>`],
    ["Homogênea e heterogênea",`<p>Cada parte diferente que dá para ver numa mistura se chama <b>fase</b>.</p>
     <p><b>Homogênea:</b> <b>uma fase só</b>. Parece uma coisa só, não dá para ver os componentes.</p>
@@ -1161,7 +1183,7 @@ const TOPICS = {
   mat:[["base","Pré-requisitos"],["decimais","Números decimais"],["porcentagem","Porcentagem"],["probabilidade","Probabilidade"],["plano","Plano cartesiano"]],
   port:[["cap8","Cap. 8 · Para convencer"],["cap9","Cap. 9 · O consumidor atento"]],
   hist:[["roma","Cap. 8 · Império Romano"],["bizancio","Cap. 9 · Império Bizantino"]],
-  geo:[["vegetacao","Cap. 8 · Formações vegetais"],["acao","Cap. 9 · Ação humana"]],
+  geo:[["vegetacao","Cap. 8 · Formações vegetais"],["acao","Cap. 9 · Ação humana no clima e na vegetação"]],
   cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]]
 };
 
@@ -1384,7 +1406,10 @@ const Q = {
   ["\"A cidade inteira foi ao jogo.\" Há metonímia porque:",["\"cidade\" está no lugar das pessoas da cidade","a cidade ganhou vida de verdade","há uma comparação","há rima","o jogo é uma pessoa"],0,"O lugar está no lugar de quem mora nele.",3],
   ["Qual frase tem metonímia?",["Comi dois pratos de arroz.","A lua sorriu para mim.","O rio chorava baixinho.","O vento cantava.","A casa é grande."],0,"Prato no lugar da comida. As outras são personificação ou não têm figura.",3],
   ["Complete: \"Se eu ___ (ter) dinheiro, compraria um livro.\"",["tivesse","tenho","tiver","tenha","tinha"],0,"\"Se\" + hipótese: pretérito imperfeito do subjuntivo.",3],
-  ["Complete: \"Espero que vocês ___ (vencer) o jogo.\"",["vençam","vencem","venceram","vencendo","vencer"],0,"\"Que\" + desejo: presente do subjuntivo.",3]
+  ["Complete: \"Espero que vocês ___ (vencer) o jogo.\"",["vençam","vencem","venceram","vencendo","vencer"],0,"\"Que\" + desejo: presente do subjuntivo.",3],
+  ["Qual é a principal diferença entre a carta e a postagem de reclamação?",["A postagem é pública e mais curta","A postagem não pede solução","A carta é sempre publicada na internet","A postagem precisa de local e data","Não há nenhuma diferença"],0,"A postagem aparece para outras pessoas e é mais direta.",2],
+  ["O que uma boa postagem de reclamação deve ter?",["A descrição do problema e o pedido de solução","Só xingamentos para chamar atenção","Apenas uma foto, sem texto","Uma história inventada","Um poema sobre o produto"],0,"O objetivo é o mesmo da carta: explicar e pedir solução.",1],
+  ["Por que a postagem de reclamação precisa ser verdadeira e educada?",["Porque é pública e outras pessoas vão ler","Porque só a empresa lê","Porque é proibido postar","Porque é mais longa que a carta","Porque precisa ter rimas"],0,"Exagerar ou ofender tira a razão de quem reclama.",3]
  ],
  "hist/roma":[
   ["Quem foi o primeiro imperador romano?",["Otávio Augusto","Júlio César","Constantino","Justiniano","Nero"],0,"Júlio César foi ditador, mas não imperador.",1],
@@ -1442,7 +1467,9 @@ const Q = {
   ["Qual par está CORRETO?",["Roma: latim · Bizâncio: grego","Roma: grego · Bizâncio: latim","Roma: árabe · Bizâncio: latim","Roma: grego · Bizâncio: árabe","Os dois falavam só latim"],0,"Latim no Ocidente, grego no Oriente.",3],
   ["Qual data está ligada ao Império Bizantino?",["1054, Cisma do Oriente","27 a.C., primeiro imperador romano","476, queda de Roma","313, tolerância aos cristãos","1500, chegada ao Brasil"],0,"As outras datas são do Império Romano ou do Brasil.",3],
   ["Cesaropapismo quer dizer que:",["o imperador também mandava na Igreja","o papa escolhia o imperador","não havia religião","cada cidade tinha seu imperador","o povo elegia o papa"],0,"O imperador tinha poder político e religioso.",3],
-  ["A posição de Constantinopla era boa porque:",["ficava entre a Europa e a Ásia, ótima para o comércio","ficava no meio do deserto","era uma ilha isolada no oceano","ficava perto do Polo Norte","não tinha vizinhos"],0,"Rotas de comércio passavam por ali.",3]
+  ["A posição de Constantinopla era boa porque:",["ficava entre a Europa e a Ásia, ótima para o comércio","ficava no meio do deserto","era uma ilha isolada no oceano","ficava perto do Polo Norte","não tinha vizinhos"],0,"Rotas de comércio passavam por ali.",3],
+  ["Como era o poder do imperador bizantino?",["Absoluto: fazia as leis, comandava o exército e mandava na Igreja","Dividido igualmente com o povo","Só religioso, sem poder político","Escolhido por eleição a cada 4 anos","Menor que o poder do Senado romano"],0,"O poder era centralizado nas mãos do imperador.",2],
+  ["Quem governou ao lado de Justiniano e teve grande influência?",["A imperatriz Teodora","Otávio Augusto","Júlio César","Constantino","Nero"],0,"Teodora participava das decisões do governo.",3]
  ],
  "geo/vegetacao":[
   ["O que mais influencia o tipo de vegetação de um lugar?",["O clima","A cor do solo","O número de cidades","A língua falada","A altura dos prédios"],0,"Temperatura e chuva decidem o que cresce.",1],
@@ -1494,7 +1521,11 @@ const Q = {
   ["O desmatamento pode diminuir as chuvas porque:",["as árvores devolvem umidade para o ar","as árvores produzem sal","as árvores esquentam o oceano","as árvores atraem vulcões","as árvores bloqueiam o sol no espaço"],0,"As plantas liberam vapor d'água, que forma nuvens.",3],
   ["Qual é a diferença entre efeito estufa natural e intensificado?",["O natural mantém a Terra habitável; o intensificado aquece demais por causa da ação humana","Não há diferença","O natural é causado por carros","O intensificado esfria a Terra","O natural só existe nas cidades"],0,"O natural é bom; o problema é o excesso.",3],
   ["Uma cidade com muito asfalto e poucas árvores terá, no centro:",["temperaturas mais altas que nos arredores","temperaturas mais baixas","neve no verão","mais chuva ácida só no campo","o mesmo clima de um deserto polar"],0,"É a ilha de calor.",3],
-  ["Qual combinação de atitudes ajuda MAIS o planeta?",["reflorestar e usar energia solar","queimar lixo e andar de carro","desmatar e plantar soja","usar carvão e reciclar","asfaltar e usar ar-condicionado"],0,"As duas atitudes reduzem o CO₂.",3]
+  ["Qual combinação de atitudes ajuda MAIS o planeta?",["reflorestar e usar energia solar","queimar lixo e andar de carro","desmatar e plantar soja","usar carvão e reciclar","asfaltar e usar ar-condicionado"],0,"As duas atitudes reduzem o CO₂.",3],
+  ["Qual é uma causa do desmatamento?",["Abrir áreas para agricultura e pecuária","Reflorestar áreas degradadas","Criar parques","Usar energia solar","Reciclar o lixo"],0,"Derrubar a mata para plantar ou criar gado é a principal causa.",1],
+  ["Qual formação vegetal brasileira é a mais devastada?",["Mata Atlântica","Pampa","Tundra","Taiga","Estepe"],0,"Foi a primeira ocupada e é onde estão as grandes cidades.",2],
+  ["O Cerrado tem sido muito desmatado principalmente para:",["plantar soja e criar gado","construir geleiras","formar desertos de gelo","plantar pinheiros de taiga","fazer praias"],0,"O avanço da agropecuária é a maior causa no Cerrado.",3],
+  ["Quando a vegetação é retirada, o que acontece com o solo?",["Fica desprotegido e sofre erosão","Fica mais fértil para sempre","Vira rocha imediatamente","Congela","Não muda nada"],0,"Sem raízes e folhas, a chuva e o vento levam o solo.",2]
  ],
  "cien/locomotor":[
   ["Quantos ossos tem, em média, um adulto?",["206","100","350","600","150"],0,"Cerca de 600 é o número de músculos.",1],
@@ -1553,7 +1584,9 @@ const Q = {
   ["Por que a destilação fracionada separa água e álcool?",["porque cada líquido ferve numa temperatura diferente","porque o álcool é atraído pelo ímã","porque a água é mais escura","porque o álcool é sólido","porque eles não se misturam"],0,"O álcool ferve antes e sai primeiro.",3],
   ["Na destilação simples de água com sal, o que acontece com o sal?",["fica no recipiente onde a mistura é aquecida","evapora junto com a água","vira água","vai para o condensador","some para sempre"],0,"Só a água vira vapor.",3],
   ["Uma mistura tem água, areia e sal dissolvido. Qual ordem separa tudo?",["filtração para tirar a areia, depois evaporação para tirar o sal","imantação e depois catação","só peneiração","catação e depois imantação","decantação do sal e filtração da água"],0,"Primeiro sai a parte heterogênea (areia), depois a homogênea (sal).",3],
-  ["Qual método NÃO serve para separar água e areia?",["imantação","filtração","decantação","decantação seguida de filtração","deixar assentar e virar a água com cuidado"],0,"A areia não é atraída pelo ímã.",3]
+  ["Qual método NÃO serve para separar água e areia?",["imantação","filtração","decantação","decantação seguida de filtração","deixar assentar e virar a água com cuidado"],0,"A areia não é atraída pelo ímã.",3],
+  ["A água (H₂O) é uma substância:",["composta, pois tem mais de um tipo de átomo","simples, pois tem um só tipo de átomo","mistura heterogênea","mistura homogênea","que não é matéria"],0,"H (hidrogênio) e O (oxigênio): dois tipos de átomo.",3],
+  ["Qual destas é uma substância simples?",["gás oxigênio (O₂)","água (H₂O)","gás carbônico (CO₂)","sal de cozinha (NaCl)","água com sal"],0,"O₂ tem um só tipo de átomo: oxigênio.",3]
  ]
 };
 
