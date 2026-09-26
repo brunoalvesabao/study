@@ -92,6 +92,7 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 .btn.primary{background:var(--pen); border-color:var(--pen); color:var(--on-pen)}
 .btn.primary:hover{filter:brightness(1.07)}
 .btn.block{width:100%}
+.btn:disabled{opacity:.45; cursor:not-allowed; filter:none}
 .btn.ghost{background:none; border-color:transparent; color:var(--pen); padding-inline:4px}
 .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .between{justify-content:space-between}
@@ -242,8 +243,8 @@ svg text{fill:var(--ink); font-family:var(--body)}
 .quiz-top{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
 .icon-btn{width:42px; height:42px; border-radius:12px; border:1px solid var(--line); background:var(--surface); display:grid; place-items:center; cursor:pointer}
 .qnum{font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums}
-.lvl{justify-self:start; width:max-content; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px}
-.lvl-1{background:var(--ok-soft); color:var(--ok)} .lvl-2{background:var(--amber-soft); color:var(--amber)} .lvl-3{background:var(--red-soft); color:var(--red)}
+.qlvl{justify-self:start; width:max-content; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px}
+.qlvl-1{background:var(--ok-soft); color:var(--ok)} .qlvl-2{background:var(--amber-soft); color:var(--amber)} .qlvl-3{background:var(--red-soft); color:var(--red)}
 .lvl-sum{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
 .q{font-family:var(--display); font-size:clamp(20px,5.2vw,26px); font-weight:600; line-height:1.3}
 .opts{display:grid; gap:10px}
@@ -324,6 +325,72 @@ body.locked main{margin-left:auto; margin-right:auto; max-width:460px; padding-i
 .dg.full{background:var(--ok-soft); border-color:var(--ok)} .dg.full b{color:var(--ok)}
 .dg.part{background:var(--amber-soft); border-color:color-mix(in srgb,var(--amber) 50%,var(--line))}
 .dg.today{box-shadow:0 0 0 2px var(--pen)}
+
+/* ---------- laboratório (jogos) ---------- */
+.star{width:20px;height:20px;fill:var(--line)}
+.stars{display:inline-flex;gap:2px}
+.stars i.on .star{fill:#F2B705}
+.bigstars .star{width:52px;height:52px}
+.lab-head{display:grid;gap:10px;padding:22px;border-radius:24px;color:var(--ink);
+  background:radial-gradient(circle at 90% 10%,color-mix(in srgb,var(--mat) 22%,transparent),transparent 45%),radial-gradient(circle at 0% 100%,color-mix(in srgb,var(--port) 18%,transparent),transparent 50%),var(--surface);border:1px solid var(--line)}
+.lab-head h1{font-size:clamp(32px,9vw,44px)}
+.map{display:grid;gap:10px}
+.map-cap{margin-top:10px}
+.node{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow)}
+.node:hover{border-color:var(--c)}
+.node-ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:19px;color:var(--surface);background:var(--c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.node-tx{display:grid;gap:2px;min-width:0}
+.node-tx b{font-family:var(--display);font-size:18px}
+.node-tx span{font-size:13px;color:var(--muted);line-height:1.35}
+.gdots{display:flex;gap:5px}
+.gdots i{flex:1;height:8px;border-radius:99px;background:var(--line)}
+.gdots i.done{background:var(--ok)} .gdots i.now{background:var(--pen)}
+.lvl{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);white-space:nowrap}
+.gcard{display:grid;gap:16px}
+.gstage{display:grid;gap:12px}
+.bign{display:inline-block;font-family:var(--display);font-weight:800;font-size:1.25em;color:var(--c,var(--pen));padding:0 6px;border-radius:8px;background:color-mix(in srgb,var(--c,var(--pen)) 12%,transparent)}
+.gsvg-wrap{display:grid;justify-items:center}
+.gsvg{width:100%;max-width:420px;height:auto;touch-action:none;user-select:none;cursor:pointer}
+.tray{display:grid;gap:8px;padding:12px;border-radius:14px;background:var(--surface-2);border:1px dashed var(--line)}
+.tray b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.tray-in{display:flex;flex-wrap:wrap;gap:6px;min-height:48px;align-items:center}
+.cash{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cash button,.tray-in button{border:0;cursor:pointer;font-weight:700;font-family:var(--body);color:#1b1b1b;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),var(--shadow)}
+.bill{width:88px;height:48px;border-radius:8px;font-size:15px}
+.coin{width:56px;height:56px;border-radius:50%;font-size:13px}
+.tray-in .bill.sm{width:62px;height:34px;font-size:12px} .tray-in .coin.sm{width:40px;height:40px;font-size:10px}
+.v1000{background:#F2A65A} .v500{background:#C9A3E0} .v200{background:#9CC7E8}
+.v100{background:radial-gradient(circle,#E8D27A 55%,#C7C9CC 56%)} .v50{background:#C7C9CC} .v25{background:#E3C45C} .v10{background:#E3C45C} .v5{background:#D08E5B}
+.cash button:active{transform:scale(.95)}
+.g100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-width:360px;width:100%;margin:0 auto;touch-action:none;user-select:none;padding:4px;border-radius:12px;background:var(--line)}
+.g100 i{aspect-ratio:1;background:var(--surface);border-radius:3px;cursor:pointer}
+.g100 i:nth-child(10n+5){margin-right:2px}
+.g100 i.on{background:var(--port)}
+.g100 i.ans{outline:2px solid var(--ok);outline-offset:-2px}
+.bar10{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.bar10 button{border:0;border-radius:8px;padding:8px 0;cursor:pointer;display:grid;gap:2px;background:color-mix(in srgb,var(--ing) 16%,var(--surface));color:var(--ink);font-family:var(--body)}
+.bar10 button small{font-size:9px;color:var(--muted)} .bar10 button span{font-size:11px;font-weight:700}
+.bar10 button.cut{background:repeating-linear-gradient(45deg,var(--red-soft),var(--red-soft) 5px,var(--surface) 5px,var(--surface) 10px);text-decoration:line-through;color:var(--red)}
+.gk{display:grid;gap:10px}
+.gk-disp{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--line);padding:6px 4px}
+.gk-disp b{font-family:var(--display);font-size:30px;font-variant-numeric:tabular-nums}
+.ph{color:var(--line)}
+.bag{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:16px;border-radius:40px 40px 24px 24px;background:color-mix(in srgb,var(--hist) 14%,var(--surface));border:2px solid color-mix(in srgb,var(--hist) 40%,var(--line))}
+.bag i{width:34px;height:34px;border-radius:50%;box-shadow:inset -4px -5px 0 rgba(0,0,0,.18)}
+.dice{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-width:360px;margin:0 auto;width:100%}
+.dice i{aspect-ratio:1;border-radius:10px;display:grid;place-items:center;font-style:normal;font-family:var(--display);font-weight:800;font-size:20px;background:var(--surface);border:2px solid var(--ink)}
+.frac-build{display:grid;gap:8px;justify-items:center}
+.frac-build hr{width:180px;border:0;border-top:3px solid var(--ink);margin:0}
+.stp{display:grid;gap:4px;justify-items:center}
+.stp .muted{font-size:13px}
+.stp-row{display:flex;align-items:center;gap:14px}
+.stp-row button{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-size:24px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+.stp-row b{font-family:var(--display);font-size:32px;min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.lab-card{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;text-align:left;cursor:pointer;padding:18px;border-radius:20px;border:0;color:#fff;
+  background:linear-gradient(135deg,#E8590C,#C2255C 60%,#6741D9);box-shadow:var(--shadow)}
+.lab-card b{font-family:var(--display);font-size:22px}
+.lab-card span{font-size:14px;opacity:.9}
+.lab-card .big-ic{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:22px}
 
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important; transition:none!important}}
 </style>
@@ -1050,7 +1117,7 @@ const store = {
 const S = {
   checks:store.get("checks",{}), lessons:store.get("lessons",{}), best:store.get("best",{}),
   erros:store.get("erros",{}), tabBest:store.get("tabBest",0),
-  meta:store.get("meta",{}), activity:store.get("activity",[])
+  meta:store.get("meta",{}), activity:store.get("activity",[]), jogos:store.get("jogos",{})
 };
 const save = k=>store.set(k,S[k]);
 /* toda alteração passa por aqui: guarda quando mudou, para a sincronização saber o que é mais novo */
@@ -1112,7 +1179,7 @@ function toast(msg,action,label){
    Navegação
    ========================================================= */
 let V={name:"inicio",p:{}};
-const TOP={inicio:"inicio",agenda:"agenda",materias:"materias",materia:"materias",licao:"materias",praticar:"praticar",quiz:"praticar",tabuada:"praticar",progresso:"progresso"};
+const TOP={inicio:"inicio",agenda:"agenda",materias:"materias",materia:"materias",licao:"materias",praticar:"praticar",quiz:"praticar",tabuada:"praticar",jogos:"praticar",jogo:"praticar",progresso:"progresso"};
 function go(name,p={}){
   V={name,p}; render(); window.scrollTo({top:0});
   try{history.replaceState(null,"","#"+(TOP[name]||name))}catch(e){}
@@ -1130,10 +1197,11 @@ document.querySelectorAll("[data-nav]").forEach(b=>{
 function render(){
   document.querySelectorAll("[data-nav]").forEach(b=>b.toggleAttribute("aria-current",b.dataset.nav===TOP[V.name]) || b.dataset.nav===TOP[V.name] && b.setAttribute("aria-current","page"));
   document.querySelectorAll("[data-nav]").forEach(b=>{ if(b.dataset.nav===TOP[V.name]) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current") });
-  const html = ({inicio:vInicio,agenda:vAgenda,materias:vMaterias,materia:vMateria,licao:vLicao,praticar:vPraticar,quiz:vQuiz,tabuada:vTabuada,progresso:vProgresso})[V.name](V.p);
+  const html = ({inicio:vInicio,agenda:vAgenda,materias:vMaterias,materia:vMateria,licao:vLicao,praticar:vPraticar,quiz:vQuiz,tabuada:vTabuada,jogos:vJogos,jogo:vJogo,progresso:vProgresso})[V.name](V.p);
   const banner=ROLE==="tutor"?`<div class="flag" style="background:var(--pen-soft);color:var(--pen)">Modo tutor · acompanhando ${STUDENT.nome}. Treinos feitos aqui não contam para ela.</div>`:"";
   $("#main").innerHTML=`<div class="view">${banner}${html}</div>`;
   if(V.name==="tabuada") tabMount();
+  if(V.name==="jogo") gameMount();
 }
 
 /* =========================================================
@@ -1167,7 +1235,7 @@ function vInicio(){
   return `<div class="hello"><span class="eyebrow">${dLong(t)}</span><h1>${ROLE==="tutor"?"Acompanhando":"Olá,"} <span class="hl">${STUDENT.nome}</span></h1></div>
     ${hero}${sessionCard()}${track}
     <div class="quick">
-      <button class="qcard" data-open="T"><span class="eyebrow">5 minutos</span><b>Tabuada relâmpago</b><span class="muted" style="font-size:14px">Recorde: ${S.tabBest} acertos</span></button>
+      <button class="qcard" data-nav2="jogos"><span class="eyebrow">Matemática em jogo</span><b>Laboratório</b><span class="muted" style="font-size:14px">${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas</span></button>
       <button class="qcard" data-nav2="praticar"><span class="eyebrow">Revisão</span><b>Caderno de erros</b><span class="muted" style="font-size:14px">${Object.keys(S.erros).length} questões para refazer</span></button>
     </div>
     ${statsRow()}`;
@@ -1283,6 +1351,7 @@ function vLicao({s,id,i,fin}){
     return top+`<section class="card step done-card" style="--c:${c}"><span class="big-check">${ICON.check}</span><h2>Lição concluída!</h2>
       <p class="muted">Agora é hora de ver se ficou. Ela tenta sozinha e você só ajuda se travar.</p>
       <button class="btn primary block" data-open="Q:${l.q}">Praticar agora · ${qn} questões</button>
+      ${(s==="mat"&&GAMES_FOR[id]||[]).map(gid=>{const g=GAMES.find(x=>x.id===gid);return `<button class="btn block" data-game="${gid}">Jogar ${g.t}</button>`}).join("")}
       <button class="btn block" data-subj="${s}">Voltar para ${SUBJ[s].n}</button></section>`;
   }
   const [h,body]=l.steps[i];
@@ -1298,7 +1367,7 @@ let pracSubj="mat";
 function vPraticar(){
   const s=pracSubj;
   return `<div class="hello"><span class="eyebrow">Treino</span><h1>Praticar</h1><p class="muted">Uma questão por vez, com a explicação logo depois. As questões começam fáceis e vão ficando mais difíceis. O que ela errar vai para o caderno de erros.</p></div>
-    <button class="qcard" data-open="T" style="--c:var(--mat)"><span class="eyebrow">Aquecimento de Matemática</span><b>Tabuada relâmpago</b><span class="muted" style="font-size:14px">60 segundos · recorde: ${S.tabBest} acertos</span></button>
+    <button class="lab-card" data-nav2="jogos"><div style="display:grid;gap:4px"><span>Matemática em jogo</span><b>Laboratório</b><span>${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas · tabuada, troco, porcentagem, sorte e mapa</span></div><span class="big-ic">${ICON.arrow}</span></button>
     <div class="chips">${ORDER.filter(x=>TOPICS[x]).map(x=>`<button class="chip" style="--c:${SUBJ[x].c}" aria-pressed="${x===s}" data-psubj="${x}">${SUBJ[x].n}</button>`).join("")}</div>
     <div class="topics" style="--c:${SUBJ[s].c}">
       <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span></div>${badge(S.best[s+"/all"])}</button>
@@ -1327,11 +1396,11 @@ function vQuiz(){
     const msg=pct>=80?"Excelente! Pronta para este assunto.":pct>=60?"Bom! Refaça o caderno de erros amanhã.":"Volte à lição, revise com calma e tente de novo.";
     return top+`<section class="card result" style="display:grid;--c:${c}"><div class="ring" style="--p:${pct}"><div>${pct}%</div></div>
       <h2>${qz.score} de ${N} certas</h2><p class="muted">${msg}</p>
-      <div class="lvl-sum">${[1,2,3].filter(n=>qz.lv[n][1]).map(n=>`<span class="lvl lvl-${n}">${LVL[n]}: ${qz.lv[n][0]} de ${qz.lv[n][1]}</span>`).join("")}</div>
+      <div class="lvl-sum">${[1,2,3].filter(n=>qz.lv[n][1]).map(n=>`<span class="qlvl qlvl-${n}">${LVL[n]}: ${qz.lv[n][0]} de ${qz.lv[n][1]}</span>`).join("")}</div>
       <div class="row" style="justify-content:center"><button class="btn primary" data-again>Treinar de novo</button>${errCount(qz.s)?`<button class="btn" data-open="Q:${qz.s}/erros">Refazer erros (${errCount(qz.s)})</button>`:""}<button class="btn" data-quit>Sair</button></div></section>`;
   }
   const it=qz.list[qz.i], a=qz.answered;
-  return top+`<span class="lvl lvl-${it.q[4]}">${LVL[it.q[4]]}</span><p class="q">${it.q[0]}</p>
+  return top+`<span class="qlvl qlvl-${it.q[4]}">${LVL[it.q[4]]}</span><p class="q">${it.q[0]}</p>
     <div class="opts">${it.opts.map((o,k)=>{
       let cls="opt"; if(a){ if(o.ok) cls+=" right"; else if(a.k===k) cls+=" wrong"; }
       return `<button class="${cls}" data-opt="${k}" ${a?"disabled":""}><span class="let">${"ABCDE"[k]}</span><span>${o.o}</span></button>`}).join("")}</div>
@@ -1357,7 +1426,7 @@ function answer(k){
 let tb={state:"idle",score:0,miss:[],a:0,b:0,ans:"",end:0,iv:null,flash:""};
 function tabNew(){let a,b;do{a=2+Math.floor(Math.random()*9);b=2+Math.floor(Math.random()*9)}while(a===tb.a&&b===tb.b);tb.a=a;tb.b=b;tb.ans=""}
 function vTabuada(){
-  const head=`<button class="back" data-nav2="praticar">${ICON.left} Praticar</button><div class="hello"><span class="eyebrow">Aquecimento · 60 segundos</span><h1>Tabuada relâmpago</h1></div>`;
+  const head=`<button class="back" data-nav2="jogos">${ICON.left} Laboratório</button><div class="hello"><span class="eyebrow">Aquecimento · 60 segundos</span><h1>Tabuada relâmpago</h1></div>`;
   if(tb.state==="idle") return head+`<section class="card step" style="justify-items:center;text-align:center"><p class="muted">Responda o máximo de contas em 60 segundos. Pode usar o teclado da tela.</p><p>Recorde: <b>${S.tabBest}</b></p><button class="btn primary" data-tab-start>${ICON.play} Começar</button></section>`;
   if(tb.state==="end"){
     const uniq=[...new Set(tb.miss)];
@@ -1493,6 +1562,289 @@ pIv=setInterval(()=>{if(P.running) pDraw()},500);
 pDraw();
 
 /* =========================================================
+   Laboratório de Matemática (jogos no estilo "manipular e descobrir")
+   Cada jogo tem 6 rodadas, 3 níveis que sobem e descem conforme ela acerta,
+   dica no primeiro erro e estrelas no final.
+   ========================================================= */
+const GAMES=[
+  {id:"tabuada",cap:"Base",t:"Tabuada relâmpago",ic:"×",c:"var(--mat)",d:"60 segundos de contas rápidas."},
+  {id:"reta",cap:"Cap. 7 · Decimais",t:"Reta dos decimais",ic:"0,5",c:"var(--pen)",d:"Coloque o número no lugar certo da reta."},
+  {id:"mercado",cap:"Cap. 7 · Decimais",t:"Mercadinho",ic:"R$",c:"var(--geo)",d:"Separe o troco certo com moedas e notas."},
+  {id:"pinta",cap:"Cap. 8 · Porcentagem",t:"Pinta 100",ic:"%",c:"var(--port)",d:"Pinte a parte certa do quadro."},
+  {id:"liquida",cap:"Cap. 8 · Porcentagem",t:"Liquidação",ic:"−%",c:"var(--ing)",d:"Descubra o preço com desconto."},
+  {id:"sorte",cap:"Cap. 8 · Probabilidade",t:"Laboratório da sorte",ic:"?",c:"var(--cien)",d:"Descubra a chance de cada sorteio."},
+  {id:"tesouro",cap:"Cap. 9 · Plano cartesiano",t:"Caça ao tesouro",ic:"x,y",c:"var(--hist)",d:"Encontre os pontos no mapa."}
+];
+const GAMES_FOR={base:["tabuada"],decimais:["reta","mercado"],porcentagem:["pinta","liquida"],probabilidade:["sorte"],plano:["tesouro"]};
+const STAR='<svg viewBox="0 0 24 24" class="star"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
+const starsHtml=(n,of=3)=>`<span class="stars">${[...Array(of)].map((x,i)=>`<i class="${i<n?"on":""}">${STAR}</i>`).join("")}</span>`;
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const fmtDec=n=>String(+(+n).toFixed(3)).replace(".",",");
+const money=c=>"R$ "+(c/100).toFixed(2).replace(".",",");
+function gameStars(id){if(id==="tabuada"){const b=S.tabBest||0;return b>=25?3:b>=15?2:b>0?1:0}return S.jogos[id]||0}
+
+/* ---------- componentes ---------- */
+function keypadHtml(label,prefix=""){
+  return `<div class="gk"><div class="gk-disp"><span class="muted">${label}</span><b id="gk-val">${prefix}<span class="ph">?</span></b></div>
+  <div class="keypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-gk="${n}">${n}</button>`).join("")}<button data-gk=",">,</button><button data-gk="0">0</button><button data-gk="del" aria-label="Apagar">⌫</button></div></div>`;
+}
+function keypadMount(el,ctx,prefix,onVal){
+  let v="";
+  el.querySelectorAll("[data-gk]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.gk;
+    if(k==="del") v=v.slice(0,-1); else if(k===","){ if(!v.includes(",")) v=(v||"0")+","} else if(v.replace(",","").length<7) v+=k;
+    el.querySelector("#gk-val").innerHTML=prefix+(v||'<span class="ph">?</span>'); onVal(v); ctx.ready(!!v&&v!=="0,");
+  });
+}
+const parseBR=v=>parseFloat(String(v).replace(",","."));
+function stepperHtml(id,label,val){return `<div class="stp"><span class="muted">${label}</span><div class="stp-row"><button data-stp="${id}" data-d="-1" aria-label="Menos">−</button><b id="stp-${id}">${val}</b><button data-stp="${id}" data-d="1" aria-label="Mais">+</button></div></div>`}
+function stepperMount(el,vals,lims,onChange){
+  el.querySelectorAll("[data-stp]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.stp; vals[id]=Math.max(lims[id][0],Math.min(lims[id][1],vals[id]+(+b.dataset.d)));
+    el.querySelector("#stp-"+id).textContent=vals[id]; onChange();
+  });
+}
+function svgPoint(svg,e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+
+/* ---------- jogos ---------- */
+const GAMEDEF={
+ reta:{gen(l){
+  let min=0,max=1,step=.1,target;
+  if(l===1) target=rnd(1,9)/10;
+  else if(l===2){max=2; do{target=rnd(1,19)/10}while(target===1)}
+  else {step=.05; target=pick([5,15,25,35,45,55,65,75,85,95])/100}
+  const x0=24,x1=316,Y=62,X=v=>x0+(v-min)/(max-min)*(x1-x0); let sel=null, svg;
+  const n=Math.round((max-min)/step);
+  const ticks=[...Array(n+1)].map((_,i)=>{const v=+(min+i*step).toFixed(2), big=Math.abs(v-Math.round(v))<1e-9, mid=Math.abs(v*10-Math.round(v*10))<1e-9;
+    const h=big?16:mid?10:6; return `<line x1="${X(v)}" y1="${Y-h}" x2="${X(v)}" y2="${Y+h}" stroke="var(--ink)" stroke-width="${big?2.5:1.5}"/>${big?`<text x="${X(v)}" y="${Y+36}" text-anchor="middle" font-size="16" font-weight="700">${v}</text>`:""}`}).join("");
+  const mark=(v,col,lab)=>`<g><path d="M${X(v)} ${Y-20} l-9 -16 h18z" fill="${col}"/>${lab?`<text x="${X(v)}" y="${Y-42}" text-anchor="middle" font-size="14" font-weight="700" fill="${col}">${fmtDec(v)}</text>`:""}</g>`;
+  return {prompt:`Toque na reta onde fica o número <span class="bign">${fmtDec(target)}</span>`,
+   hint:l===3?`${fmtDec(target)} fica bem no meio entre ${fmtDec(target-.05)} e ${fmtDec(target+.05)}. Os risquinhos médios são os décimos.`
+     :`${fmtDec(target)} tem ${Math.round(target*10)} décimos. Cada risquinho é 1 décimo: conte ${Math.round(target*10)} a partir do 0.`,
+   answer:`O lugar certo de ${fmtDec(target)} está marcado em verde.`,
+   mount(el,ctx){
+    el.innerHTML=`<div class="gsvg-wrap"><svg viewBox="0 0 340 110" class="gsvg" id="reta-svg" role="img" aria-label="Reta numérica de ${min} a ${max}">
+      <rect x="0" y="0" width="340" height="110" fill="transparent"/><line x1="${x0-8}" y1="${Y}" x2="${x1+8}" y2="${Y}" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>${ticks}<g id="reta-mk"></g><g id="reta-ans"></g></svg></div>
+      <p class="muted" style="text-align:center;font-size:14px">Toque em um risquinho. Pode trocar quantas vezes quiser.</p>`;
+    svg=el.querySelector("#reta-svg");
+    svg.addEventListener("pointerdown",e=>{const p=svgPoint(svg,e); let v=Math.round(((p.x-x0)/(x1-x0)*(max-min))/step)*step+min; v=+Math.max(min,Math.min(max,v)).toFixed(2); sel=v;
+      svg.querySelector("#reta-mk").innerHTML=mark(v,"var(--pen)",false); ctx.ready(true)});
+   },
+   check(){return {ok:Math.abs(sel-target)<1e-6, info:`Você marcou ${fmtDec(sel)}.`}},
+   reveal(){svg.querySelector("#reta-ans").innerHTML=mark(target,"var(--ok)",true)}};
+ }},
+
+ mercado:{gen(l){
+  const nomes=["caderno","lápis","borracha","suco","pão de queijo","régua","cola","chocolate","caneta","picolé"];
+  let price,items;
+  if(l===1){price=rnd(2,9)*100; items=[[pick(nomes),price]]}
+  else if(l===2){price=rnd(3,17)*100+pick([50,25,75]); items=[[pick(nomes),price]]}
+  else {const a=rnd(30,110)*5,b=rnd(30,110)*5; let n1=pick(nomes),n2; do{n2=pick(nomes)}while(n2===n1); items=[[n1,a],[n2,b]]; price=a+b}
+  const pay=price<1000?1000:price<2000?2000:5000, troco=pay-price;
+  const DEN=[1000,500,200,100,50,25,10,5].filter(d=>d<pay);
+  let tray=[];
+  const lista=items.map(([n,p])=>`${n} <b>${money(p)}</b>`).join(" + ");
+  return {prompt:`Alice comprou ${lista} e pagou com uma nota de <b>${money(pay)}</b>. Separe o troco.`,
+   hint:`Troco = dinheiro dado − total da compra. Faça ${money(pay)} − ${money(price)}, com vírgula embaixo de vírgula.`,
+   answer:`O troco certo é <b>${money(troco)}</b> (${money(pay)} − ${money(price)}).`,
+   mount(el,ctx){
+    el.innerHTML=`<div class="tray"><div class="row between"><span class="muted">Troco separado</span><b id="tray-sum">R$ 0,00</b></div><div class="tray-in" id="tray-in"><span class="muted" style="font-size:14px">Toque no dinheiro abaixo para separar. Toque aqui para devolver.</span></div></div>
+      <div class="cash">${DEN.map(d=>`<button class="${d>=200?"bill":"coin"} v${d}" data-cash="${d}">${d>=100?"R$ "+d/100:(d/100).toFixed(2).replace(".",",")}</button>`).join("")}</div>`;
+    const draw=()=>{const s=tray.reduce((a,b)=>a+b,0); el.querySelector("#tray-sum").textContent=money(s);
+      el.querySelector("#tray-in").innerHTML=tray.length?tray.map((d,i)=>`<button class="${d>=200?"bill":"coin"} v${d} sm" data-tr="${i}">${d>=100?"R$ "+d/100:(d/100).toFixed(2).replace(".",",")}</button>`).join(""):`<span class="muted" style="font-size:14px">Toque no dinheiro abaixo para separar.</span>`;
+      el.querySelectorAll("[data-tr]").forEach(b=>b.onclick=()=>{tray.splice(+b.dataset.tr,1);draw()}); ctx.ready(s>0)};
+    el.querySelectorAll("[data-cash]").forEach(b=>b.onclick=()=>{if(tray.length<14){tray.push(+b.dataset.cash);draw()}});
+   },
+   check(){const s=tray.reduce((a,b)=>a+b,0);return {ok:s===troco,info:`Você separou ${money(s)}.`}}};
+ }},
+
+ pinta:{gen(l){
+  let label,target,hint;
+  if(l===1){target=rnd(1,9)*10; label=`${target}%`; hint="Cada linha tem 10 quadradinhos, e cada linha é 10% do quadro."}
+  else if(l===2){ if(Math.random()<.5){target=rnd(3,19)*5; label=fmtDec(target/100); hint=`${label} são ${target} centésimos, ou seja, ${target} quadradinhos de 100.`}
+                  else {target=pick([25,75,35,45,15,65]); label=`${target}%`; hint=`${target}% quer dizer ${target} de cada 100.`}}
+  else { const f=pick([["1/4",25],["3/4",75],["1/5",20],["2/5",40],["3/5",60],["1/2",50],["7/10",70],["3/10",30]]); label=f[0]; target=f[1];
+         hint=`Transforme em centésimos: ${f[0]} = ?/100. Quanto é 1/${f[0].split("/")[1]} de 100?`}
+  let cells=new Array(100).fill(false), grid;
+  return {prompt:`Pinte <span class="bign">${label}</span> do quadro`,hint,
+   answer:`${label} = ${target}/100 = ${target} quadradinhos pintados.`,
+   mount(el,ctx){
+    el.innerHTML=`<div class="row between"><span class="muted">Pintados: <b id="g100-n">0</b> de 100</span><button class="btn ghost" id="g100-clear">Limpar</button></div>
+      <div class="g100" id="g100">${cells.map((c,i)=>`<i data-c="${i}"></i>`).join("")}</div>
+      <p class="muted" style="text-align:center;font-size:14px">Arraste o dedo para pintar vários de uma vez.</p>`;
+    grid=el.querySelector("#g100"); let mode=null;
+    const upd=()=>{const n=cells.filter(Boolean).length; el.querySelector("#g100-n").textContent=n; ctx.ready(n>0)};
+    const set=(t)=>{if(!t||t.dataset.c==null) return; const i=+t.dataset.c; cells[i]=mode; t.classList.toggle("on",mode); upd()};
+    grid.addEventListener("pointerdown",e=>{const t=e.target.closest("[data-c]"); if(!t) return; mode=!cells[+t.dataset.c]; set(t); grid.setPointerCapture(e.pointerId)});
+    grid.addEventListener("pointermove",e=>{if(mode===null) return; set(document.elementFromPoint(e.clientX,e.clientY)?.closest?.("[data-c]"))});
+    const end=()=>mode=null; grid.addEventListener("pointerup",end); grid.addEventListener("pointercancel",end);
+    el.querySelector("#g100-clear").onclick=()=>{cells.fill(false); grid.querySelectorAll("i").forEach(c=>c.classList.remove("on")); upd()};
+   },
+   check(){const n=cells.filter(Boolean).length;return {ok:n===target,info:`Você pintou ${n} quadradinhos, que são ${n}%.`}},
+   reveal(){grid.querySelectorAll("i").forEach((c,i)=>{c.classList.toggle("ans",i<target)})}};
+ }},
+
+ liquida:{gen(l){
+  const coisas=["O tênis","A mochila","O fone","A bicicleta","O jogo","O estojo","A bola","A camiseta"];
+  let price,pct;
+  if(l===1){price=pick([40,50,60,80,100,120,150,200]); pct=pick([10,20,30,50])}
+  else if(l===2){price=pick([70,90,130,160,240,350,110]); pct=pick([10,20,30,40])}
+  else {price=pick([45,64,85,36,125,58]); pct=pick([5,10,20])}
+  const desc=Math.round(price*100*pct/100), novo=price*100-desc, blk=price*10; // centavos
+  const item=pick(coisas);
+  let val="", bar;
+  return {prompt:`${item} custa <b>${money(price*100)}</b> e está com <span class="bign">${pct}%</span> de desconto. Qual o novo preço?`,
+   hint:`Cada bloco da barra é 10% = ${money(blk)} (o preço dividido por 10). ${pct===5?"5% é metade de um bloco.":`${pct}% são ${pct/10} blocos.`} Depois tire o desconto do preço.`,
+   answer:`Desconto: ${pct}% de ${money(price*100)} = ${money(desc)}. Novo preço: <b>${money(novo)}</b>.`,
+   mount(el,ctx){
+    el.innerHTML=`<p class="muted" style="font-size:14px">A barra é o preço inteiro, dividido em 10 blocos de 10%. Toque nos blocos para riscar o desconto.</p>
+      <div class="bar10" id="bar10">${[...Array(10)].map((_,i)=>`<button data-b="${i}"><small>10%</small><span>${l===1?money(blk).replace("R$ ",""):"?"}</span></button>`).join("")}</div>
+      ${keypadHtml("Novo preço","R$ ")}`;
+    bar=el.querySelector("#bar10");
+    bar.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>b.classList.toggle("cut"));
+    keypadMount(el,ctx,"R$ ",v=>val=v);
+   },
+   check(){const c=Math.round(parseBR(val)*100);return {ok:c===novo,info:`Você respondeu ${money(c)}.`}},
+   reveal(){bar.querySelectorAll("[data-b]").forEach((b,i)=>{b.classList.toggle("cut",i>=10-Math.ceil(pct/10)); b.querySelector("span").textContent=money(blk).replace("R$ ","")})}};
+ }},
+
+ sorte:{gen(l){
+  const COR={azul:"var(--pen)",vermelha:"var(--red)",verde:"var(--ok)",amarela:"#E8B400"};
+  let prompt,stageTop,num,den,hint,mode="frac",label;
+  if(l===1||l===3){
+    const cs=Object.keys(COR); const a=pick(cs); let b; do{b=pick(cs)}while(b===a);
+    let na,nb; if(l===1){na=rnd(1,4); nb=rnd(1,4)} else {const tot=pick([4,5,10,20]); na=rnd(1,tot-1); nb=tot-na}
+    const balls=[...Array(na).fill(a),...Array(nb).fill(b)].sort(()=>Math.random()-.5);
+    const ask=Math.random()<.5?a:b; num=ask===a?na:nb; den=na+nb; label=`bola ${ask}`;
+    stageTop=`<div class="bag">${balls.map(c=>`<i style="background:${COR[c]}"></i>`).join("")}</div>`;
+    if(l===3){mode="pct"; prompt=`Sorteando uma bola sem olhar, qual a chance, <b>em porcentagem</b>, de sair ${label}?`; hint=`Primeiro a fração: bolas ${ask}s ÷ total de bolas. Depois transforme em ?/100.`}
+    else {prompt=`Sorteando uma bola sem olhar, qual a chance de sair <b>${label}</b>?`; hint=`Em cima, quantas bolas ${ask}s tem. Embaixo, quantas bolas tem ao todo.`}
+  } else {
+    const ev=pick([["um número par",n=>n%2===0],["um número maior que 4",n=>n>4],["o número 6",n=>n===6],["um número menor que 3",n=>n<3],["um múltiplo de 3",n=>n%3===0],["um número ímpar",n=>n%2===1],["o número 7",n=>n===7]]);
+    num=[1,2,3,4,5,6].filter(ev[1]).length; den=6; label=ev[0];
+    stageTop=`<div class="dice">${[1,2,3,4,5,6].map(n=>`<i>${n}</i>`).join("")}</div>`;
+    prompt=`Jogando um dado, qual a chance de sair <b>${ev[0]}</b>?`; hint=`O dado tem 6 lados (embaixo). Conte quais números servem (em cima).`;
+  }
+  const vals={n:0,d:1}; let val="";
+  const fracTxt=`${num}/${den}`;
+  return {prompt,hint,
+   answer:mode==="pct"?`${fracTxt} = <b>${Math.round(100*num/den)}%</b>.`:`A chance é <b>${fracTxt}</b>${num===0?" (impossível)":""}.`,
+   mount(el,ctx){
+    el.innerHTML=stageTop+(mode==="pct"?keypadHtml("Chance",""):`<div class="frac-build">${stepperHtml("n","casos que eu quero",0)}<hr>${stepperHtml("d","casos possíveis",1)}</div>`);
+    if(mode==="pct") keypadMount(el,ctx,"",v=>val=v);
+    else stepperMount(el,vals,{n:[0,20],d:[1,20]},()=>ctx.ready(true));
+   },
+   check(){
+    if(mode==="pct"){const p=parseBR(val);return {ok:Math.abs(p-100*num/den)<.01,info:`Você respondeu ${val}%.`}}
+    const ok=num===0?vals.n===0:vals.n*den===num*vals.d; return {ok,info:`Você montou ${vals.n}/${vals.d}.`}},
+   extra(){ if(num===0) return "Não tem como acontecer: probabilidade zero.";
+    let hits=0; for(let i=0;i<60;i++) if(Math.random()<num/den) hits++; return `Teste: sorteando 60 vezes, saiu ${label} ${hits} vezes. A teoria diz ${Math.round(60*num/den)}.`}};
+ }},
+
+ tesouro:{gen(l){
+  const G0=40,SZ=32,N=8,PX=v=>G0+v*SZ,PY=v=>G0+(N-v)*SZ;
+  let tx,ty,prompt,hint,mode="tap",extraSvg="";
+  if(l===1){tx=rnd(1,7);ty=rnd(1,7); prompt=`Toque no ponto <span class="bign">(${tx}, ${ty})</span> para achar o tesouro.`; hint=`Comece no 0. Ande ${tx} para a direita no eixo x e depois suba ${ty}.`}
+  else if(l===2){tx=rnd(0,8);ty=rnd(1,8); mode="read"; prompt=`Quais são as coordenadas do tesouro?`; hint=`Primeiro o x: quantos passos para a direita. Depois o y: quantos para cima.`;
+    extraSvg=`<g transform="translate(${PX(tx)} ${PY(ty)})"><path d="M0 -13 l3.8 7.8 8.6 1.2 -6.2 6 1.5 8.5 -7.7 -4 -7.7 4 1.5 -8.5 -6.2 -6 8.6 -1.2z" fill="#E8B400" stroke="var(--ink)" stroke-width="1.2"/></g>`}
+  else {const a=rnd(1,3),b=rnd(1,3); tx=2*a;ty=2*b; prompt=`O triângulo vai ser <b>ampliado 2 vezes</b>. Toque onde vai parar o ponto <span class="bign">A(${a}, ${b})</span>.`;
+    hint=`Na ampliação, multiplique as duas coordenadas por 2: (${a} × 2, ${b} × 2).`;
+    extraSvg=`<path d="M${PX(a)} ${PY(b)} L${PX(a+1)} ${PY(b)} L${PX(a)} ${PY(b+1)}Z" fill="color-mix(in srgb,var(--port) 25%,transparent)" stroke="var(--port)" stroke-width="2"/><circle cx="${PX(a)}" cy="${PY(b)}" r="5" fill="var(--port)"/><text x="${PX(a)-14}" y="${PY(b)+16}" font-size="13" font-weight="700">A</text>`}
+  const vals={x:0,y:0}; let sel=null, svg;
+  const grid=`${[...Array(N+1)].map((_,i)=>`<line x1="${PX(i)}" y1="${PY(0)}" x2="${PX(i)}" y2="${PY(N)}" stroke="var(--line)"/><line x1="${PX(0)}" y1="${PY(i)}" x2="${PX(N)}" y2="${PY(i)}" stroke="var(--line)"/>
+    <text x="${PX(i)}" y="${PY(0)+20}" text-anchor="middle" font-size="12">${i}</text>${i?`<text x="${PX(0)-14}" y="${PY(i)+4}" text-anchor="middle" font-size="12">${i}</text>`:""}`).join("")}
+    <line x1="${PX(0)}" y1="${PY(0)}" x2="${PX(N)+10}" y2="${PY(0)}" stroke="var(--ink)" stroke-width="2.5"/><line x1="${PX(0)}" y1="${PY(0)}" x2="${PX(0)}" y2="${PY(N)-10}" stroke="var(--ink)" stroke-width="2.5"/>
+    <text x="${PX(N)+14}" y="${PY(0)+4}" font-size="14" font-weight="700">x</text><text x="${PX(0)-4}" y="${PY(N)-16}" font-size="14" font-weight="700">y</text>`;
+  const dot=(x,y,c)=>`<circle cx="${PX(x)}" cy="${PY(y)}" r="9" fill="${c}" stroke="var(--surface)" stroke-width="3"/>`;
+  return {prompt,hint,answer:`O ponto certo é <b>(${tx}, ${ty})</b>, marcado em verde.`,
+   mount(el,ctx){
+    el.innerHTML=`<div class="gsvg-wrap"><svg viewBox="0 0 330 340" class="gsvg" id="tes-svg" role="img" aria-label="Plano cartesiano de 0 a 8">${grid}${extraSvg}<g id="tes-mk"></g><g id="tes-ans"></g></svg></div>
+      ${mode==="read"?`<div class="frac-build row" style="justify-content:center;gap:24px">${stepperHtml("x","x (para o lado)",0)}${stepperHtml("y","y (para cima)",0)}</div>`:""}`;
+    svg=el.querySelector("#tes-svg");
+    if(mode==="read") stepperMount(el,vals,{x:[0,8],y:[0,8]},()=>ctx.ready(true));
+    else svg.addEventListener("pointerdown",e=>{const p=svgPoint(svg,e); const x=Math.round((p.x-G0)/SZ), y=Math.round(N-(p.y-G0)/SZ);
+      if(x<0||x>N||y<0||y>N) return; sel=[x,y]; svg.querySelector("#tes-mk").innerHTML=dot(x,y,"var(--pen)"); ctx.ready(true)});
+   },
+   check(){ if(mode==="read") return {ok:vals.x===tx&&vals.y===ty,info:`Você disse (${vals.x}, ${vals.y}).`};
+     return {ok:sel[0]===tx&&sel[1]===ty,info:`Você tocou em (${sel[0]}, ${sel[1]}).`}},
+   reveal(){svg.querySelector("#tes-ans").innerHTML=dot(tx,ty,"var(--ok)")}};
+ }}
+};
+
+/* ---------- motor dos jogos ---------- */
+let GM=null;
+function startGame(id){
+  if(id==="tabuada") return go("tabuada");
+  GM={id,i:0,n:6,level:1,streak:0,score:0,tries:0,phase:"play",round:null,fb:null};
+  GM.round=GAMEDEF[id].gen(1); go("jogo");
+}
+function vJogos(){
+  const total=GAMES.reduce((a,g)=>a+gameStars(g.id),0);
+  let lastCap="";
+  return `<button class="back" data-nav2="praticar">${ICON.left} Praticar</button>
+   <section class="lab-head"><span class="eyebrow">Matemática em jogo</span><h1>Laboratório</h1>
+    <p>Mexa, teste e descubra. Cada jogo tem 6 desafios e fica mais difícil quando ela acerta seguido.</p>
+    <div class="row">${starsHtml(1,1)}<b>${total} de ${GAMES.length*3} estrelas</b></div></section>
+   <div class="map">${GAMES.map((g,i)=>{
+     const head=g.cap!==lastCap?`<span class="eyebrow map-cap">${g.cap}</span>`:""; lastCap=g.cap;
+     return `${head}<button class="node" style="--c:${g.c}" data-game="${g.id}"><span class="node-ic">${g.ic}</span>
+       <span class="node-tx"><b>${g.t}</b><span>${g.d}</span></span>${starsHtml(gameStars(g.id))}</button>`}).join("")}</div>`;
+}
+function vJogo(){
+  if(!GM) return vJogos();
+  const g=GAMES.find(x=>x.id===GM.id);
+  const top=`<div class="quiz-top"><button class="icon-btn" data-gquit aria-label="Sair do jogo">${ICON.x}</button>
+    <div style="display:grid;gap:6px"><span class="eyebrow">${g.t}</span><div class="gdots">${[...Array(GM.n)].map((_,i)=>`<i class="${i<GM.i?"done":i===GM.i?"now":""}"></i>`).join("")}</div></div>
+    <span class="lvl" style="--c:${g.c}">Nível ${GM.level}</span></div>`;
+  if(GM.i>=GM.n){
+    const pct=GM.score/GM.n, st=pct>=.9?3:pct>=.65?2:pct>0?1:0;
+    return top+`<section class="card result" style="display:grid;--c:${g.c}"><div class="bigstars">${starsHtml(st)}</div>
+      <h2>${st===3?"Mandou muito bem!":st===2?"Muito bom!":st===1?"Bom começo!":"Vamos tentar de novo?"}</h2>
+      <p class="muted">${Math.round(GM.score*10)/10} de ${GM.n} pontos. Acertar de primeira vale 1 ponto; na segunda tentativa, meio.</p>
+      <div class="row" style="justify-content:center"><button class="btn primary" data-game="${g.id}">Jogar de novo</button><button class="btn" data-nav2="jogos">Voltar ao laboratório</button></div></section>`;
+  }
+  const r=GM.round;
+  return top+`<section class="card gcard" style="--c:${g.c}"><p class="q">${r.prompt}</p><div id="gstage" class="gstage"></div></section>
+    <div id="gfb"></div><div id="gbtn"><button class="btn primary block" id="g-check" data-gcheck disabled>Verificar</button></div>`;
+}
+function gameMount(){ if(!GM||GM.i>=GM.n) return; GM.round.mount($("#gstage"),{ready:b=>{const x=$("#g-check"); if(x) x.disabled=!b}}) }
+function gameCheck(){
+  const r=GM.round, res=r.check(); let fb;
+  if(res.ok){
+    GM.score+=GM.tries===0?1:.5; GM.streak++; let up="";
+    if(GM.streak>=2&&GM.level<3){GM.level++;GM.streak=0;up=`<br><b style="font-size:15px">Subiu para o nível ${GM.level}!</b>`}
+    fb=`<div class="fb ok"><b>${pick(["Acertou!","Isso aí!","Perfeito!","Mandou bem!"])}</b><span>${r.extra?r.extra():""}${up}</span></div>`; GM.phase="done";
+    if(r.reveal) r.reveal();
+  } else {
+    GM.tries++; GM.streak=0;
+    if(GM.tries===1){fb=`<div class="fb no"><b>Quase! ${res.info}</b><span><b style="font-size:14px;font-family:var(--body)">Dica:</b> ${r.hint}</span></div>`}
+    else {GM.phase="done"; if(GM.level>1) GM.level--; if(r.reveal) r.reveal(); fb=`<div class="fb no"><b>Vamos ver juntos</b><span>${r.answer}</span></div>`}
+  }
+  $("#gfb").innerHTML=fb;
+  $("#gbtn").innerHTML=GM.phase==="done"?`<button class="btn primary block" data-gnext>${GM.i+1<GM.n?"Próximo desafio":"Ver estrelas"} ${ICON.arrow}</button>`
+    :`<button class="btn primary block" id="g-check" data-gcheck>Verificar de novo</button>`;
+  $("#gfb").scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function gameNext(){
+  GM.i++;
+  if(GM.i<GM.n){GM.round=GAMEDEF[GM.id].gen(GM.level); GM.tries=0; GM.phase="play"}
+  else {
+    const pct=GM.score/GM.n, st=pct>=.9?3:pct>=.65?2:pct>0?1:0, g=GAMES.find(x=>x.id===GM.id);
+    if(st>(S.jogos[GM.id]||0)) setItem("jogos",GM.id,st);
+    logAct(`Jogo ${g.t}: ${st} ${st===1?"estrela":"estrelas"}`);
+  }
+  render(); window.scrollTo({top:0});
+}
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-game],[data-gcheck],[data-gnext],[data-gquit]"); if(!el) return;
+  if(el.dataset.game) return startGame(el.dataset.game);
+  if(el.dataset.gcheck!==undefined){ if(!el.disabled) gameCheck(); return }
+  if(el.dataset.gnext!==undefined) return gameNext();
+  if(el.dataset.gquit!==undefined){GM=null; go("jogos")}
+});
+/* =========================================================
+/* =========================================================
    Progresso (painel para acompanhar)
    ========================================================= */
 function fmtWhen(t){const d=new Date(t);return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`}
@@ -1529,6 +1881,8 @@ function vProgresso(){
     ${statsRow(false)}
     <section class="card" style="display:grid;gap:12px"><h3>Blocos por dia</h3>${days}
       <p class="muted" style="font-size:13px">Verde: dia completo · Amarelo: dia pela metade</p></section>
+    <section class="card" style="display:grid;gap:8px"><h3>Laboratório de Matemática</h3>
+      <div class="plist">${GAMES.map(g=>`<div class="prow"><span>${g.t}<br><span class="sub">${g.id==="tabuada"?`Recorde: ${S.tabBest} acertos`:g.cap}</span></span>${starsHtml(gameStars(g.id))}</div>`).join("")}</div></section>
     ${subjects}
     <section class="card" style="display:grid;gap:8px"><h3>Atividade recente</h3>
       ${S.activity.length?`<ul class="act">${S.activity.slice(0,20).map(a=>`<li><time>${fmtWhen(a.t)}</time><span>${a.txt}</span></li>`).join("")}</ul>`:`<p class="muted">Nada ainda.</p>`}</section>`;
@@ -1539,19 +1893,19 @@ function vProgresso(){
    ========================================================= */
 const CONFIGURED = !!(SUPABASE_URL && SUPABASE_KEY);
 let SB=null, USER=null, STUDENTS=[], SYNC={state:"off",at:0,msg:""}, syncing=false, pushT=null, pollIv=null;
-const KEYS=["checks","lessons","best","erros","meta","tabBest","activity"];
+const KEYS=["checks","lessons","best","erros","meta","tabBest","activity","jogos"];
 
 function loadState(){
-  ["checks","lessons","best","erros","meta"].forEach(k=>S[k]=store.get(k,{}));
+  ["checks","lessons","best","erros","meta","jogos"].forEach(k=>S[k]=store.get(k,{}));
   S.tabBest=store.get("tabBest",0); S.activity=store.get("activity",[]);
 }
 function migrateLegacy(){ // leva o progresso feito antes do login para a conta da aluna
   try{KEYS.forEach(k=>{const old=localStorage.getItem("alice:"+k); if(old&&!localStorage.getItem(NS+k)) localStorage.setItem(NS+k,old)})}catch(e){}
 }
-function snapshot(){return {checks:S.checks,lessons:S.lessons,erros:S.erros,best:S.best,tabBest:S.tabBest,meta:S.meta,activity:S.activity}}
+function snapshot(){return {checks:S.checks,lessons:S.lessons,erros:S.erros,best:S.best,tabBest:S.tabBest,meta:S.meta,activity:S.activity,jogos:S.jogos}}
 function mergeState(r){
   r=r||{}; const rm=r.meta||{};
-  ["checks","lessons","erros","best"].forEach(kind=>{
+  ["checks","lessons","erros","best","jogos"].forEach(kind=>{
     const R=r[kind]||{}, ids=new Set([...Object.keys(S[kind]),...Object.keys(R)]);
     ids.forEach(id=>{
       const k=kind+":"+id, lt=S.meta[k]||0, rt=rm[k]||0, lv=id in S[kind], rv=id in R;
@@ -1576,7 +1930,7 @@ async function syncNow(){
     const before=JSON.stringify(snapshot());
     if(data&&data.dados) mergeState(data.dados);
     const after=JSON.stringify(snapshot());
-    if(!data || after!==JSON.stringify(Object.assign({checks:{},lessons:{},erros:{},best:{},tabBest:0,meta:{},activity:[]},data.dados))){
+    if(!data || after!==JSON.stringify(Object.assign({checks:{},lessons:{},erros:{},best:{},tabBest:0,meta:{},activity:[],jogos:{}},data.dados))){
       const {error:e2}=await SB.from("progresso").upsert({aluno_id:STUDENT.id,dados:snapshot(),atualizado_em:new Date().toISOString()});
       if(e2) throw e2;
     }
