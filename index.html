@@ -52,6 +52,9 @@
 [hidden]{display:none!important}
 img,svg{max-width:100%}
 html,body{margin:0}
+html{touch-action:manipulation; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+button,a,summary,input,label{touch-action:manipulation; -webkit-tap-highlight-color:transparent}
+main{overflow-wrap:break-word}
 body{
   background-color:var(--bg); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -132,12 +135,12 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 .lchip{font-size:13px; padding:4px 10px; border-radius:99px; background:var(--surface); border:1px solid var(--line)}
 .lchip.done{border-color:var(--ok); color:var(--ok)}
 
-.track{list-style:none; margin:0; padding:4px 0 0; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; overflow-x:auto}
-.track li{position:relative; display:grid; justify-items:center; gap:4px; text-align:center; min-width:62px; padding-inline:2px}
-.track li::before{content:""; position:absolute; top:22px; right:50%; width:100%; height:3px; background:var(--line); z-index:0}
+.track{--d:clamp(36px,11vw,46px); list-style:none; margin:0; padding:4px 0 0; display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr)}
+.track li{position:relative; display:grid; justify-items:center; gap:4px; text-align:center; min-width:0; padding-inline:2px}
+.track li::before{content:""; position:absolute; top:calc(var(--d)/2 - 1px); right:50%; width:100%; height:3px; background:var(--line); z-index:0}
 .track li:first-child::before{display:none}
 .track li.done::before,.track li.next::before{background:var(--ok)}
-.track .dot{position:relative; z-index:1; width:46px; height:46px; border-radius:50%; display:grid; place-items:center; line-height:1;
+.track .dot{position:relative; z-index:1; width:var(--d); height:var(--d); border-radius:50%; display:grid; place-items:center; line-height:1;
   font-family:var(--display); font-weight:800; font-size:17px; background:var(--surface); border:3px solid var(--c); color:var(--ink)}
 .track .dot small{display:block; font-family:var(--body); font-size:9px; font-weight:600; text-transform:uppercase; color:var(--muted)}
 .track li.done .dot{background:var(--ok); border-color:var(--ok); color:var(--surface)}
@@ -159,7 +162,20 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 .bl .det{font-size:14px; color:var(--muted); line-height:1.45}
 .bl.done .ttl{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--ok)}
 .bl.now{background:linear-gradient(90deg,var(--pen-soft),transparent); margin-inline:-18px; padding-inline:18px; border-radius:0}
-.bl.now .t::after{content:" · agora"; color:var(--pen)}
+.tag-now{color:var(--pen)}
+.mini{margin:4px 0 0; padding-left:20px; font-size:14px; color:var(--muted); line-height:1.4; display:grid; gap:2px}
+.mini li.ok{text-decoration:line-through; text-decoration-color:var(--ok)}
+.mini li::marker{font-weight:700}
+.steps{list-style:none; margin:0; padding:0; display:grid}
+.steps>li{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:12px 0; border-top:1px solid var(--line)}
+.steps>li:first-child{border-top:0}
+.steps .n{width:32px; height:32px; border-radius:50%; display:grid; place-items:center; font-weight:800; background:color-mix(in srgb,var(--c) 14%,var(--surface)); color:var(--c)}
+.steps .n svg{width:18px; height:18px; stroke-width:3}
+.steps>li.done .n{background:var(--ok); color:var(--surface)}
+.steps>li>div{display:grid; gap:2px; min-width:0}
+.steps>li>div span{font-size:13px}
+.steps>li.done b{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--ok)}
+.btn.sm{padding:8px 12px; font-size:14px}
 .go-btn{width:40px; height:40px; border-radius:12px; border:1px solid var(--line); background:var(--surface); display:grid; place-items:center; cursor:pointer; color:var(--pen)}
 .go-btn:hover{border-color:var(--pen)}
 
@@ -226,24 +242,47 @@ details.day.today .date-box small{color:var(--on-pen)}
 .stext ul,.stext ol{margin:0; padding-left:22px; display:grid; gap:6px}
 .ex{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-variant-numeric:tabular-nums; line-height:1.7}
 .ex b{color:var(--c,var(--pen))}
+.try{border:1px dashed color-mix(in srgb,var(--c,var(--pen)) 55%,var(--line)); border-radius:12px; padding:10px 14px; background:color-mix(in srgb,var(--c,var(--pen)) 6%,var(--surface))}
+.try summary{cursor:pointer; font-weight:700; list-style:none}
+.try summary::-webkit-details-marker{display:none}
+.try summary::before{content:"✎ "; color:var(--c,var(--pen))}
+.try summary::after{content:"Toque para ver a resposta"; display:block; margin-top:4px; font-size:13px; font-weight:600; color:var(--muted); text-decoration:underline; text-underline-offset:3px}
+.try[open] summary::after{content:"Esconder a resposta"}
+.try p{margin-top:8px; padding-top:8px; border-top:1px solid var(--line)}
+.pv{display:flex; gap:clamp(3px,1vw,6px)}
+.pv>span{display:grid; justify-items:center; align-content:center; gap:2px; flex:1 1 0; min-width:0; padding:8px 2px; border-radius:12px; background:var(--surface-2); border:1px solid var(--line); text-align:center}
+.pv b{font-family:var(--display); font-size:clamp(22px,7vw,28px); line-height:1; color:var(--c,var(--pen))}
+.pv small{font-size:clamp(11px,3.2vw,12px); line-height:1.2; color:var(--muted); font-weight:600; hyphens:manual}
+.pv>.pv-c{flex:0 0 auto; background:none; border:0; padding:0 2px; font-family:var(--display); font-size:32px; font-weight:800}
 .box{border-radius:14px; padding:12px 14px; display:grid; gap:4px}
 .box.warn{background:var(--red-soft)}
 .box.tip{background:var(--pen-soft)}
 .box .lbl{font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase}
 .box.warn .lbl{color:var(--red)} .box.tip .lbl{color:var(--pen)}
-.tbl{overflow-x:auto; border:1px solid var(--line); border-radius:12px}
+.tbl{border:1px solid var(--line); border-radius:12px; overflow:hidden}
 table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:15px}
-th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--line)}
+th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+/* no celular, tabelas de 3+ colunas viram cartões: uma linha da tabela por bloco */
+@media (max-width:560px){
+  table.stack tr:first-child{display:none}
+  table.stack,table.stack tbody,table.stack tr,table.stack td{display:block}
+  table.stack tr{padding:10px 14px; border-bottom:1px solid var(--line)}
+  table.stack tr:last-child{border-bottom:0}
+  table.stack td{border:0; padding:1px 0}
+  table.stack td:first-child{font-weight:700; font-size:16px; margin-bottom:2px}
+  table.stack td[data-label]:not(:first-child)::before{content:attr(data-label) ": "; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted)}
+}
 tr:last-child td{border-bottom:0}
 th{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--surface-2)}
 .step-nav{display:grid; grid-template-columns:1fr 2fr; gap:10px}
+.step-nav .btn:disabled{opacity:.4}
 svg text{fill:var(--ink); font-family:var(--body)}
 .done-card{text-align:center; justify-items:center}
 .big-check{width:72px; height:72px; border-radius:50%; background:var(--ok-soft); color:var(--ok); display:grid; place-items:center}
 .big-check svg{width:38px; height:38px; stroke-width:3}
 
 /* ---------- praticar / quiz ---------- */
-.chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:2px}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
 .chip{flex:none; font-weight:600; font-size:14px; padding:9px 14px; border-radius:99px; border:1px solid var(--line); background:var(--surface); cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--c,var(--pen)); border-color:var(--c,var(--pen)); color:var(--surface)}
 .topics{display:grid; gap:10px}
@@ -281,7 +320,7 @@ svg text{fill:var(--ink); font-family:var(--body)}
 .tab-q{font-family:var(--display); font-weight:800; font-size:clamp(44px,14vw,72px); text-align:center; font-variant-numeric:tabular-nums; line-height:1}
 .tab-ans{font-family:var(--display); font-weight:800; font-size:40px; text-align:center; min-height:56px; border-bottom:3px solid var(--line); font-variant-numeric:tabular-nums}
 .tab-ans.ok{color:var(--ok); border-color:var(--ok)} .tab-ans.no{color:var(--red); border-color:var(--red)}
-.keypad{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:360px; margin:0 auto; width:100%}
+.keypad{user-select:none; -webkit-user-select:none; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:360px; margin:0 auto; width:100%}
 .keypad button{height:58px; font-size:24px; font-weight:600; border-radius:14px; border:1px solid var(--line); background:var(--surface); cursor:pointer; box-shadow:var(--shadow)}
 .keypad button:active{transform:scale(.97)}
 .keypad .okk{background:var(--pen); color:var(--on-pen); border-color:var(--pen); font-size:18px}
@@ -308,9 +347,19 @@ svg text{fill:var(--ink); font-family:var(--body)}
 .pomo[data-mode="pausa"] .pbtn.main{background:var(--ok); border-color:var(--ok)}
 @media (min-width:960px){.pomo{left:auto; right:24px; bottom:24px; width:380px}}
 
-.toast{position:fixed; z-index:30; left:50%; top:calc(env(safe-area-inset-top,0px) + 14px); transform:translateX(-50%); width:min(92vw,440px);
+.toast{position:fixed; z-index:30; left:0; right:0; margin-inline:auto; top:calc(env(safe-area-inset-top,0px) + 14px); width:min(calc(100vw - 32px),440px); box-sizing:border-box;
   background:var(--ink); color:var(--bg); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow-lg); display:flex; gap:12px; align-items:center; justify-content:space-between; animation:rise .25s ease both}
 .toast button{background:var(--bg); color:var(--ink); border:0; border-radius:10px; padding:8px 12px; font-weight:600; cursor:pointer; flex:none}
+
+.modal{position:fixed; inset:0; z-index:40; display:grid; place-items:center; padding:16px; background:rgba(10,14,25,.55); animation:rise .2s ease both}
+.modal[hidden]{display:none}
+.modal-card{width:min(100%,420px); max-height:calc(100dvh - 32px); overflow:auto; background:var(--surface); color:var(--ink); border-radius:24px; padding:24px 20px; display:grid; gap:12px; text-align:center; box-shadow:var(--shadow-lg)}
+.modal-ic{justify-self:center; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; background:var(--pen-soft); color:var(--pen)}
+.modal-ic.ok{background:var(--ok-soft); color:var(--ok)}
+.modal-ic svg{width:32px; height:32px}
+.next-card{display:grid; gap:4px; justify-items:start; text-align:left; padding:12px 14px; border-radius:14px; background:color-mix(in srgb,var(--c) 10%,var(--surface)); border:1px solid color-mix(in srgb,var(--c) 30%,var(--line))}
+.next-card b{font-size:17px}
+.next-card .muted{font-size:14px}
 
 /* ---------- progresso e sincronização ---------- */
 .sync{display:grid; gap:12px}
@@ -382,9 +431,10 @@ body.locked main{margin-left:auto; margin-right:auto; max-width:460px; padding-i
 .g100 i:nth-child(10n+5){margin-right:2px}
 .g100 i.on{background:var(--port)}
 .g100 i.ans{outline:2px solid var(--ok);outline-offset:-2px}
-.bar10{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.bar10{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:clamp(2px,.8vw,3px)}
 .bar10 button{border:0;border-radius:8px;padding:8px 0;cursor:pointer;display:grid;gap:2px;background:color-mix(in srgb,var(--ing) 16%,var(--surface));color:var(--ink);font-family:var(--body)}
-.bar10 button small{font-size:9px;color:var(--muted)} .bar10 button span{font-size:11px;font-weight:700}
+.bar10 button{min-width:0;overflow:hidden} .bar10 button small{font-size:9px;color:var(--muted)} .bar10 button span{font-size:11px;font-weight:700;white-space:nowrap}
+@media (max-width:420px){.bar10{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}}
 .bar10 button.cut{background:repeating-linear-gradient(45deg,var(--red-soft),var(--red-soft) 5px,var(--surface) 5px,var(--surface) 10px);text-decoration:line-through;color:var(--red)}
 .gk{display:grid;gap:10px}
 .gk-disp{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--line);padding:6px 4px}
@@ -440,6 +490,7 @@ body.locked main{margin-left:auto; margin-right:auto; max-width:460px; padding-i
   <button data-nav="progresso"></button>
 </nav>
 <div id="toast" class="toast" hidden role="status"></div>
+<div id="modal" class="modal" hidden></div>
 
 <script>
 /* =========================================================
@@ -492,60 +543,95 @@ const EXAM_DAYS = [
 ];
 const EXAM_HOUR_END = 9; // a prova vai das 7h às 8h40
 
-/* ---------- cronograma: [data, início, blocos:[matéria, título, detalhe, link]] ----------
-   link: "L:materia/licao" abre a lição · "Q:materia/topico|all|erros" abre o treino · "T" abre a tabuada */
+/* ---------- cronograma ----------
+   Cada dia: [data, hora de início, blocos]. Cada bloco dura 50 min + 10 min de pausa.
+   Bloco: [matéria, título, objetivo/dica, passos]. Passo: [o que fazer, link, minutos].
+   Links: "T" tabuada misturada · "T:8" tabuada do 8 · "T:6,7" do 6 e do 7
+          "L:mat/decimais" lição inteira · "L:mat/decimais@0-2" só os passos 1 a 3 da lição
+          "Q:mat/decimais" treino · "G:reta" jogo do Laboratório · null tarefa fora do app (livro, caderno) */
 const DAYS = [
  ["2026-09-25",17,[
-  ["mat","Base: décimos e centésimos","5 min de tabuada do 6 e do 7. Depois, valor posicional usando dinheiro: R$ 3,45 = 3 reais, 4 moedas de 10 e 5 de 1 centavo.","L:mat/base"],
-  ["port","Cap. 8: cartaz, anúncio e outdoor","Ler o capítulo 8. Diferença entre campanha (mudar comportamento) e anúncio (vender).","L:port/generos"]]],
+  ["mat","Base: décimos e centésimos","Revisar o que vem antes dos decimais, usando dinheiro.",[
+   ["Aquecimento: tabuada do 6 e do 7","T:6,7",5],["Lição: pré-requisitos","L:mat/base",30],["Treino: pré-requisitos","Q:mat/base",15]]],
+  ["port","Cap. 8: cartaz, anúncio e outdoor","Entender a diferença entre campanha (mudar comportamento) e anúncio (vender).",[
+   ["Ler o capítulo 8 no livro",null,15],["Lição: cartaz, anúncio e outdoor","L:port/generos",20],["Lição: modo imperativo","L:port/imperativo",15]]]]],
  ["2026-09-26",13,[
-  ["mat","Decimais: comparar, somar e subtrair","Tabuada do 8. Completar com zeros para comparar. Vírgula embaixo de vírgula.","L:mat/decimais"],
-  ["port","Formação de palavras e ortografia","Justaposição e aglutinação. Homófonas e parônimos.","L:port/formacao"],
-  ["mat","Decimais: multiplicar, dividir e potência","Tabuada do 9. Multiplicar e contar as casas. ×10 e ÷10 andando com a vírgula.","L:mat/decimais"],
-  ["port","Cap. 9: reportagem e carta de reclamação","Partes da carta de reclamação. Depois, metonímia e personificação.","L:port/reclamacao"]]],
+  ["mat","Decimais: comparar, somar e subtrair","Completar com zeros para comparar. Vírgula embaixo de vírgula para somar.",[
+   ["Aquecimento: tabuada do 8","T:8",5],["Lição: casas decimais, comparar, somar e subtrair","L:mat/decimais@0-2",25],["Jogo: Reta dos decimais","G:reta",10],["Jogo: Mercadinho (troco)","G:mercado",10]]],
+  ["port","Formação de palavras e ortografia","Justaposição e aglutinação. Depois, homófonas e parônimos.",[
+   ["Lição: formação de palavras","L:port/formacao",20],["Lição: ortografia (homófonas e parônimos)","L:port/ortografia",20],["Treino do capítulo 8","Q:port/cap8",10]]],
+  ["mat","Decimais: multiplicar, dividir e potência","Multiplicar e contar as casas. Dividir igualando as casas.",[
+   ["Aquecimento: tabuada do 9","T:9",5],["Lição: multiplicar, dividir, potência e problemas","L:mat/decimais@3-6",25],["Treino: números decimais","Q:mat/decimais",20]]],
+  ["port","Cap. 9: reportagem, carta e figuras","Partes da carta de reclamação. Metonímia e personificação.",[
+   ["Lição: reportagem e carta de reclamação","L:port/reclamacao",20],["Lição: metonímia e personificação","L:port/figuras",15],["Escrever no caderno uma carta de reclamação curta",null,15]]]]],
  ["2026-09-27",16,[
-  ["port","Subjuntivo, formas nominais e treino geral","Estudar a lição e fazer o treino completo de Português.","L:port/verbos"],
-  ["mat","Porcentagem: os atalhos","Tabuada salteada. 50% = metade, 25% = um quarto, 10% = dividir por 10.","L:mat/porcentagem"]]],
+  ["port","Subjuntivo, formas nominais e treino geral","Última revisão antes da prova de amanhã.",[
+   ["Lição: subjuntivo e formas nominais","L:port/verbos",20],["Treino completo de Português","Q:port/all",30]]],
+  ["mat","Porcentagem: os atalhos","50% = metade, 25% = um quarto, 10% = dividir por 10.",[
+   ["Aquecimento: tabuada misturada","T",5],["Lição: o que é porcentagem e os atalhos","L:mat/porcentagem@0-2",25],["Jogo: Pinta 100","G:pinta",20]]]]],
  ["2026-09-28",15,[
-  ["mat","Porcentagem e educação financeira","Desconto, acréscimo, à vista x parcelado.","L:mat/porcentagem"],
-  ["mat","Probabilidade e contagem","Dado, moeda, bolinhas no saco. Desenhar a árvore no papel.","L:mat/probabilidade"],
-  ["mat","Plano cartesiano e vistas","Marcar pontos no caderno quadriculado. Ampliar um triângulo ×2.","L:mat/plano"]]],
+  ["mat","Porcentagem e educação financeira","Desconto, acréscimo, à vista x parcelado.",[
+   ["Aquecimento: tabuada do 7","T:7",5],["Lição: desconto, acréscimo e educação financeira","L:mat/porcentagem@3-5",20],["Jogo: Liquidação","G:liquida",10],["Treino: porcentagem","Q:mat/porcentagem",15]]],
+  ["mat","Probabilidade e contagem","Dado, moeda, bolinhas no saco. Desenhar a árvore no papel.",[
+   ["Aquecimento: tabuada misturada","T",5],["Lição: probabilidade e contagem","L:mat/probabilidade",20],["Jogo: Laboratório da sorte","G:sorte",10],["Treino: probabilidade","Q:mat/probabilidade",15]]],
+  ["mat","Plano cartesiano e vistas","Marcar pontos no caderno quadriculado. Ampliar um triângulo ×2.",[
+   ["Lição: plano cartesiano e vistas","L:mat/plano",20],["Jogo: Caça ao tesouro","G:tesouro",15],["Treino: plano cartesiano","Q:mat/plano",15]]]]],
  ["2026-09-29",15,[
-  ["mat","Refazer o caderno de erros","Tabuada relâmpago e depois tudo que ela errou em Matemática.","Q:mat/erros"],
-  ["mat","Simulado de Matemática","Treino com todos os assuntos. Ela resolve sozinha e você só confere no fim.","Q:mat/all"],
-  ["hist","Cap. 8: Império Romano","Início do Império, sociedade, Pax Romana, pão e circo. Dormir cedo.","L:hist/estrutura"]]],
+  ["mat","Refazer o caderno de erros","Tudo o que ela errou em Matemática, com calma.",[
+   ["Aquecimento: tabuada misturada","T",10],["Caderno de erros de Matemática","Q:mat/erros",40]]],
+  ["mat","Simulado de Matemática","Ela resolve sozinha e você só confere no fim.",[
+   ["Treino completo de Matemática","Q:mat/all",50]]],
+  ["hist","Cap. 8: Império Romano","Início do Império, sociedade, Pax Romana, pão e circo. Dormir cedo: amanhã tem prova.",[
+   ["Lição: o Império Romano","L:hist/estrutura",30],["Treino: Império Romano","Q:hist/roma",20]]]]],
  ["2026-09-30",15,[
-  ["hist","Cap. 8: cultura e crise de Roma","Heranças romanas, cristianismo, crise e queda em 476.","L:hist/cultura"],
-  ["hist","Cap. 9: Império Bizantino","Constantinopla, Justiniano, Hagia Sofia, cisma e queda.","L:hist/bizancio"],
-  ["geo","Cap. 8: primeira leitura","Só conhecer as formações vegetais, sem treino ainda.","L:geo/vegetacao"]]],
+  ["hist","Cap. 8: cultura e crise de Roma","Heranças romanas, cristianismo, crise e queda em 476.",[
+   ["Lição: cultura e crise de Roma","L:hist/cultura",30],["Treino: Império Romano","Q:hist/roma",20]]],
+  ["hist","Cap. 9: Império Bizantino","Constantinopla, Justiniano, Hagia Sofia, cisma e queda.",[
+   ["Lição: Império Bizantino","L:hist/bizancio",30],["Treino: Império Bizantino","Q:hist/bizancio",20]]],
+  ["geo","Cap. 8: primeira leitura","Só conhecer as formações vegetais, sem treino ainda.",[
+   ["Ler o capítulo 8 no livro",null,15],["Lição: formações vegetais","L:geo/vegetacao",35]]]]],
  ["2026-10-01",15,[
-  ["hist","Simulado de História","Treino completo. Ela explica em voz alta a diferença entre Roma e Bizâncio.","Q:hist/all"],
-  ["geo","Cap. 8: formações vegetais","Montar no caderno uma tabela: vegetação, clima, exemplo.","L:geo/vegetacao"],
-  ["cien","Cap. 8: leitura leve do esqueleto","Funções dos ossos e tipos de articulação. Dormir cedo.","L:cien/esqueleto"]]],
+  ["hist","Simulado de História","No fim, ela explica em voz alta a diferença entre Roma e Bizâncio.",[
+   ["Treino completo de História","Q:hist/all",40],["Explicar em voz alta: Roma x Bizâncio",null,10]]],
+  ["geo","Cap. 8: formações vegetais","Fixar vegetação, clima e exemplo de cada uma.",[
+   ["Montar no caderno a tabela: vegetação, clima, exemplo",null,20],["Treino: formações vegetais","Q:geo/vegetacao",30]]],
+  ["cien","Cap. 8: leitura leve do esqueleto","Funções dos ossos e tipos de articulação. Dormir cedo: amanhã tem prova.",[
+   ["Lição: sistema esquelético","L:cien/esqueleto",35],["Ler o capítulo 8 no livro",null,15]]]]],
  ["2026-10-02",15,[
-  ["geo","Cap. 9: ação humana e clima","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.","L:geo/acao"],
-  ["cien","Cap. 8: sistema muscular","Três tipos de músculo. Tendão e ligamento. Bíceps e tríceps.","L:cien/musculos"],
-  ["ing","Inglês","Conteúdo da escola ou revisão do caderno.",null]]],
+  ["geo","Cap. 9: ação humana e clima","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.",[
+   ["Lição: ação humana e clima","L:geo/acao",30],["Treino: ação humana","Q:geo/acao",20]]],
+  ["cien","Cap. 8: sistema muscular","Três tipos de músculo. Tendão e ligamento. Bíceps e tríceps.",[
+   ["Lição: sistema muscular","L:cien/musculos",25],["Treino: sistema locomotor","Q:cien/locomotor",25]]],
+  ["ing","Inglês","Conteúdo da escola ou revisão do caderno.",[["Revisar o caderno de Inglês",null,50]]]]],
  ["2026-10-03",13,[
-  ["geo","Treino de Geografia","Treino completo e caderno de erros.","Q:geo/all"],
-  ["cien","Cap. 9: matéria e misturas","Homogênea e heterogênea com coisas da cozinha.","L:cien/materia"],
-  ["ing","Inglês","Conteúdo informado pela escola.",null],
-  ["cien","Separação de misturas","Destilação, evaporação, destilação fracionada.","L:cien/separacao"]]],
+  ["geo","Treino de Geografia","Treino completo e depois o caderno de erros.",[
+   ["Treino completo de Geografia","Q:geo/all",35],["Caderno de erros de Geografia","Q:geo/erros",15]]],
+  ["cien","Cap. 9: matéria e misturas","Homogênea e heterogênea com coisas da cozinha.",[
+   ["Lição: matéria e misturas","L:cien/materia",20],["Na cozinha: água com sal e água com óleo",null,10],["Treino: misturas","Q:cien/misturas",20]]],
+  ["ing","Inglês","Conteúdo informado pela escola.",[["Estudar o conteúdo de Inglês",null,50]]],
+  ["cien","Separação de misturas","Destilação, evaporação, destilação fracionada.",[
+   ["Lição: separação de misturas","L:cien/separacao",30],["Treino: misturas","Q:cien/misturas",20]]]]],
  ["2026-10-04",16,[
-  ["geo","Revisão de Geografia","Refazer os erros. Ela explica o efeito estufa com as próprias palavras.","Q:geo/erros"],
-  ["ing","Inglês","Revisão do conteúdo.",null]]],
+  ["geo","Revisão de Geografia","Refazer os erros e explicar o efeito estufa com as próprias palavras.",[
+   ["Caderno de erros de Geografia","Q:geo/erros",30],["Explicar em voz alta o efeito estufa",null,10],["Rever a lição: ação humana","L:geo/acao",10]]],
+  ["ing","Inglês","Revisão do conteúdo.",[["Revisar o caderno de Inglês",null,50]]]]],
  ["2026-10-05",15,[
-  ["geo","Treino final de Geografia","Treino completo.","Q:geo/all"],
-  ["ing","Revisão de Inglês","Vocabulário e exercícios do caderno.",null],
-  ["cien","Treino do cap. 8 de Ciências","Esqueleto e músculos. Dormir cedo: amanhã são duas provas.","Q:cien/locomotor"]]],
+  ["geo","Treino final de Geografia","Último treino antes da prova de amanhã.",[
+   ["Treino completo de Geografia","Q:geo/all",50]]],
+  ["ing","Revisão de Inglês","Vocabulário e exercícios do caderno.",[["Vocabulário e exercícios do caderno",null,50]]],
+  ["cien","Treino do cap. 8 de Ciências","Esqueleto e músculos. Dormir cedo: amanhã são duas provas.",[
+   ["Treino: sistema locomotor","Q:cien/locomotor",50]]]]],
  ["2026-10-06",15,[
-  ["cien","Cap. 9: revisão de misturas","Refazer os tipos de mistura e as separações.","L:cien/separacao"],
-  ["cien","Simulado de Ciências","Treino completo.","Q:cien/all"],
-  ["cien","Caderno de erros de Ciências","Refazer só o que errou.","Q:cien/erros"]]],
+  ["cien","Cap. 9: revisão de misturas","Refazer os tipos de mistura e as separações.",[
+   ["Rever a lição: separação de misturas","L:cien/separacao",25],["Treino: misturas","Q:cien/misturas",25]]],
+  ["cien","Simulado de Ciências","Treino completo, sem consultar.",[["Treino completo de Ciências","Q:cien/all",50]]],
+  ["cien","Caderno de erros de Ciências","Refazer só o que errou.",[["Caderno de erros de Ciências","Q:cien/erros",50]]]]],
  ["2026-10-07",15,[
-  ["cien","Revisão final: locomotor","Ela ensina para você: ossos, articulações, músculos.","L:cien/esqueleto"],
-  ["cien","Revisão final: misturas","Ela ensina para você: tipos de mistura e como separar.","L:cien/materia"],
-  ["rev","Bloco leve","Treino rápido e descanso. Dormir cedo.","Q:cien/all"]]]
+  ["cien","Revisão final: locomotor","Ela ensina para você: ossos, articulações, músculos.",[
+   ["Rever a lição: sistema esquelético","L:cien/esqueleto",20],["Rever a lição: sistema muscular","L:cien/musculos",15],["Ela explica para você o que aprendeu",null,15]]],
+  ["cien","Revisão final: misturas","Ela ensina para você: tipos de mistura e como separar.",[
+   ["Rever a lição: matéria e misturas","L:cien/materia",15],["Rever a lição: separação de misturas","L:cien/separacao",20],["Ela explica para você o que aprendeu",null,15]]],
+  ["rev","Bloco leve","Treino rápido e descanso. Dormir cedo.",[["Treino completo de Ciências","Q:cien/all",30],["Descansar",null,20]]]]]
 ];
 
 /* ---------- conteúdo das lições ---------- */
@@ -567,156 +653,508 @@ const ARVORE_SVG = `<div class="tbl" style="border:0"><svg viewBox="0 0 300 170"
 const LESSONS = {
  mat:[
   {id:"base",cap:"Antes de tudo",t:"Pré-requisitos",q:"mat/base",steps:[
-   ["Por que começar pela base",`<p>Cada assunto desta prova se apoia em algo dos anos anteriores. Se a base falha, o assunto novo não faz sentido.</p>
-    <div class="box tip"><span class="lbl">Ela precisa saber</span><ol><li>Tabuada do 2 ao 10</li><li>Valor posicional</li><li>Conta armada de multiplicação e divisão</li><li>Frações simples: 1/2, 1/4, 1/10, 1/100</li><li>Multiplicar e dividir por 10, 100 e 1000</li></ol></div>
-    <p>Se ela travar em qualquer lição, volte para esta.</p>`],
-   ["Tabuada todo dia",`<p>Todo bloco de Matemática começa com 5 minutos de tabuada. Use a <b>Tabuada relâmpago</b> na aba Praticar.</p>
-    <p>As que mais derrubam alunos do 6º ano:</p><div class="ex">6 × 7 = <b>42</b> · 6 × 8 = <b>48</b> · 7 × 8 = <b>56</b><br>7 × 9 = <b>63</b> · 8 × 9 = <b>72</b> · 6 × 9 = <b>54</b></div>`],
-   ["Valor posicional e frações decimais",`<p>Depois da vírgula continuam as casas, cada uma 10 vezes menor.</p>
-    <div class="tbl"><table><tr><th>Fração</th><th>Decimal</th><th>Nome</th></tr><tr><td>1/10</td><td>0,1</td><td>um décimo</td></tr><tr><td>1/100</td><td>0,01</td><td>um centésimo</td></tr><tr><td>1/1000</td><td>0,001</td><td>um milésimo</td></tr></table></div>
-    <p>Com dinheiro fica fácil: 1 centavo é um centésimo do real. R$ 0,50 é metade de 1 real.</p>`],
-   ["Vezes e dividido por 10, 100, 1000",`<div class="ex">× 10 → a vírgula anda <b>1 casa para a direita</b><br>× 100 → <b>2 casas</b> · × 1000 → <b>3 casas</b></div>
-    <div class="ex">÷ 10 → a vírgula anda <b>1 casa para a esquerda</b><br>÷ 100 → <b>2 casas</b> · ÷ 1000 → <b>3 casas</b></div>
-    <div class="ex">4,5 × 10 = <b>45</b> · 4,5 ÷ 10 = <b>0,45</b></div>`]]},
+   ["Por que começar pela base",`<p>Cada assunto da prova se apoia em algo que você aprendeu nos anos anteriores. Decimais usam o valor posicional. Porcentagem usa frações e divisão. Probabilidade usa frações e multiplicação.</p>
+    <p>Se a base estiver firme, o assunto novo fica fácil. Se estiver fraca, tudo parece difícil, mesmo quando não é.</p>
+    <div class="box tip"><span class="lbl">Nesta lição você revisa</span><ol><li>Tabuada do 2 ao 10</li><li>Valor posicional (unidade, décimo, centésimo…)</li><li>Frações decimais: 1/10, 1/100, 1/1000</li><li>Multiplicar e dividir por 10, 100 e 1000</li><li>Conta armada de multiplicação e divisão</li></ol></div>
+    <p>Sempre que travar numa lição mais para frente, volte aqui. Não é voltar para trás: é arrumar o chão para continuar andando.</p>`],
+   ["Tabuada todo dia",`<p><b>Todo dia de Matemática começa com 5 a 10 minutos de tabuada.</b> Esse aquecimento aparece como o primeiro passo de cada bloco de Matemática na Agenda. É só tocar nele para abrir a <b>Tabuada relâmpago</b>.</p>
+    <p>Por que todo dia? Porque a tabuada é usada em quase todas as contas da prova. Quem sabe de cabeça gasta a energia pensando no problema, não na conta.</p>
+    <p>As que mais derrubam alunos do 6º ano:</p>
+    <div class="ex">6 × 7 = <b>42</b> · 6 × 8 = <b>48</b> · 7 × 8 = <b>56</b><br>7 × 9 = <b>63</b> · 8 × 9 = <b>72</b> · 6 × 9 = <b>54</b></div>
+    <div class="box tip"><span class="lbl">Truques que ajudam</span><ul>
+     <li><b>Tabuada do 9:</b> o primeiro algarismo é um a menos que o número, e os dois somam 9. 9 × 7 → começa com 6 e 6 + 3 = 9 → <b>63</b>.</li>
+     <li><b>Tabuada do 8:</b> é o dobro do dobro do dobro. 8 × 7 → 7, 14, 28, <b>56</b>.</li>
+     <li><b>Tabuada do 5:</b> é a metade da tabuada do 10. 5 × 8 → 10 × 8 = 80 → metade: <b>40</b>. 5 × 7 → 70 → metade: <b>35</b>.</li>
+     <li><b>Tabuada do 4:</b> dobro do dobro. 4 × 7 → 14, <b>28</b>.</li></ul></div>
+    <details class="try"><summary>Tente você: quanto é 8 × 6 e 9 × 8?</summary><p>8 × 6: 6, 12, 24, <b>48</b>. 9 × 8: começa com 7 e 7 + 2 = 9 → <b>72</b>.</p></details>`],
+   ["Valor posicional",`<p>No nosso sistema, o <b>lugar</b> onde o algarismo está muda o valor dele. Em 333, cada 3 vale uma coisa diferente: 300, 30 e 3.</p>
+    <p>Depois da vírgula, as casas continuam, cada uma <b>10 vezes menor</b> que a anterior:</p>
+    <div class="pv"><span><b>3</b><small>uni&shy;dades</small></span><span class="pv-c">,</span><span><b>4</b><small>déci&shy;mos</small></span><span><b>5</b><small>centé&shy;simos</small></span></div>
+    <p>O dinheiro ajuda muito a entender. <b>R$ 3,45</b> é:</p>
+    <div class="ex">3 moedas de <b>1 real</b> (3 unidades)<br>4 moedas de <b>10 centavos</b> (4 décimos de real)<br>5 moedas de <b>1 centavo</b> (5 centésimos de real)</div>
+    <p>Por isso 1 centavo é <b>um centésimo</b> do real: são precisos 100 centavos para formar 1 real.</p>
+    <details class="try"><summary>Tente você: em 7,82, quanto vale o 8? E o 2?</summary><p>O 8 está na casa dos décimos: vale <b>8 décimos</b> (0,8). O 2 está nos centésimos: vale <b>2 centésimos</b> (0,02).</p></details>`],
+   ["Frações decimais",`<p>Fração decimal é a que tem 10, 100 ou 1000 embaixo. Ela vira número decimal de um jeito bem simples: <b>a quantidade de zeros de baixo é a quantidade de casas depois da vírgula</b>.</p>
+    <div class="tbl"><table><tr><th>Fração</th><th>Decimal</th><th>Como se lê</th></tr>
+     <tr><td>1/10</td><td>0,1</td><td>um décimo</td></tr><tr><td>3/10</td><td>0,3</td><td>três décimos</td></tr>
+     <tr><td>25/100</td><td>0,25</td><td>vinte e cinco centésimos</td></tr><tr><td>7/100</td><td>0,07</td><td>sete centésimos</td></tr>
+     <tr><td>7/1000</td><td>0,007</td><td>sete milésimos</td></tr></table></div>
+    <div class="box warn"><span class="lbl">Cuidado</span><p>7/100 é <b>0,07</b>, não 0,7. São dois zeros embaixo, então precisa de duas casas: o 7 fica na segunda casa e a primeira ganha um zero.</p></div>
+    <p>Algumas frações comuns também valem decorar: <b>1/2 = 0,5</b> · <b>1/4 = 0,25</b> · <b>3/4 = 0,75</b>.</p>
+    <details class="try"><summary>Tente você: escreva 9/100 e 125/1000 como decimais.</summary><p>9/100 → duas casas → <b>0,09</b>. 125/1000 → três casas → <b>0,125</b>.</p></details>`],
+   ["Vezes e dividido por 10, 100, 1000",`<p>Multiplicar ou dividir por 10, 100 ou 1000 não precisa de conta armada. Basta <b>andar com a vírgula</b>: uma casa para cada zero.</p>
+    <div class="ex">× 10 → vírgula anda <b>1 casa para a direita</b> · × 100 → <b>2 casas</b> · × 1000 → <b>3 casas</b></div>
+    <div class="ex">÷ 10 → vírgula anda <b>1 casa para a esquerda</b> · ÷ 100 → <b>2 casas</b> · ÷ 1000 → <b>3 casas</b></div>
+    <p>Quando faltar algarismo, <b>complete com zero</b>:</p>
+    <div class="ex">4,5 × 10 = <b>45</b><br>3,5 × 100 = 3,50 × 100 = <b>350</b><br>4,5 ÷ 10 = <b>0,45</b><br>4 ÷ 100 → 004 → vírgula 2 casas para a esquerda → <b>0,04</b></div>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p>Multiplicar deixa o número <b>maior</b> (vírgula vai para a direita). Dividir deixa <b>menor</b> (vírgula vai para a esquerda). Se o resultado ficou do tamanho errado, a vírgula andou para o lado errado.</p></div>
+    <details class="try"><summary>Tente você: 2,37 × 100 e 56 ÷ 1000.</summary><p>2,37 × 100 = <b>237</b>. 56 ÷ 1000 = <b>0,056</b> (três casas para a esquerda, completando com zero).</p></details>`],
+   ["Conta armada",`<p><b>Multiplicação:</b> comece pela direita e lembre do "vai um".</p>
+    <div class="ex">146 × 3<br>6 × 3 = 18 → escreve <b>8</b>, vai 1<br>4 × 3 = 12, + 1 = 13 → escreve <b>3</b>, vai 1<br>1 × 3 = 3, + 1 = 4 → escreve <b>4</b><br>Resultado: <b>438</b></div>
+    <p><b>Divisão:</b> comece pela esquerda. Pergunte "quantas vezes cabe?", multiplique, subtraia e baixe o próximo algarismo.</p>
+    <div class="ex">252 ÷ 4<br>25 ÷ 4 = <b>6</b> (4 × 6 = 24), sobra 1<br>baixa o 2 → 12 ÷ 4 = <b>3</b>, sobra 0<br>Resultado: <b>63</b> · Confere: 4 × 63 = 252</div>
+    <div class="box tip"><span class="lbl">Sempre confira</span><p>Na divisão, multiplique o resultado pelo divisor. Tem que dar o número do começo.</p></div>
+    <details class="try"><summary>Tente você: 215 × 4 e 144 ÷ 6.</summary><p>215 × 4 = <b>860</b>. 144 ÷ 6: 14 ÷ 6 = 2, sobra 2; baixa o 4 → 24 ÷ 6 = 4 → <b>24</b>.</p></details>`]]},
   {id:"decimais",cap:"Cap. 7",t:"Números decimais",q:"mat/decimais",steps:[
-   ["Casas decimais",`<p class="muted">Depende de: valor posicional e frações decimais.</p>
-    <div class="tbl"><table><tr><th>Unidade</th><th>,</th><th>Décimo</th><th>Centésimo</th><th>Milésimo</th></tr><tr><td>3</td><td>,</td><td>4</td><td>7</td><td>5</td></tr></table></div>
-    <p>3,475 se lê "três inteiros e quatrocentos e setenta e cinco milésimos".</p>`],
-   ["Comparar",`<p>Complete com zeros até os dois números terem o mesmo número de casas. Depois compare.</p>
-    <div class="ex">0,5 e 0,45 → <b>0,50</b> e <b>0,45</b> → 0,50 é maior</div>
-    <div class="box warn"><span class="lbl">Erro comum</span><p>Achar que 0,45 é maior "porque 45 é maior que 5".</p></div>`],
-   ["Somar e subtrair",`<p>Vírgula embaixo de vírgula. Onde faltar casa, coloque zero.</p>
-    <div class="ex">&nbsp;&nbsp;2,50<br>+ 1,35<br>= <b>3,85</b></div><div class="ex">5,0 − 1,8 = <b>3,2</b></div>`],
-   ["Multiplicar",`<ol><li>Multiplique como se não houvesse vírgula.</li><li>Conte quantas casas depois da vírgula os dois números têm juntos.</li><li>Coloque a vírgula no resultado com essa quantidade de casas.</li></ol>
-    <div class="ex">0,4 × 0,2 → 4 × 2 = 8 → 1 + 1 = 2 casas → <b>0,08</b></div><div class="ex">1,2 × 3 → 12 × 3 = 36 → 1 casa → <b>3,6</b></div>`],
-   ["Dividir",`<p><b>Decimal por inteiro:</b> faça a conta armada. Quando passar pela vírgula, coloque vírgula no resultado.</p><div class="ex">7,5 ÷ 3 = <b>2,5</b> (confere: 3 × 2,5 = 7,5)</div>
-    <p><b>Decimal por decimal:</b> iguale as casas e tire as vírgulas.</p><div class="ex">1,2 ÷ 0,4 → 12 ÷ 4 = <b>3</b></div>`],
-   ["Potenciação",`<p>O expoente diz quantas vezes o número se multiplica por ele mesmo.</p>
-    <div class="ex">0,3² = 0,3 × 0,3 = <b>0,09</b><br>1,2² = 1,2 × 1,2 = <b>1,44</b></div>
-    <div class="box warn"><span class="lbl">Erro comum</span><p>Fazer 0,3² = 0,6 (multiplicou por 2) ou 0,9 (esqueceu de contar as casas).</p></div>`]]},
+   ["Casas decimais e leitura",`<p class="muted">Depende de: valor posicional e frações decimais.</p>
+    <p>Número decimal é o que tem vírgula. À esquerda da vírgula fica a <b>parte inteira</b>. À direita, a <b>parte decimal</b>, que é um pedaço menor que 1.</p>
+    <div class="pv"><span><b>3</b><small>uni&shy;dades</small></span><span class="pv-c">,</span><span><b>4</b><small>déci&shy;mos</small></span><span><b>7</b><small>centé&shy;simos</small></span><span><b>5</b><small>milé&shy;simos</small></span></div>
+    <p><b>Como ler:</b> leia a parte inteira, diga "inteiros" e depois leia a parte decimal inteira de uma vez, com o nome da <b>última casa</b>.</p>
+    <div class="ex">0,5 → cinco <b>décimos</b><br>2,07 → dois inteiros e sete <b>centésimos</b><br>3,475 → três inteiros e quatrocentos e setenta e cinco <b>milésimos</b></div>
+    <div class="box tip"><span class="lbl">Zero no fim não muda nada</span><p>0,5 = 0,50 = 0,500. Cinco décimos é o mesmo que cinquenta centésimos. Isso vai ser muito útil para comparar e somar.</p></div>
+    <details class="try"><summary>Tente você: como se lê 12,06?</summary><p>Doze inteiros e seis <b>centésimos</b> (a última casa é a dos centésimos).</p></details>`],
+   ["Comparar decimais",`<p>Para saber qual número é maior:</p>
+    <ol><li>Compare primeiro a <b>parte inteira</b>. Quem tiver a maior já ganhou.</li><li>Se a parte inteira for igual, <b>complete com zeros</b> até os dois terem a mesma quantidade de casas.</li><li>Agora compare como se fossem números sem vírgula.</li></ol>
+    <div class="ex">2,3 e 1,99 → parte inteira 2 é maior que 1 → <b>2,3 é maior</b></div>
+    <div class="ex">0,5 e 0,45 → 0,<b>50</b> e 0,<b>45</b> → 50 é mais que 45 → <b>0,5 é maior</b></div>
+    <div class="ex">1,09 e 1,9 → 1,<b>09</b> e 1,<b>90</b> → <b>1,9 é maior</b></div>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Achar que 0,45 é maior "porque 45 é maior que 5". Sem completar com zero, você está comparando centésimos com décimos, que são tamanhos diferentes.</p></div>
+    <details class="try"><summary>Tente você: coloque em ordem crescente 0,3 · 0,25 · 0,305.</summary><p>Com três casas: 0,300 · 0,250 · 0,305. Em ordem: <b>0,25 · 0,3 · 0,305</b>.</p></details>`],
+   ["Somar e subtrair",`<p>A regra de ouro: <b>vírgula embaixo de vírgula</b>. Assim, décimo fica embaixo de décimo e centésimo embaixo de centésimo. Onde faltar casa, coloque zero.</p>
+    <div class="ex">&nbsp;&nbsp;2,50<br>+ 1,35<br>= <b>3,85</b></div>
+    <p>Número inteiro também tem vírgula, só que escondida no fim: <b>5 = 5,0</b> e <b>10 = 10,00</b>.</p>
+    <div class="ex">5 − 1,8 → 5,0 − 1,8 = <b>3,2</b><br>10 − 3,75 → 10,00 − 3,75 = <b>6,25</b></div>
+    <p><b>Com dinheiro:</b> Alice comprou um caderno de R$ 12,50 e um lápis de R$ 1,75. Pagou com R$ 20,00.</p>
+    <div class="ex">Total: 12,50 + 1,75 = <b>14,25</b><br>Troco: 20,00 − 14,25 = <b>5,75</b></div>
+    <details class="try"><summary>Tente você: 6,3 + 2,48 e 8 − 2,6.</summary><p>6,30 + 2,48 = <b>8,78</b>. 8,0 − 2,6 = <b>5,4</b>.</p></details>`],
+   ["Multiplicar",`<ol><li>Multiplique como se <b>não houvesse vírgula</b>.</li><li>Conte quantas casas depois da vírgula os <b>dois números têm juntos</b>.</li><li>No resultado, conte essa quantidade de casas da direita para a esquerda e coloque a vírgula.</li></ol>
+    <div class="ex">1,2 × 3 → 12 × 3 = 36 → 1 casa no total → <b>3,6</b></div>
+    <div class="ex">0,4 × 0,2 → 4 × 2 = 8 → 1 + 1 = 2 casas → 0,0<b>8</b> → <b>0,08</b></div>
+    <div class="ex">2,5 × 1,2 → 25 × 12 = 300 → 2 casas → 3,00 → <b>3</b></div>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Na multiplicação <b>não</b> se alinha a vírgula como na soma. Faz a conta toda sem vírgula e só no fim conta as casas.</p></div>
+    <details class="try"><summary>Tente você: 0,6 × 0,5 e 3,4 × 2.</summary><p>6 × 5 = 30 → 2 casas → 0,30 = <b>0,3</b>. 34 × 2 = 68 → 1 casa → <b>6,8</b>.</p></details>`],
+   ["Dividir",`<p><b>Decimal dividido por inteiro:</b> faça a conta armada normalmente. Quando passar pela vírgula, coloque a vírgula no resultado.</p>
+    <div class="ex">7,5 ÷ 3 → 7 ÷ 3 = <b>2</b>, sobra 1 → passou a vírgula, coloca vírgula → baixa o 5: 15 ÷ 3 = <b>5</b> → <b>2,5</b><br>Confere: 3 × 2,5 = 7,5 ✓</div>
+    <p><b>Divisão por decimal:</b> iguale as casas dos dois números (completando com zero) e depois tire as vírgulas.</p>
+    <div class="ex">1,2 ÷ 0,4 → mesma quantidade de casas → 12 ÷ 4 = <b>3</b><br>4,8 ÷ 0,6 → 48 ÷ 6 = <b>8</b><br>3 ÷ 0,5 → 3,0 ÷ 0,5 → 30 ÷ 5 = <b>6</b></div>
+    <p><b>Quando a conta não é exata:</b> coloque vírgula e continue com zero. 7 ÷ 2 → 3, sobra 1 → 7,0 → <b>3,5</b>.</p>
+    <details class="try"><summary>Tente você: 9,6 ÷ 4 e 2,4 ÷ 0,6.</summary><p>9,6 ÷ 4 = <b>2,4</b> (4 × 2,4 = 9,6). 2,4 ÷ 0,6 → 24 ÷ 6 = <b>4</b>.</p></details>`],
+   ["Potenciação",`<p>Potência é uma multiplicação repetida. O <b>expoente</b> (o número pequeno em cima) diz quantas vezes a <b>base</b> aparece na multiplicação.</p>
+    <div class="ex">5² = 5 × 5 = <b>25</b> (lê-se "cinco ao quadrado")<br>2³ = 2 × 2 × 2 = <b>8</b> (lê-se "dois ao cubo")</div>
+    <p>Com decimais é igual. Depois é só usar a regra das casas da multiplicação:</p>
+    <div class="ex">0,3² = 0,3 × 0,3 → 3 × 3 = 9 → 2 casas → <b>0,09</b><br>1,2² = 1,2 × 1,2 → 12 × 12 = 144 → 2 casas → <b>1,44</b><br>0,2³ = 0,2 × 0,2 × 0,2 → 8 → 3 casas → <b>0,008</b></div>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Fazer 0,3² = 0,6 (multiplicou por 2) ou 0,9 (esqueceu de contar as casas). O expoente <b>não</b> multiplica a base.</p></div>
+    <details class="try"><summary>Tente você: 0,5² e 1,1².</summary><p>0,5 × 0,5 = <b>0,25</b>. 1,1 × 1,1 → 11 × 11 = 121 → <b>1,21</b>.</p></details>`],
+   ["Resolvendo problemas",`<p>Na prova, os decimais aparecem em problemas, quase sempre com dinheiro, medidas ou litros. Use sempre o mesmo roteiro:</p>
+    <ol><li><b>Leia duas vezes</b> e descubra o que a pergunta quer.</li><li><b>Separe os dados</b> (os números e o que cada um significa).</li><li><b>Escolha a conta:</b> juntar é somar, tirar ou troco é subtrair, repetir é multiplicar, repartir é dividir.</li><li><b>Faça a conta</b> e <b>confira</b> se o resultado faz sentido.</li></ol>
+    <div class="ex"><b>Problema:</b> Três amigos dividiram igualmente uma conta de R$ 37,50. Quanto cada um pagou?<br>Repartir → dividir: 37,50 ÷ 3 = <b>12,50</b><br>Confere: 3 × 12,50 = 37,50 ✓</div>
+    <div class="ex"><b>Problema:</b> Uma fita de 4,8 m foi cortada em pedaços de 0,6 m. Quantos pedaços?<br>Quantas vezes cabe → dividir: 4,8 ÷ 0,6 → 48 ÷ 6 = <b>8 pedaços</b></div>
+    <details class="try"><summary>Tente você: um suco custa R$ 3,50. Quanto custam 4 sucos? E qual o troco de R$ 20?</summary><p>3,50 × 4 = <b>R$ 14,00</b>. Troco: 20,00 − 14,00 = <b>R$ 6,00</b>.</p></details>`]]},
   {id:"porcentagem",cap:"Cap. 8",t:"Porcentagem",q:"mat/porcentagem",steps:[
-   ["O que é porcentagem",`<p class="muted">Depende de: frações, divisão, decimais.</p><p>% quer dizer "de cada 100".</p>
-    <div class="ex">30% = 30/100 = <b>0,3</b><br>75% = 75/100 = 3/4</div>`],
-   ["Os atalhos",`<div class="tbl"><table><tr><th>%</th><th>Atalho</th><th>de R$ 80</th></tr>
-    <tr><td>50%</td><td>metade</td><td>40</td></tr><tr><td>25%</td><td>dividir por 4</td><td>20</td></tr>
-    <tr><td>10%</td><td>dividir por 10</td><td>8</td></tr><tr><td>20%</td><td>2 × 10%</td><td>16</td></tr>
-    <tr><td>5%</td><td>metade de 10%</td><td>4</td></tr><tr><td>1%</td><td>dividir por 100</td><td>0,80</td></tr></table></div>`],
-   ["Desconto e acréscimo",`<p><b>Desconto:</b> tira a porcentagem do preço.</p><div class="ex">R$ 150 com 20% → 20% de 150 = 30 → 150 − 30 = <b>R$ 120</b></div>
-    <p><b>Acréscimo:</b> soma a porcentagem.</p><div class="ex">R$ 1.000 + 5% → 5% de 1.000 = 50 → <b>R$ 1.050</b></div>`],
-   ["Educação financeira",`<p>Sempre multiplique as parcelas antes de comparar com o preço à vista.</p>
-    <div class="ex">À vista: R$ 40<br>Parcelado: 4 × R$ 11 = <b>R$ 44</b><br>À vista é R$ 4 mais barato.</div>`]]},
+   ["O que é porcentagem",`<p class="muted">Depende de: frações, divisão, decimais.</p>
+    <p>O símbolo <b>%</b> quer dizer "<b>de cada 100</b>". Pense num quadro com 100 quadradinhos: 30% são 30 quadradinhos pintados de 100.</p>
+    <p>Toda porcentagem pode ser escrita de três jeitos, que valem a mesma coisa:</p>
+    <div class="tbl"><table><tr><th>%</th><th>Fração</th><th>Decimal</th></tr>
+     <tr><td>50%</td><td>50/100 = 1/2</td><td>0,5</td></tr><tr><td>25%</td><td>25/100 = 1/4</td><td>0,25</td></tr>
+     <tr><td>75%</td><td>75/100 = 3/4</td><td>0,75</td></tr><tr><td>10%</td><td>10/100 = 1/10</td><td>0,1</td></tr>
+     <tr><td>20%</td><td>20/100 = 1/5</td><td>0,2</td></tr><tr><td>100%</td><td>100/100</td><td>1 (o inteiro)</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p>100% é o todo. 50% é metade. Mais que 100% é mais do que o todo (como um aumento).</p></div>
+    <details class="try"><summary>Tente você: escreva 40% como fração e como decimal.</summary><p>40% = 40/100 = <b>2/5</b> = <b>0,4</b>.</p></details>`],
+   ["Os atalhos",`<p>Quase toda conta de porcentagem da prova sai com estes atalhos, sem conta armada:</p>
+    <div class="tbl"><table><tr><th>%</th><th>Atalho</th><th>de R$ 80</th></tr>
+     <tr><td>50%</td><td>metade (÷ 2)</td><td>40</td></tr><tr><td>25%</td><td>÷ 4 (metade da metade)</td><td>20</td></tr>
+     <tr><td>10%</td><td>÷ 10</td><td>8</td></tr><tr><td>20%</td><td>2 × 10%</td><td>16</td></tr>
+     <tr><td>5%</td><td>metade de 10%</td><td>4</td></tr><tr><td>1%</td><td>÷ 100</td><td>0,80</td></tr></table></div>
+    <p><b>Juntando atalhos</b> você faz qualquer porcentagem "quebrada":</p>
+    <div class="ex">15% de 200 → 10% (20) + 5% (10) = <b>30</b><br>35% de 200 → 30% (60) + 5% (10) = <b>70</b><br>75% de 40 → 50% (20) + 25% (10) = <b>30</b></div>
+    <details class="try"><summary>Tente você: 30% de 90 e 5% de 60.</summary><p>10% de 90 = 9 → 30% = <b>27</b>. 10% de 60 = 6 → 5% = <b>3</b>.</p></details>`],
+   ["Calcular qualquer porcentagem",`<p>Quando o atalho não serve, use a regra geral: <b>divida por 100 e multiplique pela porcentagem</b>. É o mesmo que achar 1% e repetir.</p>
+    <div class="ex">12% de 250<br>1% de 250 = 250 ÷ 100 = 2,5<br>12% = 12 × 2,5 = <b>30</b></div>
+    <p><b>Descobrir a porcentagem:</b> quando a pergunta é "quantos por cento", monte a fração e transforme em /100.</p>
+    <div class="ex">Alice acertou 18 de 20 questões.<br>18/20 → multiplica em cima e embaixo por 5 → 90/100 = <b>90%</b></div>
+    <div class="ex">3 de cada 5 alunos preferem futebol → 3/5 = 60/100 = <b>60%</b></div>
+    <details class="try"><summary>Tente você: 8% de 150. E 12 de 40 é quantos por cento?</summary><p>1% de 150 = 1,5 → 8 × 1,5 = <b>12</b>. 12/40 = 3/10 = 30/100 = <b>30%</b>.</p></details>`],
+   ["Desconto",`<p>Desconto é quando o preço <b>diminui</b>. Primeiro calcule quanto é o desconto, depois tire do preço.</p>
+    <div class="ex">Tênis de R$ 150 com 20% de desconto<br>20% de 150: 10% = 15 → 20% = <b>30</b><br>Preço final: 150 − 30 = <b>R$ 120</b></div>
+    <p><b>Atalho:</b> com 20% de desconto você paga 100% − 20% = <b>80%</b> do preço.</p>
+    <div class="ex">80% de 150 → 10% = 15 → 8 × 15 = <b>R$ 120</b> (mesmo resultado)</div>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Parar no meio e responder o valor do desconto (R$ 30) quando a pergunta era o preço final (R$ 120). Leia de novo o que a pergunta quer.</p></div>
+    <details class="try"><summary>Tente você: uma blusa de R$ 80 com 25% de desconto.</summary><p>25% de 80 = 20. Preço final: 80 − 20 = <b>R$ 60</b>.</p></details>`],
+   ["Acréscimo e multa",`<p>Acréscimo é quando o valor <b>aumenta</b>: aumento de salário, multa por atraso, juros. Calcule a porcentagem e <b>some</b>.</p>
+    <div class="ex">Salário de R$ 1.000 com aumento de 5%<br>5% de 1.000: 10% = 100 → 5% = <b>50</b><br>Novo salário: 1.000 + 50 = <b>R$ 1.050</b></div>
+    <div class="ex">Conta de luz de R$ 120 com 10% de multa<br>10% de 120 = 12 → total: 120 + 12 = <b>R$ 132</b></div>
+    <p><b>Atalho:</b> com 10% de acréscimo você paga 110% do valor.</p>
+    <details class="try"><summary>Tente você: um produto de R$ 200 aumentou 15%. Qual o novo preço?</summary><p>15% de 200 = 20 + 10 = 30. Novo preço: <b>R$ 230</b>.</p></details>`],
+   ["Educação financeira",`<p>Na hora de comprar, o preço anunciado nem sempre é o que você paga. Antes de decidir, <b>faça as contas</b>.</p>
+    <p><b>À vista ou parcelado?</b> Multiplique a parcela pelo número de parcelas e compare com o preço à vista.</p>
+    <div class="ex">Bola: R$ 40 à vista ou 4 × R$ 11<br>Parcelado: 4 × 11 = <b>R$ 44</b><br>À vista é <b>R$ 4 mais barato</b></div>
+    <div class="ex">Celular: R$ 600 à vista ou 10 × R$ 65<br>Parcelado: 10 × 65 = <b>R$ 650</b> → R$ 50 a mais</div>
+    <p><b>Comparar lojas:</b> calcule o preço final em cada uma. Loja A: R$ 500 com 10% de desconto = R$ 450. Loja B: R$ 470. A loja A é mais barata, mesmo tendo o preço anunciado maior.</p>
+    <div class="box tip"><span class="lbl">Consumo consciente</span><p>Antes de comprar, pergunte: eu preciso disso? Cabe no meu dinheiro? Existe opção mais barata?</p></div>
+    <details class="try"><summary>Tente você: R$ 90 à vista ou 3 × R$ 32. Qual compensa?</summary><p>3 × 32 = 96. À vista é <b>R$ 6 mais barato</b>.</p></details>`]]},
   {id:"probabilidade",cap:"Cap. 8",t:"Probabilidade e contagem",q:"mat/probabilidade",steps:[
-   ["Como calcular",`<p class="muted">Depende de: frações e multiplicação.</p>
-    <div class="ex"><b>Probabilidade = casos que eu quero ÷ casos possíveis</b></div>
-    <p>Num dado, a chance de sair 4 é <b>1/6</b>. De sair par (2, 4, 6) é 3/6 = <b>1/2</b> = 50%.</p>
-    <p>0 é impossível (sair 7 num dado). 1 é certeza.</p>`],
-   ["Árvore de possibilidades",`<p>Desenhe um galho para cada resultado. Uma moeda jogada 2 vezes:</p>${ARVORE_SVG}<p>São <b>4 resultados</b> possíveis.</p>`],
-   ["Princípio fundamental da contagem",`<p>Quando há escolhas em etapas, <b>multiplique</b>.</p>
-    <div class="ex">3 camisetas × 2 bermudas = <b>6 roupas</b><br>3 pães × 2 recheios × 2 sucos = <b>12 lanches</b></div>
-    <div class="box warn"><span class="lbl">Erro comum</span><p>Somar (3 + 2 = 5) em vez de multiplicar.</p></div>`]]},
+   ["O que é probabilidade",`<p class="muted">Depende de: frações e multiplicação.</p>
+    <p>Probabilidade é a <b>chance</b> de algo acontecer. Ela aparece em experimentos em que não dá para saber o resultado antes: jogar um dado, uma moeda, sortear uma bolinha.</p>
+    <p>O conjunto de <b>todos os resultados possíveis</b> se chama <b>espaço amostral</b>.</p>
+    <div class="ex">Moeda: {cara, coroa} → 2 resultados<br>Dado: {1, 2, 3, 4, 5, 6} → 6 resultados<br>Saco com 3 azuis e 2 vermelhas → 5 bolinhas</div>
+    <details class="try"><summary>Tente você: quantos resultados tem o espaço amostral de sortear uma letra da palavra BOLA?</summary><p><b>4</b> resultados: B, O, L, A.</p></details>`],
+   ["Como calcular",`<div class="ex"><b>Probabilidade = casos que eu quero ÷ casos possíveis</b></div>
+    <div class="ex">Sair 4 num dado → quero 1 caso de 6 → <b>1/6</b><br>Sair par num dado → pares: 2, 4, 6 → 3 de 6 → 3/6 = <b>1/2</b><br>Tirar vermelha (3 azuis e 2 vermelhas) → 2 de 5 → <b>2/5</b></div>
+    <p>A resposta pode ser dada como fração, decimal ou porcentagem: <b>1/2 = 0,5 = 50%</b> · <b>1/4 = 0,25 = 25%</b> · <b>2/5 = 0,4 = 40%</b>.</p>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Colocar embaixo só os casos que eu <b>não</b> quero. Com 3 azuis e 2 vermelhas, a chance de vermelha é 2/<b>5</b> (o total), não 2/3.</p></div>
+    <details class="try"><summary>Tente você: num dado, qual a chance de sair um número maior que 4?</summary><p>Maiores que 4: 5 e 6 → 2 de 6 = 2/6 = <b>1/3</b>.</p></details>`],
+   ["Impossível, provável e certo",`<p>A probabilidade vai sempre de <b>0</b> a <b>1</b> (ou de 0% a 100%).</p>
+    <div class="tbl"><table><tr><th>Valor</th><th>Quer dizer</th><th>Exemplo</th></tr>
+     <tr><td>0</td><td>impossível</td><td>sair 7 num dado comum</td></tr>
+     <tr><td>1/2</td><td>mesma chance de acontecer ou não</td><td>cara numa moeda</td></tr>
+     <tr><td>1</td><td>certeza</td><td>sair um número de 1 a 6 num dado</td></tr></table></div>
+    <p><b>Mais provável</b> é o que tem mais casos. Num saco com 4 verdes, 3 amarelas e 1 branca, a verde é a mais provável (4/8) e a branca a menos provável (1/8).</p>
+    <details class="try"><summary>Tente você: num saco só com bolinhas vermelhas, qual a chance de tirar azul?</summary><p><b>0</b>: é impossível, porque não existe bolinha azul.</p></details>`],
+   ["Árvore de possibilidades",`<p>A árvore ajuda a <b>não esquecer nenhum resultado</b>. Cada escolha abre novos galhos. Uma moeda jogada 2 vezes:</p>${ARVORE_SVG}
+    <p>No fim de cada galho está um resultado: cara-cara, cara-coroa, coroa-cara, coroa-coroa. São <b>4 resultados</b>.</p>
+    <div class="ex">Chance de sair duas caras: 1 de 4 → <b>1/4</b><br>Chance de sair uma cara e uma coroa (em qualquer ordem): 2 de 4 → <b>1/2</b></div>
+    <details class="try"><summary>Tente você: e se a moeda for jogada 3 vezes?</summary><p>Cada lançamento dobra os galhos: 2 × 2 × 2 = <b>8 resultados</b>.</p></details>`],
+   ["Princípio fundamental da contagem",`<p>Quando uma escolha acontece em <b>etapas</b>, o total de possibilidades é a <b>multiplicação</b> das opções de cada etapa.</p>
+    <div class="ex">3 camisetas × 2 bermudas = <b>6 roupas</b><br>3 pães × 2 recheios × 2 sucos = <b>12 lanches</b><br>4 sabores × 3 casquinhas = <b>12 sorvetes</b></div>
+    <p><b>Quando a opção não pode repetir</b>, cada etapa tem uma opção a menos:</p>
+    <div class="ex">De quantas formas 3 amigos podem ficar em fila?<br>1º lugar: 3 opções · 2º: sobram 2 · 3º: sobra 1 → 3 × 2 × 1 = <b>6</b></div>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Somar (3 + 2 = 5) em vez de multiplicar. Cada camiseta combina com <b>cada</b> bermuda, por isso multiplica.</p></div>
+    <details class="try"><summary>Tente você: com 2 calças, 3 camisetas e 2 tênis, quantos visuais?</summary><p>2 × 3 × 2 = <b>12 visuais</b>.</p></details>`]]},
   {id:"plano",cap:"Cap. 9",t:"Plano cartesiano e vistas",q:"mat/plano",steps:[
-   ["Eixos e origem",`<p>Eixo <b>x</b> é o deitado (horizontal). Eixo <b>y</b> é o em pé (vertical). Eles se cruzam na <b>origem (0, 0)</b>.</p>
-    <div class="box tip"><span class="lbl">Para lembrar</span><p>Primeiro o x se deita, depois o y se levanta.</p></div>`],
-   ["Par ordenado",`<p>(x, y): primeiro anda para o lado, depois sobe. A ordem importa: (3, 2) não é igual a (2, 3).</p>${PLANO_SVG}
-    <p>Se x = 0, o ponto fica em cima do eixo y. Se y = 0, fica em cima do eixo x.</p>`],
-   ["Ampliação e redução",`<p>Multiplicar as coordenadas amplia a figura. Dividir reduz. A forma não muda, só o tamanho.</p>
-    <div class="ex">Ampliar ×2: (1, 3) → <b>(2, 6)</b><br>Reduzir ÷2: (4, 8) → <b>(2, 4)</b></div>`],
-   ["Vistas e planta baixa",`<p>Um objeto pode ser desenhado de <b>frente</b>, de <b>lado</b> ou de <b>cima</b>.</p>
-    <p>A <b>planta baixa</b> é a casa vista de cima, mostrando os cômodos, portas e janelas.</p>
-    <div class="box tip"><span class="lbl">Atividade</span><p>Pegue uma caixa de remédio e desenhe como ela aparece de frente, de lado e de cima.</p></div>`]]}
+   ["Eixos e origem",`<p>O plano cartesiano é como um mapa feito com duas retas numeradas que se cruzam:</p>
+    <ul><li>O eixo <b>x</b> é o <b>deitado</b> (horizontal).</li><li>O eixo <b>y</b> é o <b>em pé</b> (vertical).</li><li>Eles se cruzam na <b>origem</b>, o ponto <b>(0, 0)</b>.</li></ul>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p>Primeiro o x se deita, depois o y se levanta. Como no alfabeto: x vem antes de y.</p></div>
+    <p>Ele é usado em mapas, jogos (como batalha naval), telas de computador e gráficos.</p>`],
+   ["Par ordenado",`<p>Cada ponto tem um endereço com dois números entre parênteses: <b>(x, y)</b>. O primeiro diz quanto <b>andar para o lado</b>; o segundo, quanto <b>subir</b>.</p>${PLANO_SVG}
+    <div class="ex">A(3, 2): sai da origem, anda <b>3 para a direita</b> e sobe <b>2</b><br>B(1, 4): anda <b>1 para a direita</b> e sobe <b>4</b></div>
+    <div class="box warn"><span class="lbl">A ordem importa</span><p>(3, 2) e (2, 3) são pontos <b>diferentes</b>. Trocar a ordem é o erro mais comum da prova.</p></div>
+    <details class="try"><summary>Tente você: partindo de (2, 3), andei 3 casas para a direita. Onde cheguei?</summary><p>Andar para o lado muda só o x: 2 + 3 = 5 → <b>(5, 3)</b>.</p></details>`],
+   ["Pontos em cima dos eixos",`<p>Se um dos números é zero, o ponto fica <b>em cima de um eixo</b>:</p>
+    <div class="ex">x = 0 → não andou para o lado → fica <b>no eixo y</b>. Ex.: (0, 4)<br>y = 0 → não subiu → fica <b>no eixo x</b>. Ex.: (6, 0)<br>(0, 0) → é a <b>origem</b></div>
+    <p><b>Ler um ponto no desenho:</b> desça até o eixo x e leia o número (esse é o x). Depois vá até o eixo y e leia (esse é o y).</p>
+    <p><b>Qual está mais à direita?</b> O que tem o maior x. <b>Qual está mais alto?</b> O que tem o maior y.</p>
+    <details class="try"><summary>Tente você: (7, 1), (1, 8) e (5, 5). Qual está mais alto? E mais à direita?</summary><p>Mais alto: maior y → <b>(1, 8)</b>. Mais à direita: maior x → <b>(7, 1)</b>.</p></details>`],
+   ["Ampliação e redução",`<p>Para <b>ampliar</b> uma figura, multiplique <b>as duas coordenadas</b> de todos os vértices pelo mesmo número. Para <b>reduzir</b>, divida.</p>
+    <div class="ex">Triângulo com vértices (1, 1), (3, 1) e (1, 2)<br>Ampliado ×2 → <b>(2, 2), (6, 2) e (2, 4)</b></div>
+    <div class="ex">Reduzir pela metade: (4, 8) → <b>(2, 4)</b> · (6, 10) → <b>(3, 5)</b></div>
+    <p>A figura ampliada ou reduzida tem <b>a mesma forma</b>, só muda o tamanho. Os ângulos continuam iguais.</p>
+    <div class="box warn"><span class="lbl">Erro comum</span><p>Multiplicar só o x ou só o y. Assim a figura fica esticada e deixa de ser uma ampliação.</p></div>
+    <details class="try"><summary>Tente você: o ponto (2, 1) virou (6, 3). A figura foi ampliada quantas vezes?</summary><p>2 × 3 = 6 e 1 × 3 = 3 → ampliada <b>3 vezes</b>.</p></details>`],
+   ["Vistas e planta baixa",`<p>Um objeto pode ser desenhado visto de <b>frente</b>, de <b>lado</b> ou de <b>cima</b>. Cada vista mostra uma forma diferente:</p>
+    <div class="tbl"><table><tr><th>Objeto</th><th>De frente</th><th>De cima</th></tr>
+     <tr><td>Lata de refrigerante</td><td>retângulo</td><td>círculo</td></tr>
+     <tr><td>Caixa de sapato</td><td>retângulo</td><td>retângulo</td></tr>
+     <tr><td>Cone de trânsito</td><td>triângulo</td><td>círculo</td></tr></table></div>
+    <p>A <b>planta baixa</b> é a casa vista <b>de cima</b>, como se tirassem o telhado. Ela mostra os cômodos, as portas e as janelas, mas não mostra alturas.</p>
+    <div class="box tip"><span class="lbl">Atividade</span><p>Pegue uma caixa de remédio e desenhe como ela aparece de frente, de lado e de cima.</p></div>
+    <details class="try"><summary>Tente você: uma bola vista de qualquer lado parece o quê?</summary><p>Um <b>círculo</b>, de qualquer lado.</p></details>`]]}
  ],
  port:[
   {id:"generos",cap:"Cap. 8",t:"Cartaz, anúncio e outdoor",q:"port/cap8",steps:[
-   ["Cartaz de campanha",`<p>Quer que as pessoas <b>mudem um comportamento</b>: economizar água, se vacinar, não jogar lixo.</p><p>Usa imagem, texto curto, slogan e verbos no imperativo.</p>`],
-   ["Anúncio publicitário",`<p>Quer <b>vender</b> um produto ou serviço. Mostra vantagens e tenta convencer quem lê.</p>
-    <p>Cartaz e anúncio misturam linguagem <b>verbal</b> (palavras) e <b>não verbal</b> (imagens, cores).</p>`],
-   ["Outdoor",`<p>Anúncio gigante na rua. Tem texto muito curto e imagem forte, porque as pessoas leem de passagem, em poucos segundos.</p>`]]},
+   ["Textos que querem convencer",`<p>O capítulo 8 é sobre textos que tentam <b>convencer o leitor</b> de alguma coisa. Eles se chamam textos <b>persuasivos</b> (persuadir = convencer).</p>
+    <p>Três deles caem na prova: o <b>cartaz de campanha</b>, o <b>anúncio publicitário</b> e o <b>outdoor</b>. Todos juntam:</p>
+    <ul><li><b>Linguagem verbal:</b> as palavras escritas.</li><li><b>Linguagem não verbal:</b> imagens, cores, símbolos, tipo de letra.</li></ul>
+    <p>O que muda entre eles é o <b>objetivo</b> (o que o texto quer que você faça) e o <b>lugar</b> onde aparecem.</p>`],
+   ["Cartaz de campanha",`<p>Quer que as pessoas <b>mudem um comportamento</b> para o bem de todos: economizar água, se vacinar, não jogar lixo na rua, respeitar a faixa de pedestres.</p>
+    <p><b>Quem faz:</b> governos, escolas, ONGs, hospitais. <b>Não vende nada.</b></p>
+    <div class="ex"><b>Exemplo:</b> imagem de uma torneira pingando e a frase<br>"<b>Feche a torneira. Cada gota conta.</b>"<br>Embaixo: logotipo da prefeitura.</div>
+    <p><b>Características:</b> imagem forte, texto curto, <b>slogan</b> (frase fácil de lembrar) e verbos no <b>imperativo</b> (feche, vacine, economize).</p>`],
+   ["Anúncio publicitário",`<p>Quer <b>vender</b> um produto ou serviço. Mostra as vantagens e tenta despertar o desejo de comprar.</p>
+    <p><b>Quem faz:</b> empresas e lojas.</p>
+    <div class="ex"><b>Exemplo:</b> foto de um tênis colorido e a frase<br>"<b>Corra mais longe. Seja livre.</b>"<br>Embaixo: a marca e o preço.</div>
+    <p><b>Recursos que o anúncio usa para convencer:</b></p>
+    <ul><li>Adjetivos positivos: <i>novo, incrível, macio, o melhor</i>.</li><li>Verbos no imperativo: <i>compre, experimente, aproveite</i>.</li><li>Slogan e marca bem visíveis.</li><li>Imagens bonitas, pessoas felizes usando o produto.</li></ul>
+    <details class="try"><summary>Tente você: "Vacine seu filho!" é cartaz de campanha ou anúncio?</summary><p><b>Cartaz de campanha</b>: quer mudar um comportamento e não está vendendo nada.</p></details>`],
+   ["Outdoor",`<p>O outdoor é um anúncio (ou campanha) <b>gigante, na rua</b>, em placas enormes.</p>
+    <p>Quem vê está passando de carro, ônibus ou a pé, e tem <b>poucos segundos</b> para ler. Por isso o outdoor tem:</p>
+    <ul><li><b>Texto muito curto</b>, às vezes só uma frase.</li><li><b>Imagem forte</b> e cores chamativas.</li><li>Letras grandes, que dá para ler de longe.</li></ul>
+    <div class="box warn"><span class="lbl">Pegadinha</span><p>O texto do outdoor é curto por causa do <b>tempo de leitura</b> de quem passa, não por falta de espaço.</p></div>`],
+   ["Comparando os três",`<div class="tbl"><table><tr><th></th><th>Objetivo</th><th>Onde</th></tr>
+     <tr><td><b>Cartaz de campanha</b></td><td>mudar um comportamento</td><td>escolas, postos, ruas</td></tr>
+     <tr><td><b>Anúncio</b></td><td>vender</td><td>revistas, internet, TV</td></tr>
+     <tr><td><b>Outdoor</b></td><td>vender ou conscientizar</td><td>placas grandes na rua</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Pergunta-chave</span><p>Na prova, pergunte: <b>o texto quer vender alguma coisa?</b> Se sim, é anúncio. Se quer mudar uma atitude, é campanha.</p></div>
+    <details class="try"><summary>Tente você: "Não dirija depois de beber. Sua vida vale mais." é o quê?</summary><p><b>Campanha de conscientização</b>: não vende nada, quer mudar um comportamento. Repare no imperativo negativo "não dirija".</p></details>`]]},
   {id:"imperativo",cap:"Cap. 8",t:"Modo imperativo",q:"port/cap8",steps:[
-   ["Para que serve",`<p>Dá <b>ordem, conselho, pedido ou convite</b>. Aparece muito em campanhas e anúncios.</p>`],
-   ["Afirmativo e negativo",`<div class="ex">Afirmativo: <b>Economize</b> água. <b>Beba</b> mais água.<br>Negativo: <b>Não jogue</b> lixo na rua.</div>
-    <div class="box tip"><span class="lbl">Atividade</span><p>Achar 3 verbos no imperativo em propagandas ou embalagens de casa.</p></div>`]]},
+   ["Para que serve",`<p>O <b>modo imperativo</b> é o jeito do verbo usado para <b>dar ordem, conselho, pedido ou convite</b>. É o modo preferido de cartazes, anúncios, receitas e manuais.</p>
+    <div class="ex">Ordem: <b>Feche</b> a porta.<br>Conselho: <b>Beba</b> mais água.<br>Pedido: <b>Ajude</b> a manter a escola limpa.<br>Convite: <b>Venha</b> conhecer nossa loja!</div>
+    <p>Repare que no imperativo quase nunca aparece o sujeito: a gente fala direto com o leitor (você).</p>`],
+   ["Como formar",`<p>No dia a dia, o imperativo que mais aparece é o que fala com <b>você</b>. Ele segue um padrão fácil:</p>
+    <div class="tbl"><table><tr><th>Verbo</th><th>Imperativo (você)</th></tr>
+     <tr><td>economiz<b>ar</b></td><td>economiz<b>e</b></td></tr><tr><td>desligar</td><td>deslig<b>ue</b></td></tr>
+     <tr><td>beb<b>er</b></td><td>beb<b>a</b></td></tr><tr><td>abr<b>ir</b></td><td>abr<b>a</b></td></tr>
+     <tr><td>vir</td><td>venha</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Truque</span><p>Verbos terminados em <b>-ar</b> ganham <b>-e</b> (compre, ande). Verbos em <b>-er</b> e <b>-ir</b> ganham <b>-a</b> (beba, abra).</p></div>
+    <details class="try"><summary>Tente você: qual o imperativo de "reciclar" e de "escrever"?</summary><p><b>Recicle</b> e <b>escreva</b>.</p></details>`],
+   ["Afirmativo e negativo",`<p>O imperativo pode ser <b>afirmativo</b> (manda fazer) ou <b>negativo</b> (manda não fazer). O negativo é só colocar <b>não</b> antes do verbo.</p>
+    <div class="ex">Afirmativo: <b>Economize</b> água. <b>Jogue</b> o lixo no lixo.<br>Negativo: <b>Não desperdice</b> água. <b>Não jogue</b> lixo na rua.</div>
+    <div class="box warn"><span class="lbl">Atenção</span><p>"Não desperdiçar comida" <b>não</b> é imperativo, é infinitivo. O imperativo negativo é "<b>Não desperdice</b> comida".</p></div>
+    <div class="box tip"><span class="lbl">Atividade</span><p>Achar 3 verbos no imperativo em propagandas, embalagens ou receitas de casa.</p></div>
+    <details class="try"><summary>Tente você: passe "Pise na grama" para o imperativo negativo.</summary><p><b>Não pise</b> na grama.</p></details>`]]},
   {id:"formacao",cap:"Cap. 8",t:"Formação de palavras",q:"port/cap8",steps:[
-   ["Justaposição",`<p>Junta palavras <b>sem perder nenhum som</b>.</p><div class="ex">gira + sol = <b>girassol</b><br>passa + tempo = <b>passatempo</b><br>guarda + chuva = <b>guarda-chuva</b></div>`],
-   ["Aglutinação",`<p>Junta palavras e <b>algum som some</b>.</p><div class="ex">plano + alto = <b>planalto</b> (sumiu o "o")<br>em boa hora = <b>embora</b><br>água + ardente = <b>aguardente</b></div>`],
-   ["Como diferenciar",`<div class="box tip"><span class="lbl">Truque</span><p>Separe as palavras. Se as duas aparecem inteiras, é justaposição. Se falta um pedaço, é aglutinação.</p></div>`]]},
-  {id:"ortografia",cap:"Cap. 8",t:"Homófonas e parônimos",q:"port/cap8",steps:[
-   ["Homófonas",`<p><b>Mesmo som</b>, escrita e sentido diferentes.</p>
-    <div class="tbl"><table><tr><td>conserto (reparo)</td><td>concerto (música)</td></tr><tr><td>cela (prisão)</td><td>sela (do cavalo)</td></tr><tr><td>cem (100)</td><td>sem (falta)</td></tr><tr><td>acender (luz)</td><td>ascender (subir)</td></tr></table></div>`],
-   ["Parônimos",`<p>Escrita e som <b>parecidos</b>, mas não iguais.</p>
-    <div class="tbl"><table><tr><td>cumprimento (saudação)</td><td>comprimento (medida)</td></tr><tr><td>emigrar (sair do país)</td><td>imigrar (entrar no país)</td></tr><tr><td>descrição (descrever)</td><td>discrição (ser discreto)</td></tr></table></div>`]]},
+   ["O que é formação de palavras",`<p>A língua não para de criar palavras. Muitas palavras novas nascem <b>juntando palavras que já existem</b>. Estudar "formação de palavras" é descobrir <b>como</b> cada palavra foi montada.</p>
+    <div class="ex"><b>Palavra simples:</b> tem uma palavra só por dentro. <i>sol, flor, chuva, tempo</i><br><b>Palavra composta:</b> é feita juntando duas ou mais palavras. <i>girassol, guarda-chuva, passatempo</i></div>
+    <p>Esse jeito de juntar palavras se chama <b>composição</b>. E existem <b>dois tipos</b> de composição, que caem na prova:</p>
+    <ol><li><b>Justaposição:</b> as palavras se juntam <b>sem perder nada</b>.</li><li><b>Aglutinação:</b> as palavras se juntam e <b>algum som some</b>.</li></ol>
+    <p>Os próximos passos explicam cada um, com vários exemplos.</p>`],
+   ["Justaposição",`<p>Na justaposição, as palavras ficam <b>lado a lado</b>, cada uma inteirinha. Nenhuma letra e nenhum som se perde. Pode ter hífen ou não.</p>
+    <div class="ex">gira + sol = <b>girassol</b> (o s dobra só por causa da escrita, o som continua o mesmo)<br>passa + tempo = <b>passatempo</b><br>guarda + chuva = <b>guarda-chuva</b><br>beija + flor = <b>beija-flor</b><br>segunda + feira = <b>segunda-feira</b><br>para + quedas = <b>paraquedas</b></div>
+    <details class="try"><summary>Tente você: "couve-flor" é formada por justaposição? Por quê?</summary><p><b>Sim.</b> couve + flor: as duas palavras aparecem inteiras.</p></details>`],
+   ["Aglutinação",`<p>Na aglutinação, as palavras se juntam tanto que <b>se "grudam"</b> e alguma parte some: uma letra, um som, às vezes até muda o acento.</p>
+    <div class="ex">plano + alto = <b>planalto</b> (sumiu o "o" de plano)<br>em + boa + hora = <b>embora</b> (sumiram vários sons)<br>água + ardente = <b>aguardente</b> (sumiu o "a" de água)<br>filho + de + algo = <b>fidalgo</b><br>perna + alta = <b>pernalta</b> (ave de pernas longas)</div>
+    <div class="box tip"><span class="lbl">Dica</span><p>"Aglutinar" quer dizer <b>grudar, fundir</b>. Pense em duas bolinhas de massinha amassadas juntas: uma parte some na emenda.</p></div>`],
+   ["Como diferenciar",`<p>Separe a palavra nas partes que a formaram e confira:</p>
+    <div class="box tip"><span class="lbl">Truque</span><p>As duas palavras aparecem <b>inteiras</b>? → <b>justaposição</b>.<br>Falta <b>algum pedaço</b>? → <b>aglutinação</b>.</p></div>
+    <div class="tbl"><table><tr><th>Palavra</th><th>Partes</th><th>Tipo</th></tr>
+     <tr><td>girassol</td><td>gira + sol</td><td>justaposição</td></tr><tr><td>planalto</td><td>plan(o) + alto</td><td>aglutinação</td></tr>
+     <tr><td>guarda-roupa</td><td>guarda + roupa</td><td>justaposição</td></tr><tr><td>aguardente</td><td>água(a) + ardente</td><td>aglutinação</td></tr></table></div>
+    <details class="try"><summary>Tente você: classifique "passatempo" e "embora".</summary><p>passatempo → passa + tempo, inteiras → <b>justaposição</b>. embora → em boa hora, perdeu sons → <b>aglutinação</b>.</p></details>`]]},
+  {id:"ortografia",cap:"Cap. 8",t:"Ortografia: homófonas e parônimos",q:"port/cap8",steps:[
+   ["O que é ortografia",`<p><b>Ortografia</b> é o jeito <b>correto de escrever</b> as palavras (orto = correto, grafia = escrita).</p>
+    <p>Algumas palavras confundem muito porque têm o <b>som igual</b> ou <b>quase igual</b> a outra, mas a escrita e o significado são diferentes. Trocar uma pela outra muda o sentido da frase.</p>
+    <div class="ex">O mecânico fez o <b>conserto</b> do carro. (reparo)<br>Fomos ao <b>concerto</b> da orquestra. (apresentação musical)</div>
+    <p>Neste capítulo você estuda dois grupos dessas palavras:</p>
+    <ul><li><b>Homófonas:</b> som <b>igual</b>, escrita diferente.</li><li><b>Parônimos:</b> som e escrita <b>parecidos</b>, mas não iguais.</li></ul>
+    <p>Para escolher a certa, o segredo é sempre o mesmo: <b>olhar o sentido da frase</b>.</p>`],
+   ["Palavras homófonas",`<p>Homo = igual, fono = som. São palavras com <b>o mesmo som</b>, mas escrita e significado diferentes.</p>
+    <div class="tbl"><table><tr><th>Palavra</th><th>Significado</th></tr>
+     <tr><td>conserto</td><td>reparo, arrumar algo</td></tr><tr><td>concerto</td><td>apresentação musical</td></tr>
+     <tr><td>cela</td><td>quarto da prisão</td></tr><tr><td>sela</td><td>assento do cavalo</td></tr>
+     <tr><td>cem</td><td>o número 100</td></tr><tr><td>sem</td><td>indica falta</td></tr>
+     <tr><td>acender</td><td>ligar a luz, pôr fogo</td></tr><tr><td>ascender</td><td>subir</td></tr>
+     <tr><td>sessão</td><td>tempo de um evento (sessão de cinema)</td></tr><tr><td>seção</td><td>parte, setor (seção de brinquedos)</td></tr></table></div>
+    <div class="ex">Paguei <b>cem</b> reais. · Saí <b>sem</b> guarda-chuva.<br>O preso ficou na <b>cela</b>. · Coloque a <b>sela</b> no cavalo.</div>
+    <details class="try"><summary>Tente você: "A ___ de cinema começa às 15h" (sessão ou seção)?</summary><p><b>Sessão</b>: é o tempo em que o filme passa.</p></details>`],
+   ["Parônimos",`<p>Parônimos são palavras <b>parecidas</b> na escrita e no som, mas <b>não iguais</b>, e com significados diferentes.</p>
+    <div class="tbl"><table><tr><th>Palavra</th><th>Significado</th></tr>
+     <tr><td>cumprimento</td><td>saudação ("bom dia!")</td></tr><tr><td>comprimento</td><td>medida de tamanho</td></tr>
+     <tr><td>emigrar</td><td>sair do seu país</td></tr><tr><td>imigrar</td><td>entrar em outro país</td></tr>
+     <tr><td>descrição</td><td>ato de descrever</td></tr><tr><td>discrição</td><td>ser discreto, reservado</td></tr>
+     <tr><td>tráfego</td><td>movimento de veículos</td></tr><tr><td>tráfico</td><td>comércio ilegal</td></tr></table></div>
+    <div class="ex">Ela fez um <b>cumprimento</b> ao professor. · A mesa tem 2 metros de <b>comprimento</b>.<br>Meu avô <b>emigrou</b> da Itália e <b>imigrou</b> para o Brasil.</div>
+    <div class="box tip"><span class="lbl">Truque</span><p><b>E</b>migrar = <b>E</b>xit (sair). <b>I</b>migrar = <b>I</b>n (entrar).</p></div>`],
+   ["Como não errar",`<ol><li>Leia a frase inteira e entenda <b>o que ela quer dizer</b>.</li><li>Lembre o significado de cada palavra do par.</li><li>Troque pela palavra que combina com o sentido.</li></ol>
+    <div class="box warn"><span class="lbl">Homófona ou parônimo?</span><p>Leia em voz alta. Se o som for <b>exatamente igual</b> (cela/sela), é homófona. Se for só <b>parecido</b> (emigrar/imigrar), é parônimo.</p></div>
+    <details class="try"><summary>Tente você: complete: "Ela agiu com ___ e ninguém percebeu" (descrição ou discrição).</summary><p><b>Discrição</b>, de discreto.</p></details>
+    <details class="try"><summary>Tente você: "acender" e "ascender" são homófonas ou parônimos?</summary><p><b>Homófonas</b>: o som é igual.</p></details>`]]},
   {id:"reclamacao",cap:"Cap. 9",t:"Reportagem e carta de reclamação",q:"port/cap9",steps:[
-   ["Reportagem",`<p>Texto jornalístico que <b>aprofunda</b> um assunto, com entrevistas, dados e opiniões diferentes. É mais longa e detalhada que a notícia.</p>`],
-   ["Carta de reclamação",`<p>O consumidor explica um problema e pede solução.</p><ol><li>Local e data</li><li>Destinatário</li><li>Explicação do problema, com detalhes</li><li>Pedido de solução</li><li>Despedida e assinatura</li></ol>`],
-   ["Como escrever bem",`<p>Linguagem <b>formal, respeitosa e firme</b>. Sem xingamento. Quanto mais claro o problema e o pedido, maior a chance de resolver.</p>`]]},
+   ["Notícia e reportagem",`<p>As duas são textos <b>jornalísticos</b>: contam fatos reais. A diferença está na <b>profundidade</b>.</p>
+    <div class="tbl"><table><tr><th>Notícia</th><th>Reportagem</th></tr>
+     <tr><td>conta um fato de forma rápida</td><td><b>aprofunda</b> um assunto</td></tr>
+     <tr><td>texto curto</td><td>texto longo</td></tr>
+     <tr><td>responde o quê, quem, quando, onde</td><td>traz também o porquê, com entrevistas, dados e opiniões diferentes</td></tr></table></div>
+    <div class="ex"><b>Notícia:</b> "Praia amanhece com 2 toneladas de lixo após feriado."<br><b>Reportagem:</b> investiga de onde vem o lixo, entrevista moradores, biólogos e a prefeitura, mostra números de outros anos e fotos.</div>`],
+   ["Partes da reportagem",`<ul><li><b>Título:</b> chama a atenção.</li><li><b>Linha fina:</b> frase logo abaixo do título, que resume o assunto.</li><li><b>Texto principal:</b> apresenta o problema e as informações.</li><li><b>Entrevistas:</b> falas de pessoas, entre aspas.</li><li><b>Dados:</b> números, pesquisas, gráficos.</li><li><b>Fotos e legendas.</b></li></ul>
+    <details class="try"><summary>Tente você: por que a reportagem ouve pessoas diferentes?</summary><p>Para mostrar <b>vários lados</b> do assunto e deixar o leitor mais bem informado.</p></details>`],
+   ["Carta de reclamação",`<p>É escrita pelo <b>consumidor</b> quando um produto ou serviço deu problema. O objetivo é <b>explicar o problema e pedir uma solução</b>.</p>
+    <p><b>Partes, nesta ordem:</b></p>
+    <ol><li>Local e data</li><li>Destinatário (a empresa)</li><li>Explicação do problema, com detalhes: o que comprou, quando, o que aconteceu</li><li>Pedido de solução: troca, conserto ou devolução do dinheiro</li><li>Despedida e assinatura</li></ol>
+    <div class="ex">São Paulo, 20 de setembro de 2026.<br>À Loja Bom Preço,<br>No dia 10/09 comprei um fone de ouvido, e depois de três dias o lado esquerdo parou de funcionar.<br><b>Solicito a troca do produto</b> ou a devolução do valor pago.<br>Atenciosamente, Alice.</div>
+    <p>Quem compra tem seus direitos garantidos pelo <b>Código de Defesa do Consumidor</b>.</p>`],
+   ["A linguagem certa",`<p>A carta de reclamação usa linguagem <b>formal, respeitosa e firme</b>. Educação e clareza aumentam a chance de resolver.</p>
+    <div class="ex">✓ "Solicito a troca do produto com defeito."<br>✓ "Aguardo retorno no prazo de 7 dias."<br>✗ "Vocês são péssimos!"<br>✗ "kkk o produto quebrou"</div>
+    <details class="try"><summary>Tente você: o que não pode faltar numa carta de reclamação?</summary><p>A <b>descrição do problema</b> e o <b>pedido de solução</b>.</p></details>`]]},
   {id:"figuras",cap:"Cap. 9",t:"Metonímia e personificação",q:"port/cap9",steps:[
-   ["Metonímia",`<p>Troca uma palavra por outra que tem <b>relação</b> com ela.</p><div class="ex">"Li Machado de Assis" → autor no lugar da obra<br>"Bebi dois copos" → recipiente no lugar do conteúdo</div>`],
-   ["Personificação",`<p>Dá ações ou sentimentos <b>humanos</b> a animais, objetos ou à natureza.</p><div class="ex">"O vento <b>sussurrava</b>."<br>"A lua <b>sorriu</b> para mim."</div>`]]},
+   ["Figuras de linguagem",`<p>Figuras de linguagem são jeitos <b>diferentes e expressivos</b> de usar as palavras, fora do sentido comum. Elas deixam o texto mais bonito, mais forte ou mais curto.</p>
+    <p>Duas caem na prova: <b>metonímia</b> e <b>personificação</b>.</p>`],
+   ["Metonímia",`<p>Na metonímia, uma palavra é trocada por outra que tem <b>relação próxima</b> com ela.</p>
+    <div class="tbl"><table><tr><th>Troca</th><th>Exemplo</th></tr>
+     <tr><td>autor pela obra</td><td>"Li <b>Monteiro Lobato</b>" (os livros dele)</td></tr>
+     <tr><td>recipiente pelo conteúdo</td><td>"Bebi dois <b>copos</b>" (o suco)</td></tr>
+     <tr><td>lugar pelas pessoas</td><td>"A <b>cidade</b> foi ao jogo" (os moradores)</td></tr>
+     <tr><td>marca pelo produto</td><td>"Comprei um <b>Bombril</b>" (esponja de aço)</td></tr></table></div>
+    <details class="try"><summary>Tente você: "Comi dois pratos de arroz". Onde está a metonímia?</summary><p>Em <b>pratos</b>: o recipiente está no lugar da comida.</p></details>`],
+   ["Personificação",`<p>A personificação dá <b>ações, sentimentos ou características humanas</b> a animais, objetos ou à natureza.</p>
+    <div class="ex">"O vento <b>sussurrava</b> nas janelas."<br>"A lua <b>sorriu</b> para mim."<br>"As árvores <b>dançavam</b>."<br>"O relógio <b>preguiçoso</b> não queria andar."</div>
+    <div class="box tip"><span class="lbl">Como reconhecer</span><p>Pergunte: <b>isso só uma pessoa faria?</b> Vento não sussurra, lua não sorri: é personificação.</p></div>
+    <details class="try"><summary>Tente você: "O rio chorava baixinho" é metonímia ou personificação?</summary><p><b>Personificação</b>: chorar é ação humana dada ao rio.</p></details>`]]},
   {id:"verbos",cap:"Cap. 9",t:"Subjuntivo e formas nominais",q:"port/cap9",steps:[
-   ["Modo subjuntivo",`<p>Fala de <b>dúvida, desejo ou hipótese</b>.</p>
-    <div class="tbl"><table><tr><th>Tempo</th><th>Pista</th><th>Exemplo</th></tr><tr><td>Presente</td><td>que</td><td>que eu estude</td></tr><tr><td>Pretérito imperfeito</td><td>se</td><td>se eu estudasse</td></tr><tr><td>Futuro</td><td>quando</td><td>quando eu estudar</td></tr></table></div>`],
-   ["Formas nominais",`<div class="ex">Infinitivo: estud<b>ar</b>, vend<b>er</b>, part<b>ir</b><br>Gerúndio: estuda<b>ndo</b><br>Particípio: estud<b>ado</b>, vend<b>ido</b></div>`],
-   ["Pegadinha",`<div class="box warn"><span class="lbl">Atenção</span><p>"Quando eu <b>terminar</b>" parece infinitivo, mas é futuro do subjuntivo por causa do "quando".</p></div>`]]}
+   ["Os três modos do verbo",`<p>O <b>modo</b> do verbo mostra a atitude de quem fala:</p>
+    <div class="tbl"><table><tr><th>Modo</th><th>Expressa</th><th>Exemplo</th></tr>
+     <tr><td>Indicativo</td><td>certeza, fato</td><td>Eu <b>estudo</b> todo dia.</td></tr>
+     <tr><td>Subjuntivo</td><td>dúvida, desejo, hipótese</td><td>Talvez eu <b>estude</b>.</td></tr>
+     <tr><td>Imperativo</td><td>ordem, pedido</td><td><b>Estude</b>!</td></tr></table></div>
+    <p>O foco deste capítulo é o <b>subjuntivo</b>. Ele tem três tempos, e cada um tem uma palavra-pista.</p>`],
+   ["Subjuntivo: as três pistas",`<div class="tbl"><table><tr><th>Tempo</th><th>Pista</th><th>estudar</th><th>vender</th></tr>
+     <tr><td>Presente</td><td><b>que</b></td><td>que eu estud<b>e</b></td><td>que eu vend<b>a</b></td></tr>
+     <tr><td>Pretérito imperfeito</td><td><b>se</b></td><td>se eu estud<b>asse</b></td><td>se eu vend<b>esse</b></td></tr>
+     <tr><td>Futuro</td><td><b>quando</b></td><td>quando eu estud<b>ar</b></td><td>quando eu vend<b>er</b></td></tr></table></div>
+    <div class="ex">"Espero <b>que</b> você <b>estude</b>." → presente (desejo)<br>"<b>Se</b> eu <b>estudasse</b> mais, tiraria nota boa." → pretérito imperfeito (hipótese)<br>"<b>Quando</b> eu <b>terminar</b>, vou brincar." → futuro</div>
+    <details class="try"><summary>Tente você: complete "Se eu ___ (ter) dinheiro, compraria um livro".</summary><p><b>Tivesse</b> (pretérito imperfeito do subjuntivo, pista "se").</p></details>`],
+   ["Pegadinha do futuro",`<div class="box warn"><span class="lbl">Atenção</span><p>"Quando eu <b>terminar</b>" parece infinitivo (terminar), mas é <b>futuro do subjuntivo</b> por causa do "quando". Em alguns verbos a forma fica diferente e dá para ver: "quando eu <b>fizer</b>", "quando eu <b>tiver</b>", "quando eu <b>puder</b>".</p></div>
+    <details class="try"><summary>Tente você: "Quando você ___ (chegar), me avise."</summary><p><b>Chegar</b>, no futuro do subjuntivo.</p></details>`],
+   ["Formas nominais",`<p>São três formas do verbo que funcionam quase como nomes. Elas não mostram quem faz a ação nem quando.</p>
+    <div class="tbl"><table><tr><th>Forma</th><th>Termina em</th><th>Exemplos</th></tr>
+     <tr><td>Infinitivo</td><td>-ar, -er, -ir</td><td>estudar, vender, partir</td></tr>
+     <tr><td>Gerúndio</td><td>-ndo</td><td>estudando, vendendo, partindo</td></tr>
+     <tr><td>Particípio</td><td>-ado, -ido</td><td>estudado, vendido, partido</td></tr></table></div>
+    <div class="ex">"<b>Estudar</b> é importante." → infinitivo<br>"Estou <b>lendo</b> um livro." → gerúndio<br>"<b>Terminado</b> o jogo, todos saíram." → particípio</div>
+    <details class="try"><summary>Tente você: qual o gerúndio e o particípio de "correr"?</summary><p>Gerúndio: <b>correndo</b>. Particípio: <b>corrido</b>.</p></details>`]]}
  ],
  hist:[
   {id:"estrutura",cap:"Cap. 8",t:"O Império Romano",q:"hist/roma",steps:[
-   ["O começo do Império",`<p>Começa em <b>27 a.C.</b> com <b>Otávio Augusto</b>, o primeiro imperador. O imperador concentrava o poder e o Senado perdeu força.</p>`],
-   ["Sociedade romana",`<ul><li><b>Patrícios:</b> ricos, donos de terra.</li><li><b>Plebeus:</b> a maioria livre, como comerciantes e artesãos.</li><li><b>Escravizados:</b> muitos eram prisioneiros de guerra.</li></ul>`],
-   ["Pax Romana",`<p>Cerca de <b>200 anos</b> (séculos I e II) de relativa paz dentro do Império. O comércio e as estradas cresceram.</p>`],
-   ["Pão e circo",`<p>O governo dava <b>comida e espetáculos</b> (gladiadores no Coliseu, corridas de carro) para a plebe não se revoltar.</p>`]]},
+   ["Da República ao Império",`<p>Antes de ser um império, Roma foi uma <b>República</b>: quem governava eram magistrados eleitos e o <b>Senado</b>, formado pelos homens mais ricos.</p>
+    <p>Com as guerras e conquistas, os generais ganharam muito poder. <b>Júlio César</b> virou ditador e foi assassinado em 44 a.C. Depois de anos de disputa, seu sobrinho <b>Otávio</b> venceu os rivais.</p>
+    <p>Em <b>27 a.C.</b>, o Senado deu a Otávio o título de <b>Augusto</b> ("o sagrado"). Ele se tornou o <b>primeiro imperador</b> e começou o <b>Império Romano</b>.</p>
+    <div class="box warn"><span class="lbl">Pegadinha</span><p>Júlio César <b>não</b> foi imperador, foi ditador. O primeiro imperador foi <b>Otávio Augusto</b>.</p></div>`],
+   ["O poder do imperador",`<p>No Império, o <b>imperador concentrava o poder</b>: comandava o exército, fazia as leis, cobrava impostos e era chefe da religião.</p>
+    <p>O <b>Senado continuou existindo</b>, mas perdeu força e passou a obedecer ao imperador.</p>
+    <div class="ex">República: poder dividido entre magistrados e Senado<br>Império: poder <b>concentrado</b> em uma pessoa, o imperador</div>
+    <details class="try"><summary>Tente você: o que aconteceu com o Senado no Império?</summary><p>Continuou existindo, mas <b>perdeu força</b> para o imperador.</p></details>`],
+   ["Sociedade romana",`<div class="tbl"><table><tr><th>Grupo</th><th>Quem eram</th></tr>
+     <tr><td><b>Patrícios</b></td><td>ricos, donos de terras; ocupavam os cargos importantes</td></tr>
+     <tr><td><b>Plebeus</b></td><td>a maioria livre: comerciantes, artesãos, camponeses</td></tr>
+     <tr><td><b>Escravizados</b></td><td>muitos eram <b>prisioneiros de guerra</b>; trabalhavam nas casas, campos e minas</td></tr></table></div>
+    <p>Quanto mais Roma conquistava, mais escravizados chegavam. A economia dependia muito desse trabalho forçado.</p>
+    <details class="try"><summary>Tente você: de onde vinham muitos escravizados?</summary><p>Eram <b>prisioneiros das guerras</b> de conquista.</p></details>`],
+   ["Pax Romana",`<p>"Pax" quer dizer paz. A <b>Pax Romana</b> foi um período de cerca de <b>200 anos</b> (séculos I e II) de relativa paz <b>dentro</b> do Império.</p>
+    <p>Com menos guerras internas:</p>
+    <ul><li>o <b>comércio</b> cresceu;</li><li>foram construídas <b>estradas</b> ligando o Império ("todos os caminhos levam a Roma");</li><li>as cidades cresceram, com aquedutos, termas e teatros.</li></ul>
+    <div class="box warn"><span class="lbl">Atenção</span><p>Paz <b>dentro</b> do Império. Nas fronteiras ainda havia guerras.</p></div>`],
+   ["Pão e circo",`<p>Roma tinha muitos plebeus pobres, e o governo temia revoltas. A solução foi a política do <b>pão e circo</b>:</p>
+    <ul><li><b>Pão:</b> distribuição de trigo (comida) de graça ou barata.</li><li><b>Circo:</b> espetáculos gratuitos, como lutas de <b>gladiadores</b> no <b>Coliseu</b> e corridas de bigas.</li></ul>
+    <p>Com a barriga cheia e distraída, a plebe <b>não se revoltava</b> contra o governo.</p>
+    <details class="try"><summary>Tente você: qual era o objetivo do pão e circo?</summary><p><b>Evitar revoltas</b> da plebe, dando comida e diversão.</p></details>`]]},
   {id:"cultura",cap:"Cap. 8",t:"Cultura e crise de Roma",q:"hist/roma",steps:[
-   ["Heranças romanas",`<ul><li><b>Latim:</b> deu origem ao português, espanhol, francês e italiano.</li><li><b>Direito romano:</b> base das leis de muitos países.</li><li><b>Arquitetura:</b> arcos, aquedutos, estradas, Coliseu.</li></ul>`],
-   ["Religião",`<p>Roma era <b>politeísta</b>. Os cristãos foram perseguidos, depois tolerados (313) e o cristianismo virou religião oficial (380).</p>`],
-   ["A crise",`<ol><li>Fim das conquistas: menos riquezas e menos escravizados.</li><li>Crise econômica e mais impostos.</li><li>Em <b>395</b>, divisão em Ocidente (Roma) e Oriente (Constantinopla).</li></ol>`],
-   ["A queda",`<p>Com as invasões dos povos germânicos, o Império Romano do <b>Ocidente</b> caiu em <b>476</b>.</p>`]]},
+   ["Heranças romanas",`<p>Muita coisa do nosso dia a dia veio dos romanos:</p>
+    <ul><li><b>Latim:</b> a língua romana deu origem ao <b>português</b>, espanhol, francês, italiano e romeno. (O inglês <b>não</b>: é de origem germânica.)</li>
+    <li><b>Direito romano:</b> as leis organizadas por escrito são a base das leis de muitos países, inclusive do Brasil.</li>
+    <li><b>Arquitetura e engenharia:</b> arcos, <b>aquedutos</b> (que levavam água às cidades), estradas, pontes, o Coliseu.</li>
+    <li>O calendário, os números romanos (I, V, X…) e muitas palavras.</li></ul>
+    <details class="try"><summary>Tente você: a bússola é herança romana?</summary><p><b>Não.</b> A bússola, o papel e a pólvora vieram da <b>China</b>.</p></details>`],
+   ["Religião",`<p>Os romanos eram <b>politeístas</b>: adoravam vários deuses, como Júpiter, Marte e Vênus.</p>
+    <p>O <b>cristianismo</b> surgiu na Palestina e se espalhou pelo Império. Por adorar um só Deus e não aceitar o culto ao imperador, os cristãos foram <b>perseguidos</b>.</p>
+    <div class="tbl"><table><tr><th>Ano</th><th>O que aconteceu</th></tr>
+     <tr><td>313</td><td>Os cristãos passam a ser <b>tolerados</b> (liberdade de culto)</td></tr>
+     <tr><td>380</td><td>O cristianismo vira a <b>religião oficial</b> do Império</td></tr></table></div>`],
+   ["A crise do Império",`<p>A partir do século III, o Império entrou em crise. Uma causa puxou a outra:</p>
+    <ol><li><b>Fim das conquistas:</b> sem novas guerras vitoriosas, chegavam menos riquezas e menos escravizados.</li><li><b>Crise econômica:</b> faltava mão de obra e produção.</li><li><b>Mais impostos</b> para pagar o exército, deixando o povo insatisfeito.</li><li><b>Invasões</b> dos povos germânicos nas fronteiras.</li></ol>
+    <details class="try"><summary>Tente você: por que o fim das conquistas enfraqueceu Roma?</summary><p>Porque a economia dependia das <b>riquezas e dos escravizados</b> que vinham das guerras.</p></details>`],
+   ["Divisão e queda",`<p>Para facilitar o governo de um território enorme, em <b>395</b> o Império foi dividido em dois:</p>
+    <div class="ex"><b>Ocidente:</b> capital Roma<br><b>Oriente:</b> capital Constantinopla (vai virar o Império Bizantino)</div>
+    <p>O Império Romano do <b>Ocidente</b> não resistiu às invasões dos povos <b>germânicos</b> e caiu em <b>476</b>. Essa data marca o fim da Antiguidade e o início da <b>Idade Média</b>.</p>
+    <div class="box warn"><span class="lbl">Não confunda</span><p>476: queda de Roma (germânicos). 1453: queda de Constantinopla (turcos). São quase mil anos de diferença.</p></div>`]]},
   {id:"bizancio",cap:"Cap. 9",t:"Império Bizantino",q:"hist/bizancio",steps:[
-   ["O que foi",`<p>É o <b>Império Romano do Oriente</b>, que durou quase mil anos depois da queda de Roma. Capital: <b>Constantinopla</b>, antiga Bizâncio, hoje Istambul.</p>`],
-   ["Poder e Justiniano",`<p>O imperador tinha poder total, inclusive sobre a Igreja. Isso se chama <b>cesaropapismo</b>.</p>
-    <p><b>Justiniano</b> (século VI) organizou o <b>Código de Justiniano</b> e construiu a <b>Hagia Sofia</b>.</p>`],
-   ["Cultura e religião",`<p>Mistura grega, romana e oriental. Falava-se <b>grego</b>. Arte de <b>mosaicos</b> e ícones.</p>
-    <p>Em <b>1054</b>, o Cisma do Oriente dividiu a Igreja em Católica Romana e Ortodoxa.</p>`],
-   ["Queda e datas",`<p>Em <b>1453</b> os turcos otomanos tomaram Constantinopla.</p>
-    <div class="tbl"><table><tr><td>27 a.C.</td><td>início do Império</td></tr><tr><td>395</td><td>divisão</td></tr><tr><td>476</td><td>queda de Roma</td></tr><tr><td>1054</td><td>cisma</td></tr><tr><td>1453</td><td>queda de Constantinopla</td></tr></table></div>`]]}
+   ["O que foi",`<p>O Império Bizantino é o <b>Império Romano do Oriente</b>: a metade que <b>não caiu</b> em 476. Ele durou quase <b>mil anos</b> depois da queda de Roma.</p>
+    <p>O nome vem de <b>Bizâncio</b>, a cidade antiga onde o imperador Constantino fundou <b>Constantinopla</b>, a capital. Hoje ela se chama <b>Istambul</b>, na <b>Turquia</b>.</p>`],
+   ["Constantinopla",`<p>Constantinopla ficava num lugar <b>estratégico</b>: entre a <b>Europa e a Ásia</b>, junto ao mar. Por ali passavam as rotas de comércio de seda, especiarias e ouro.</p>
+    <p>Por isso ela era rica, cheia de gente e bem protegida por muralhas.</p>
+    <details class="try"><summary>Tente você: por que a localização de Constantinopla era boa?</summary><p>Ficava <b>entre a Europa e a Ásia</b>, ótima para o comércio.</p></details>`],
+   ["Justiniano",`<p>O imperador mais famoso foi <b>Justiniano</b>, no <b>século VI</b>. Ele:</p>
+    <ul><li>organizou as leis romanas no <b>Código de Justiniano</b>;</li><li>construiu a igreja de <b>Hagia Sofia</b> (Santa Sofia), em Constantinopla;</li><li>tentou reconquistar terras do antigo Império do Ocidente.</li></ul>
+    <p>O imperador bizantino tinha poder total, <b>inclusive sobre a Igreja</b>. Isso se chama <b>cesaropapismo</b> (César = imperador + papa).</p>`],
+   ["Religião e o Cisma",`<p>Os bizantinos eram cristãos, mas com o tempo surgiram muitas diferenças em relação à Igreja de Roma.</p>
+    <p>Em <b>1054</b> aconteceu o <b>Cisma do Oriente</b> (cisma = separação). O cristianismo se dividiu em:</p>
+    <div class="ex"><b>Igreja Católica Romana</b>, com sede em Roma, liderada pelo papa<br><b>Igreja Ortodoxa</b>, com sede em Constantinopla</div>`],
+   ["Cultura bizantina",`<p>A cultura bizantina misturava influências <b>gregas, romanas e orientais</b>.</p>
+    <ul><li>A língua mais falada era o <b>grego</b> (em Roma era o latim).</li><li>Arte de <b>mosaicos</b>: imagens feitas com pedrinhas coloridas, que decoravam as igrejas.</li><li><b>Ícones</b>: pinturas de santos, muito usadas na religião.</li></ul>
+    <details class="try"><summary>Tente você: que língua se falava em Roma e em Bizâncio?</summary><p>Roma: <b>latim</b>. Bizâncio: <b>grego</b>.</p></details>`],
+   ["Queda e linha do tempo",`<p>Em <b>1453</b>, os <b>turcos otomanos</b> tomaram Constantinopla. Foi o fim do Império Bizantino e, para muitos historiadores, o <b>fim da Idade Média</b>.</p>
+    <div class="tbl"><table><tr><th>Ano</th><th>Fato</th></tr><tr><td>27 a.C.</td><td>início do Império Romano (Otávio Augusto)</td></tr><tr><td>313</td><td>tolerância aos cristãos</td></tr><tr><td>380</td><td>cristianismo religião oficial</td></tr><tr><td>395</td><td>divisão do Império</td></tr><tr><td>476</td><td>queda de Roma</td></tr><tr><td>1054</td><td>Cisma do Oriente</td></tr><tr><td>1453</td><td>queda de Constantinopla</td></tr></table></div>`]]}
  ],
  geo:[
   {id:"vegetacao",cap:"Cap. 8",t:"Formações vegetais",q:"geo/vegetacao",steps:[
-   ["O clima decide",`<p>A <b>temperatura</b> e a <b>chuva</b> de um lugar decidem quais plantas conseguem viver ali.</p>`],
-   ["Florestas",`<div class="tbl"><table><tr><th>Floresta</th><th>Clima</th><th>Como é</th></tr>
-    <tr><td>Tropical e equatorial</td><td>quente e úmido</td><td>árvores altas, muita biodiversidade (Amazônia)</td></tr>
-    <tr><td>Temperada</td><td>4 estações</td><td>folhas caem no outono</td></tr><tr><td>Taiga (boreal)</td><td>frio</td><td>pinheiros (coníferas)</td></tr></table></div>`],
-   ["Savanas e campos",`<p><b>Savana:</b> gramíneas e árvores espalhadas, com estação seca. O <b>Cerrado</b> é uma savana.</p>
-    <p><b>Estepe e pradaria:</b> campos de gramíneas em clima temperado, como o <b>Pampa</b>.</p>`],
-   ["Desertos, tundra e mediterrânea",`<p><b>Deserto:</b> muito seco, plantas que guardam água, como o cacto.</p><p><b>Tundra:</b> região polar, musgos e liquens.</p><p><b>Mediterrânea:</b> arbustos, verão seco.</p>`]]},
+   ["O clima decide",`<p>Formação vegetal é o conjunto de plantas que cobre uma região. O que mais decide qual vegetação cresce num lugar é o <b>clima</b>:</p>
+    <ul><li><b>Temperatura:</b> quente, frio ou com quatro estações.</li><li><b>Chuva:</b> muita, pouca ou só em parte do ano.</li></ul>
+    <p>Muito calor e muita chuva → florestas densas. Pouca chuva → plantas baixas e resistentes à seca. Muito frio → poucas plantas.</p>`],
+   ["Florestas tropicais e equatoriais",`<p>Aparecem em clima <b>quente e úmido</b>, perto da linha do Equador.</p>
+    <ul><li>Árvores <b>altas e muito próximas</b>, folhas largas e sempre verdes.</li><li><b>Maior biodiversidade</b> do planeta: muitas espécies de plantas e animais.</li></ul>
+    <div class="ex">Exemplos: <b>Amazônia</b> (equatorial) e <b>Mata Atlântica</b> (tropical)</div>
+    <details class="try"><summary>Tente você: por que essas florestas são tão densas?</summary><p>Porque há <b>muito calor e muita chuva</b> o ano todo.</p></details>`],
+   ["Florestas temperadas e taiga",`<p><b>Floresta temperada:</b> clima com <b>quatro estações</b> bem definidas. As árvores <b>perdem as folhas no outono</b> e ficam peladas no inverno.</p>
+    <p><b>Taiga (floresta boreal):</b> clima <b>frio</b>, no norte da América, da Europa e da Ásia. Formada por <b>pinheiros</b> (coníferas), com folhas finas como agulhas, que aguentam a neve.</p>`],
+   ["Savanas e campos",`<p><b>Savana:</b> gramíneas (capim) com <b>árvores espalhadas</b>, de troncos tortos. Clima quente com uma <b>estação seca</b>. O <b>Cerrado</b>, no centro do Brasil, é uma savana.</p>
+    <p><b>Estepes e pradarias:</b> campos de gramíneas, <b>quase sem árvores</b>, em clima temperado. O <b>Pampa</b>, no Rio Grande do Sul, é um exemplo.</p>
+    <div class="box warn"><span class="lbl">Não confunda</span><p>Savana tem árvores espalhadas. Pradaria e estepe quase não têm árvores.</p></div>`],
+   ["Desertos, tundra e mediterrânea",`<p><b>Deserto:</b> chove muito pouco. As plantas, como o <b>cacto</b>, guardam água, têm espinhos em vez de folhas e raízes longas.</p>
+    <p><b>Tundra:</b> regiões <b>polares</b>, muito frias. O solo fica congelado quase o ano todo. Só crescem <b>musgos e liquens</b>.</p>
+    <p><b>Vegetação mediterrânea:</b> <b>arbustos</b> e árvores baixas, em clima com <b>verão seco</b> e inverno chuvoso, perto do mar Mediterrâneo.</p>`],
+   ["Resumo",`<div class="tbl"><table><tr><th>Vegetação</th><th>Clima</th><th>Plantas</th></tr>
+     <tr><td>Tropical/equatorial</td><td>quente e úmido</td><td>árvores altas, muita biodiversidade</td></tr>
+     <tr><td>Temperada</td><td>4 estações</td><td>folhas caem no outono</td></tr>
+     <tr><td>Taiga</td><td>frio</td><td>pinheiros</td></tr>
+     <tr><td>Savana</td><td>quente com seca</td><td>capim e árvores espalhadas</td></tr>
+     <tr><td>Estepe/pradaria</td><td>temperado</td><td>campos de capim</td></tr>
+     <tr><td>Deserto</td><td>muito seco</td><td>cactos</td></tr>
+     <tr><td>Tundra</td><td>polar</td><td>musgos e liquens</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Atividade</span><p>Copie esta tabela no caderno e acrescente um exemplo de lugar para cada vegetação.</p></div>`]]},
   {id:"acao",cap:"Cap. 9",t:"Ação humana no clima",q:"geo/acao",steps:[
-   ["Efeito estufa",`<p><b>Natural:</b> gases seguram parte do calor e mantêm a Terra habitável. É bom.</p>
-    <p><b>Intensificado:</b> queima de combustíveis, queimadas e desmatamento lançam mais CO₂ e a Terra esquenta demais.</p>`],
-   ["Cidades e desmatamento",`<p><b>Ilhas de calor:</b> o centro das cidades esquenta mais por causa do asfalto, concreto e poucas árvores.</p>
-    <p><b>Desmatamento:</b> perda de biodiversidade, erosão do solo, menos chuva.</p><p><b>Chuva ácida:</b> poluentes de fábricas e veículos misturados à chuva.</p>`],
-   ["Mudanças climáticas",`<p>Derretimento de geleiras, aumento do nível do mar, secas, enchentes e ondas de calor mais fortes.</p>`],
-   ["O que fazer",`<ul><li>Reflorestar</li><li>Usar energia solar e eólica</li><li>Transporte público</li><li>Proteger áreas de conservação</li></ul>`]]}
+   ["Efeito estufa natural",`<p>A Terra é envolvida por gases, como o <b>gás carbônico (CO₂)</b> e o vapor d'água. Eles funcionam como o vidro de uma estufa: deixam o calor do Sol entrar e <b>seguram uma parte</b> dele.</p>
+    <p>Esse é o <b>efeito estufa natural</b>, e ele é <b>bom</b>: sem ele, a Terra seria gelada demais para a vida.</p>`],
+   ["Efeito estufa intensificado",`<p>O problema começa quando o ser humano joga <b>gás carbônico demais</b> no ar. Aí a camada fica mais "grossa", segura calor demais e o planeta esquenta: é o <b>aquecimento global</b>.</p>
+    <p><b>O que libera mais CO₂:</b></p>
+    <ul><li>queima de combustíveis (gasolina, diesel, carvão) em carros e fábricas;</li><li><b>queimadas</b> e <b>desmatamento</b> (as árvores que absorviam CO₂ deixam de existir).</li></ul>
+    <details class="try"><summary>Tente você: qual a diferença entre o efeito estufa natural e o intensificado?</summary><p>O natural <b>mantém a Terra habitável</b>. O intensificado <b>aquece demais</b> por causa da ação humana.</p></details>`],
+   ["Ilhas de calor",`<p>O centro das grandes cidades costuma ser <b>mais quente</b> que os bairros afastados e o campo. Isso é a <b>ilha de calor</b>.</p>
+    <p><b>Por quê?</b> Asfalto e concreto <b>acumulam calor</b>, há <b>poucas árvores</b> e muitos carros e prédios.</p>
+    <p><b>Como diminuir:</b> plantar árvores, criar parques e praças verdes.</p>`],
+   ["Desmatamento e chuva ácida",`<p><b>Desmatamento</b> é a retirada da vegetação. Consequências:</p>
+    <ul><li><b>perda de biodiversidade</b> (plantas e animais somem);</li><li><b>erosão:</b> sem raízes, a chuva e o vento levam o solo embora;</li><li><b>menos chuva:</b> as árvores devolvem umidade para o ar, que forma nuvens.</li></ul>
+    <p><b>Chuva ácida:</b> poluentes de fábricas e veículos se misturam à água das nuvens. Ela danifica plantas, rios, estátuas e construções.</p>`],
+   ["Consequências das mudanças climáticas",`<ul><li><b>Derretimento de geleiras</b> e <b>aumento do nível do mar</b>, ameaçando cidades do litoral.</li><li><b>Secas e enchentes</b> mais fortes e frequentes.</li><li><b>Ondas de calor.</b></li><li>Espécies de animais e plantas ameaçadas.</li></ul>
+    <details class="try"><summary>Tente você: por que o nível do mar sobe?</summary><p>Por causa do <b>derretimento das geleiras</b>: a água vai para os oceanos.</p></details>`],
+   ["O que fazer",`<ul><li><b>Reflorestar</b> e proteger as florestas.</li><li>Usar <b>energias renováveis</b>: <b>solar</b> (do Sol) e <b>eólica</b> (do vento).</li><li>Usar <b>transporte público</b> e bicicleta.</li><li>Economizar energia e água.</li><li>Criar e proteger <b>áreas de conservação</b>.</li></ul>
+    <div class="box tip"><span class="lbl">Explique com suas palavras</span><p>Conte para alguém da família o que é o efeito estufa e por que ele ficou perigoso. Se você consegue explicar, você aprendeu.</p></div>`]]}
  ],
  cien:[
   {id:"esqueleto",cap:"Cap. 8",t:"Sistema esquelético",q:"cien/locomotor",steps:[
-   ["Ossos e funções",`<p>Um adulto tem cerca de <b>206 ossos</b>. Maior: <b>fêmur</b>. Menor: <b>estribo</b>, na orelha.</p>
-    <ul><li>Sustentação do corpo</li><li>Proteção: crânio protege o cérebro, costelas protegem coração e pulmões</li><li>Movimento, junto com os músculos</li><li>Produção de células do sangue na medula óssea vermelha</li><li>Reserva de cálcio</li></ul>`],
-   ["Articulações",`<div class="tbl"><table><tr><th>Tipo</th><th>Exemplo</th></tr><tr><td>Móveis</td><td>joelho, cotovelo, ombro</td></tr><tr><td>Semimóveis</td><td>coluna vertebral</td></tr><tr><td>Imóveis</td><td>ossos do crânio</td></tr></table></div>`],
-   ["Ligamento e cartilagem",`<p><b>Ligamento</b> liga osso com osso. <b>Cartilagem</b> protege a ponta dos ossos nas articulações.</p>`]]},
+   ["Sistema locomotor",`<p>O <b>sistema locomotor</b> é o que permite o corpo se mover. Ele é formado por:</p>
+    <ul><li><b>ossos</b> (sistema esquelético);</li><li><b>articulações</b> (onde os ossos se encontram);</li><li><b>músculos</b> (sistema muscular), que puxam os ossos.</li></ul>
+    <p>Nesta lição você estuda o esqueleto. Na próxima, os músculos.</p>`],
+   ["Ossos e funções",`<p>Um adulto tem cerca de <b>206 ossos</b>. O maior é o <b>fêmur</b>, na coxa. O menor é o <b>estribo</b>, dentro da orelha.</p>
+    <p><b>Funções do esqueleto:</b></p>
+    <ul><li><b>Sustentação:</b> mantém o corpo de pé.</li><li><b>Proteção:</b> o crânio protege o cérebro; as costelas protegem o coração e os pulmões.</li><li><b>Movimento:</b> junto com os músculos.</li><li><b>Produção de células do sangue</b>, na medula óssea vermelha, dentro de alguns ossos.</li><li><b>Reserva de cálcio.</b></li></ul>
+    <details class="try"><summary>Tente você: o que as costelas protegem?</summary><p>O <b>coração e os pulmões</b>. Juntas, formam a caixa torácica.</p></details>`],
+   ["Partes do esqueleto",`<ul><li><b>Crânio:</b> ossos da cabeça, protegem o cérebro.</li><li><b>Coluna vertebral:</b> formada por <b>vértebras</b> empilhadas; sustenta o corpo e protege a medula espinhal.</li><li><b>Caixa torácica:</b> costelas e esterno.</li><li><b>Membros superiores:</b> úmero (braço), rádio e ulna (antebraço), ossos da mão.</li><li><b>Membros inferiores:</b> fêmur (coxa), tíbia e fíbula (perna), ossos do pé.</li></ul>`],
+   ["Articulações",`<p>Articulação é o <b>encontro entre dois ossos</b>. Elas são classificadas pelo quanto se mexem:</p>
+    <div class="tbl"><table><tr><th>Tipo</th><th>Movimento</th><th>Exemplo</th></tr>
+     <tr><td>Móveis</td><td>muito</td><td>joelho, cotovelo, ombro</td></tr>
+     <tr><td>Semimóveis</td><td>pouco</td><td>entre as vértebras da coluna</td></tr>
+     <tr><td>Imóveis</td><td>nenhum</td><td>ossos do crânio</td></tr></table></div>
+    <details class="try"><summary>Tente você: o ombro é articulação de que tipo?</summary><p><b>Móvel</b>: mexe o braço em várias direções.</p></details>`],
+   ["Ligamentos, cartilagens e cuidados",`<p><b>Ligamento:</b> liga <b>osso com osso</b> nas articulações, como uma fita resistente.</p>
+    <p><b>Cartilagem:</b> tecido liso que <b>protege a ponta dos ossos</b> nas articulações, para um não gastar o outro. A orelha e a ponta do nariz também são de cartilagem.</p>
+    <div class="box tip"><span class="lbl">Cuidando dos ossos</span><ul><li>Alimentos com cálcio: leite, queijo, iogurte, vegetais verde-escuros.</li><li>Tomar sol na medida certa (vitamina D).</li><li>Boa postura e mochila nas duas alças.</li><li>Praticar atividade física.</li></ul></div>`]]},
   {id:"musculos",cap:"Cap. 8",t:"Sistema muscular",q:"cien/locomotor",steps:[
-   ["Três tipos de músculo",`<div class="tbl"><table><tr><th>Tipo</th><th>Controle</th><th>Onde</th></tr><tr><td>Esquelético</td><td>voluntário</td><td>preso aos ossos</td></tr><tr><td>Liso</td><td>involuntário</td><td>estômago, intestino</td></tr><tr><td>Cardíaco</td><td>involuntário</td><td>coração</td></tr></table></div>`],
-   ["Tendão e músculos em par",`<p><b>Tendão</b> liga músculo com osso.</p><p>Os músculos trabalham em pares: ao dobrar o braço, o <b>bíceps contrai</b> e o <b>tríceps relaxa</b>.</p>
-    <div class="box warn"><span class="lbl">Confusão comum</span><p>Tendão: músculo com osso. Ligamento: osso com osso.</p></div>`]]},
+   ["O que são os músculos",`<p>O corpo tem cerca de <b>600 músculos</b>. Eles são formados por fibras que conseguem <b>contrair</b> (encurtar) e <b>relaxar</b>.</p>
+    <p>Ao contrair, o músculo <b>puxa</b>. É assim que ele move os ossos, bombeia o sangue e empurra o alimento no estômago e no intestino.</p>`],
+   ["Três tipos de músculo",`<div class="tbl"><table><tr><th>Tipo</th><th>Controle</th><th>Onde</th></tr>
+     <tr><td>Estriado esquelético</td><td><b>voluntário</b> (a gente manda)</td><td>preso aos ossos: braços, pernas, rosto</td></tr>
+     <tr><td>Liso</td><td><b>involuntário</b></td><td>estômago, intestino, bexiga</td></tr>
+     <tr><td>Cardíaco</td><td><b>involuntário</b></td><td>só no coração</td></tr></table></div>
+    <div class="ex">Você decide correr → músculo <b>esquelético</b><br>O coração bate sozinho → músculo <b>cardíaco</b><br>O estômago mistura o alimento sozinho → músculo <b>liso</b></div>
+    <details class="try"><summary>Tente você: qual músculo trabalha sem você mandar e não fica no coração?</summary><p>O <b>liso</b>, como o do estômago e do intestino.</p></details>`],
+   ["Tendões",`<p>O <b>tendão</b> liga o <b>músculo ao osso</b>. Quando o músculo contrai, ele puxa o tendão, que puxa o osso.</p>
+    <div class="ex">O tendão de Aquiles liga o músculo da panturrilha ao osso do calcanhar.</div>
+    <div class="box warn"><span class="lbl">Confusão comum</span><p><b>Tendão:</b> músculo com osso. <b>Ligamento:</b> osso com osso.</p></div>`],
+   ["Músculos trabalham em pares",`<p>Músculo só consegue <b>puxar</b>, nunca empurrar. Por isso eles trabalham em <b>pares</b>: um puxa para um lado, o outro puxa de volta.</p>
+    <div class="ex">Dobrar o braço: o <b>bíceps contrai</b> e o <b>tríceps relaxa</b><br>Esticar o braço: o <b>tríceps contrai</b> e o <b>bíceps relaxa</b></div>
+    <div class="box tip"><span class="lbl">Teste no seu braço</span><p>Coloque a mão em cima do braço e dobre o cotovelo: você sente o bíceps endurecer. Estique: agora é o tríceps, atrás.</p></div>`]]},
   {id:"materia",cap:"Cap. 9",t:"Matéria e misturas",q:"cien/misturas",steps:[
-   ["Matéria e substância",`<p><b>Matéria:</b> tudo que tem massa e ocupa lugar no espaço. O ar também é matéria.</p>
-    <p><b>Substância pura:</b> um só tipo de material, como água destilada ou ouro.</p><p><b>Mistura:</b> duas ou mais substâncias juntas.</p>`],
-   ["Homogênea e heterogênea",`<p><b>Homogênea:</b> uma fase só, parece uma coisa só. Água com sal dissolvido, ar, álcool com água.</p>
-    <p><b>Heterogênea:</b> dá para ver mais de uma parte. Água e óleo, água e areia, granito.</p>
-    <div class="box tip"><span class="lbl">Atividade</span><p>Na cozinha, misture água com sal e água com óleo. Qual é qual?</p></div>`]]},
+   ["O que é matéria",`<p><b>Matéria</b> é tudo que tem <b>massa</b> e <b>ocupa lugar no espaço</b>. Pode estar no estado sólido, líquido ou gasoso.</p>
+    <div class="ex">Sólido: pedra, madeira, gelo<br>Líquido: água, óleo, suco<br>Gasoso: o <b>ar</b>, o vapor d'água</div>
+    <p>O ar também é matéria: um balão cheio de ar ocupa espaço e tem massa, mesmo que a gente não veja o ar.</p>`],
+   ["Substância pura e mistura",`<p><b>Substância pura:</b> formada por <b>um só tipo</b> de material.</p>
+    <div class="ex">água destilada · ouro · gás oxigênio · sal de cozinha puro</div>
+    <p><b>Mistura:</b> duas ou mais substâncias juntas. Quase tudo à nossa volta é mistura.</p>
+    <div class="ex">água com sal · ar · leite · suco · água do mar · refrigerante</div>
+    <details class="try"><summary>Tente você: a água do mar é substância pura ou mistura?</summary><p><b>Mistura</b>: tem água, sal e outras substâncias.</p></details>`],
+   ["Homogênea e heterogênea",`<p>Cada parte diferente que dá para ver numa mistura se chama <b>fase</b>.</p>
+    <p><b>Homogênea:</b> <b>uma fase só</b>. Parece uma coisa só, não dá para ver os componentes.</p>
+    <div class="ex">água com sal dissolvido · água com açúcar · álcool com água · ar</div>
+    <p><b>Heterogênea:</b> <b>duas ou mais fases</b>. Dá para ver as partes.</p>
+    <div class="ex">água e óleo (2 fases) · água e areia · granito · água, óleo e areia (3 fases)</div>
+    <div class="box tip"><span class="lbl">Atividade</span><p>Na cozinha, misture água com sal e água com óleo. Qual é homogênea? Qual é heterogênea?</p></div>
+    <details class="try"><summary>Tente você: quantas fases tem água + óleo + areia?</summary><p><b>3 fases</b>: cada material forma uma camada.</p></details>`]]},
   {id:"separacao",cap:"Cap. 9",t:"Separação de misturas",q:"cien/misturas",steps:[
-   ["Separar homogêneas",`<ul><li><b>Destilação simples:</b> separa sólido dissolvido no líquido. Ferve, o vapor esfria e volta a ser líquido. Água e sal.</li>
-    <li><b>Evaporação:</b> o líquido evapora e fica o sólido. É assim nas salinas.</li>
-    <li><b>Destilação fracionada:</b> líquidos que fervem em temperaturas diferentes, como água e álcool, ou petróleo.</li></ul>`],
-   ["E as heterogêneas?",`<ul><li><b>Filtração:</b> água e areia</li><li><b>Decantação:</b> esperar assentar</li><li><b>Catação:</b> escolher o feijão</li><li><b>Peneiração</b></li><li><b>Imantação:</b> o ímã puxa o ferro</li></ul>`]]}
+   ["Separar misturas heterogêneas",`<p>Como dá para ver as partes, os métodos são mais simples:</p>
+    <div class="tbl"><table><tr><th>Método</th><th>Como funciona</th><th>Exemplo</th></tr>
+     <tr><td>Catação</td><td>tirar com a mão</td><td>pedrinhas do feijão</td></tr>
+     <tr><td>Peneiração</td><td>a peneira segura o grosso</td><td>farinha e grãos</td></tr>
+     <tr><td>Filtração</td><td>o filtro segura o sólido e deixa o líquido passar</td><td>água e areia; coador de café</td></tr>
+     <tr><td>Decantação</td><td>esperar o mais pesado assentar</td><td>água barrenta</td></tr>
+     <tr><td>Imantação</td><td>o ímã puxa o ferro</td><td>limalha de ferro e areia</td></tr></table></div>`],
+   ["Separar misturas homogêneas",`<p>Como tudo parece uma coisa só, é preciso usar o <b>calor</b>:</p>
+    <ul><li><b>Evaporação:</b> o líquido evapora e o sólido fica. É assim nas <b>salinas</b>: o Sol evapora a água do mar e sobra o sal. (A água se perde.)</li>
+    <li><b>Destilação simples:</b> separa um sólido dissolvido num líquido e <b>recupera o líquido</b>. A mistura ferve, o vapor passa por um tubo frio (condensador) e volta a ser líquido em outro recipiente. O sal fica no primeiro.</li>
+    <li><b>Destilação fracionada:</b> separa <b>líquidos misturados</b>, porque cada um ferve numa temperatura diferente. Ex.: água e álcool; o <b>petróleo</b> nas refinarias.</li></ul>
+    <details class="try"><summary>Tente você: quero separar água e sal e ficar com a água. Qual método?</summary><p><b>Destilação simples.</b> Na evaporação, a água se perderia.</p></details>`],
+   ["Escolhendo o método",`<ol><li>A mistura é <b>heterogênea</b> (dá para ver as partes)? Use catação, peneira, filtro, decantação ou ímã.</li><li>É <b>homogênea</b>? Use evaporação ou destilação.</li><li>Tem as duas coisas? Faça <b>em etapas</b>: primeiro a parte heterogênea, depois a homogênea.</li></ol>
+    <div class="ex"><b>Água + areia + sal dissolvido</b><br>1º filtração → tira a areia<br>2º evaporação (ou destilação) → separa o sal da água</div>
+    <details class="try"><summary>Tente você: ímã serve para separar água e areia?</summary><p><b>Não</b>: a areia não é atraída pelo ímã. Use filtração ou decantação.</p></details>`]]}
  ],
  ing:[]
+
 };
 
 const TOPICS = {
@@ -1161,14 +1599,27 @@ function whenTxt(d){const n=daysBetween(today(),d);return n<0?"feita":n===0?"hoj
 const pill=s=>`<span class="pill" style="--c:${SUBJ[s].c}">${SUBJ[s].n}</span>`;
 const lessonKey=(s,id)=>s+"/"+id;
 const findLesson=(s,id)=>LESSONS[s].find(l=>l.id===id);
-function lessonLabel(link){
-  if(!link) return "";
-  if(link==="T") return "Tabuada relâmpago";
-  const [k,r]=link.split(":"); const [s,t]=r.split("/");
-  if(k==="L") return "Abrir lição";
-  return t==="erros"?"Caderno de erros":t==="all"?"Treino completo":"Praticar";
+function linkInfo(link){ // tipo de atividade de um passo do bloco
+  if(!link) return "No livro ou no caderno";
+  return {T:"Tabuada relâmpago",L:"Lição",Q:"Treino de questões",G:"Jogo do Laboratório"}[link[0]]||"";
 }
 function blockId(date,i){return date+"-"+i}
+const stepKey=(date,i,k)=>`${date}-${i}-${k}`;
+function stepDone(key){return !!store.get("passos",{})[key]}
+function setStep(key,v){const o=store.get("passos",{}); if(v) o[key]=1; else delete o[key]; store.set("passos",o)}
+let BLK=null; // passo aberto a partir da tela do bloco: {date,i,k,link}
+function blkComplete(link){ if(BLK&&BLK.link===link) setStep(stepKey(BLK.date,BLK.i,BLK.k),1) }
+function blkNextHtml(link){ // botão para seguir o roteiro do bloco no fim de uma atividade
+  if(!BLK||BLK.link!==link) return "";
+  const st=dayOf(BLK.date)[2][BLK.i][3];
+  const k=st.findIndex((x,j)=>j>BLK.k&&!stepDone(stepKey(BLK.date,BLK.i,j)));
+  if(k<0) return `<button class="btn primary block" data-bloco="${BLK.date}|${BLK.i}">Voltar ao roteiro do bloco ${ICON.arrow}</button>`;
+  return `<button class="btn primary block" data-step-go="${BLK.date}|${BLK.i}|${k}">Próximo passo: ${st[k][0]} ${ICON.arrow}</button>`;
+}
+function nextBlockOf(date,i){ // próximo bloco não feito no mesmo dia, depois do bloco i
+  const day=dayOf(date); if(!day) return -1;
+  return day[2].findIndex((b,j)=>j>i&&!S.checks[blockId(date,j)]);
+}
 function dayOf(date){return DAYS.find(d=>d[0]===date)}
 function examOn(date){const e=EXAM_DAYS.find(x=>x.d===date);return e?e.s:[]}
 function qPool(s,t){
@@ -1195,27 +1646,44 @@ function toast(msg,action,label){
    Navegação
    ========================================================= */
 let V={name:"inicio",p:{}};
-const TOP={inicio:"inicio",agenda:"agenda",materias:"materias",materia:"materias",licao:"materias",praticar:"praticar",quiz:"praticar",tabuada:"praticar",jogos:"praticar",jogo:"praticar",progresso:"progresso"};
+let APP_READY=false; // vira true na primeira tela do app (depois do login, se houver)
+const TOP={inicio:"inicio",agenda:"agenda",bloco:"agenda",materias:"materias",materia:"materias",licao:"materias",praticar:"praticar",quiz:"praticar",tabuada:"praticar",jogos:"praticar",jogo:"praticar",progresso:"progresso"};
 function go(name,p={}){
   V={name,p}; render(); window.scrollTo({top:0});
   try{history.replaceState(null,"","#"+(TOP[name]||name))}catch(e){}
 }
 function openLink(link){
   if(!link) return;
-  if(link==="T") return go("tabuada");
-  const [k,r]=link.split(":"); const [s,t]=r.split("/");
-  if(k==="L") go("licao",{s,id:t,i:0}); else startQuiz(s,t);
+  if(link[0]==="T"){ tabSet(link.slice(2)); return go("tabuada") }
+  const [k,r]=link.split(":");
+  if(k==="G") return startGame(r);
+  const [s,rest]=r.split("/"), [t,range]=rest.split("@");
+  if(k==="L"){
+    if(range){ const [from,to]=range.split("-").map(Number); return go("licao",{s,id:t,i:from,from,to}) }
+    return go("licao",{s,id:t,i:0});
+  }
+  startQuiz(s,t);
 }
 document.querySelectorAll("[data-nav]").forEach(b=>{
   const n=b.dataset.nav; b.innerHTML=ICON[n]+`<span>${NAV[n]}</span>`; b.onclick=()=>go(n);
 });
 
+function stackTables(){
+  document.querySelectorAll("#main .tbl table").forEach(t=>{
+    const head=t.rows[0]; if(!head||head.cells.length<3||[...head.cells].some(c=>c.tagName!=="TH")) return;
+    const names=[...head.cells].map(c=>c.textContent.trim());
+    t.classList.add("stack");
+    [...t.rows].slice(1).forEach(r=>[...r.cells].forEach((c,i)=>{if(names[i]) c.dataset.label=names[i]}));
+  });
+}
 function render(){
-  document.querySelectorAll("[data-nav]").forEach(b=>b.toggleAttribute("aria-current",b.dataset.nav===TOP[V.name]) || b.dataset.nav===TOP[V.name] && b.setAttribute("aria-current","page"));
+  APP_READY=true;
   document.querySelectorAll("[data-nav]").forEach(b=>{ if(b.dataset.nav===TOP[V.name]) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current") });
-  const html = ({inicio:vInicio,agenda:vAgenda,materias:vMaterias,materia:vMateria,licao:vLicao,praticar:vPraticar,quiz:vQuiz,tabuada:vTabuada,jogos:vJogos,jogo:vJogo,progresso:vProgresso})[V.name](V.p);
+  const html = ({inicio:vInicio,agenda:vAgenda,materias:vMaterias,materia:vMateria,licao:vLicao,bloco:vBloco,praticar:vPraticar,quiz:vQuiz,tabuada:vTabuada,jogos:vJogos,jogo:vJogo,progresso:vProgresso})[V.name](V.p);
   const banner=ROLE==="tutor"?`<div class="flag" style="background:var(--pen-soft);color:var(--pen)">Modo tutor · acompanhando ${STUDENT.nome}. Treinos feitos aqui não contam para ela.</div>`:"";
   $("#main").innerHTML=`<div class="view">${banner}${html}</div>`;
+  stackTables();
+  if(P.running&&P.end<=Date.now()) setTimeout(()=>pFinish(true)); // o tempo acabou com o app fechado: avisa agora, já com a conta carregada
   if(V.name==="tabuada") tabMount();
   if(V.name==="jogo") gameMount();
 }
@@ -1270,19 +1738,40 @@ function sessionCard(){
     <div class="sec-title"><div><span class="eyebrow">Sessão de hoje</span><h3 style="margin-top:2px">${pad(start)}h às ${pad(end)}h</h3></div><span class="frac${doneN===blocks.length?" full":""}">${doneN} de ${blocks.length} blocos</span></div>
     ${ex.length?`<span class="flag">Hoje teve prova de ${ex.map(s=>SUBJ[s].n).join(" e ")}</span>`:""}
     <ul class="blist">${blocks.map((b,i)=>blockRow(date,start,b,i,i===nowI)).join("")}</ul>
-    ${nowI>=0?`<button class="btn primary block" data-start="${date}|${nowI}">${ICON.play} Começar bloco ${nowI+1}: ${blocks[nowI][1]}</button>`
+    ${nowI>=0?`<button class="btn primary block" data-start="${date}|${nowI}">${ICON.play} ${blocks[nowI][3].some((x,k)=>stepDone(stepKey(date,nowI,k)))?"Continuar":"Começar"} bloco ${nowI+1}: ${blocks[nowI][1]}</button>`
       :`<p class="flag" style="background:var(--ok-soft);color:var(--ok)">Sessão concluída! Agora é descansar.</p>`}
     <p class="endnote">Nos últimos 10 minutos, ela explica para você uma coisa que aprendeu hoje.</p>
   </section>`;
 }
 function blockRow(date,start,b,i,now){
-  const id=blockId(date,i), done=!!S.checks[id];
+  const id=blockId(date,i), done=!!S.checks[id], h=new Date().getHours();
+  const tag=now?(date===today()&&h===start+i?"agora":"a seguir"):"";
   return `<li class="bl${done?" done":""}${now?" now":""}">
     <input type="checkbox" class="ck" id="ck-${id}" data-ck="${id}" ${done?"checked":""} aria-label="Concluído: ${b[1]}">
-    <div class="body"><div class="row" style="gap:8px"><span class="t">${pad(start+i)}:00–${pad(start+i)}:50</span>${pill(b[0])}</div>
-      <label class="ttl" for="ck-${id}">${b[1]}</label><span class="det">${b[2]}</span></div>
-    ${b[3]?`<button class="go-btn" data-open="${b[3]}" aria-label="${lessonLabel(b[3])}">${ICON.arrow}</button>`:"<span></span>"}
+    <div class="body"><div class="row" style="gap:8px"><span class="t">${pad(start+i)}:00–${pad(start+i)}:50${tag?` · <span class="tag-now">${tag}</span>`:""}</span>${pill(b[0])}</div>
+      <label class="ttl" for="ck-${id}">${b[1]}</label>
+      <ol class="mini">${b[3].map((x,k)=>`<li class="${stepDone(stepKey(date,i,k))?"ok":""}">${x[0]}</li>`).join("")}</ol></div>
+    <button class="go-btn" data-bloco="${date}|${i}" aria-label="Abrir o roteiro do bloco ${b[1]}">${ICON.arrow}</button>
   </li>`;
+}
+function vBloco({date,i}){
+  const day=dayOf(date), [s,title,goal,steps]=day[2][i], hr=day[1]+i, id=blockId(date,i), done=!!S.checks[id];
+  const doneN=steps.filter((x,k)=>stepDone(stepKey(date,i,k))).length, total=steps.reduce((a,x)=>a+x[2],0);
+  const back=date===today()?["inicio","Início"]:["agenda","Agenda"];
+  return `<button class="back" data-nav2="${back[0]}">${ICON.left} ${back[1]}</button>
+    <section class="subj-head" style="--c:${SUBJ[s].c}"><span class="eyebrow">${dLong(date)} · ${pad(hr)}:00–${pad(hr)}:50</span><h1>${title}</h1><p>${goal}</p></section>
+    <section class="card" style="display:grid;gap:10px;--c:${SUBJ[s].c}">
+      <div class="sec-title"><h3>Roteiro do bloco</h3><span class="frac${doneN===steps.length?" full":""}">${doneN} de ${steps.length} passos</span></div>
+      <p class="muted" style="font-size:14px">Faça na ordem. São ${total} minutos de estudo e, depois, 10 minutos de pausa.</p>
+      <ol class="steps">${steps.map(([lab,link,min],k)=>{
+        const ok=stepDone(stepKey(date,i,k));
+        return `<li class="${ok?"done":""}"><span class="n">${ok?ICON.check:k+1}</span><div><b>${lab}</b><span class="muted">${linkInfo(link)} · ${min} min</span></div>
+          ${link?`<button class="btn sm${ok?"":" primary"}" data-step-go="${date}|${i}|${k}">${ok?"Refazer":"Abrir"}</button>`
+                :`<button class="btn sm" data-step-ck="${date}|${i}|${k}">${ok?"Desfazer":"Feito"}</button>`}</li>`}).join("")}</ol>
+    </section>
+    ${done?`<p class="flag" style="background:var(--ok-soft);color:var(--ok)">${ICON.check} Bloco concluído!</p>`
+          :`<button class="btn block" data-blk-done="${date}|${i}">${ICON.check} Marcar bloco como concluído</button>`}
+    <p class="endnote">O cronômetro de 50 minutos começa sozinho quando ela abre o primeiro passo. No fim, ele avisa a hora da pausa e qual é a próxima atividade.</p>`;
 }
 function statsRow(withBtn=true){
   const totB=DAYS.reduce((a,d)=>a+d[2].length,0), doneB=Object.values(S.checks).filter(Boolean).length;
@@ -1317,7 +1806,7 @@ function vAgenda(){
     </details>`;
   }).join("");
   const last=EXAM_DAYS[EXAM_DAYS.length-1];
-  return `<div class="hello"><span class="eyebrow">Cronograma</span><h1>Agenda de estudos</h1><p class="muted">Toque em um dia para ver os blocos. Matemática começa sempre com 5 minutos de tabuada.</p></div>
+  return `<div class="hello"><span class="eyebrow">Cronograma</span><h1>Agenda de estudos</h1><p class="muted">Toque em um dia para ver os blocos e na seta para abrir o roteiro. Todo bloco de Matemática começa com 5 a 10 minutos de aquecimento: tabuada ou um jogo do Laboratório.</p></div>
     ${items}
     <div class="card"><span class="flag">${dLong(last.d)}: prova de Ciências</span><p style="margin-top:8px" class="muted">Última prova. Fim da maratona!</p></div>
     <details class="day"><summary style="grid-template-columns:1fr auto"><b>Combinados para ajudar na atenção</b><span class="muted">+</span></summary>
@@ -1357,23 +1846,27 @@ function vMateria({s}){
       <button class="qcard" data-open="Q:${s}/erros"><span class="eyebrow">${errCount(s)} para refazer</span><b>Caderno de erros</b></button>
     </div>`;
 }
-function vLicao({s,id,i,fin}){
-  const l=findLesson(s,id), n=l.steps.length, c=SUBJ[s].c;
+function lessonLink(p){return "L:"+p.s+"/"+p.id+(p.from!=null?`@${p.from}-${p.to}`:"")}
+function vLicao(p){
+  const {s,id,i,fin}=p, l=findLesson(s,id), n=l.steps.length, c=SUBJ[s].c;
+  const lo=p.from??0, hi=p.to??n-1, part=p.from!=null&&(lo>0||hi<n-1);
   const top=`<button class="back" data-subj="${s}">${ICON.left} ${SUBJ[s].n}</button>
-    <div class="lesson-top"><span class="eyebrow">${l.cap}</span><h1>${l.t}</h1></div>
-    <div class="seg" style="--c:${c}">${l.steps.map((x,j)=>`<i class="${fin||j<=i?"on":""}"></i>`).join("")}</div>`;
+    <div class="lesson-top"><span class="eyebrow">${l.cap}${part?` · passos ${lo+1} a ${hi+1}`:""}</span><h1>${l.t}</h1></div>
+    <div class="seg" style="--c:${c}">${l.steps.map((x,j)=>`<i class="${fin&&j<=hi||j<=i?"on":""}"></i>`).join("")}</div>`;
   if(fin){
-    const qn=(Q[l.q]||[]).length;
-    return top+`<section class="card step done-card" style="--c:${c}"><span class="big-check">${ICON.check}</span><h2>Lição concluída!</h2>
-      <p class="muted">Agora é hora de ver se ficou. Ela tenta sozinha e você só ajuda se travar.</p>
-      <button class="btn primary block" data-open="Q:${l.q}">Praticar agora · ${qn} questões</button>
+    const qn=(Q[l.q]||[]).length, last=hi>=n-1, nextBtn=blkNextHtml(lessonLink(p));
+    return top+`<section class="card step done-card" style="--c:${c}"><span class="big-check">${ICON.check}</span><h2>${last?"Lição concluída!":"Parte concluída!"}</h2>
+      <p class="muted">${last?"Agora é hora de ver se ficou. Ela tenta sozinha e você só ajuda se travar.":`Ela estudou os passos ${lo+1} a ${hi+1} de ${n}. O resto da lição fica para o próximo bloco.`}</p>
+      ${nextBtn}
+      ${!last&&!nextBtn?`<button class="btn primary block" data-lesson-at="${s}/${id}/${hi+1}">Continuar a lição (passo ${hi+2})</button>`:""}
+      ${last?`<button class="btn${nextBtn?"":" primary"} block" data-open="Q:${l.q}">Praticar agora · ${qn} questões</button>`:""}
       ${(s==="mat"&&GAMES_FOR[id]||[]).map(gid=>{const g=GAMES.find(x=>x.id===gid);return `<button class="btn block" data-game="${gid}">Jogar ${g.t}</button>`}).join("")}
       <button class="btn block" data-subj="${s}">Voltar para ${SUBJ[s].n}</button></section>`;
   }
   const [h,body]=l.steps[i];
   return top+`<section class="card step" style="--c:${c}"><span class="eyebrow">Passo ${i+1} de ${n}</span><h2>${h}</h2><div class="stext">${body}</div></section>
-    <div class="step-nav"><button class="btn" data-step="-1" ${i===0?"disabled style='opacity:.4'":""}>Voltar</button>
-    <button class="btn primary" data-step="1">${i+1<n?"Próximo":"Concluir lição"} ${ICON.arrow}</button></div>`;
+    <div class="step-nav"><button class="btn" data-step="-1" ${i<=lo?"disabled":""}>Voltar</button>
+    <button class="btn primary" data-step="1">${i<hi?"Próximo":hi>=n-1?"Concluir lição":"Concluir esta parte"} ${ICON.arrow}</button></div>`;
 }
 
 /* =========================================================
@@ -1406,12 +1899,13 @@ function vQuiz(){
   const top=`<div class="quiz-top"><button class="icon-btn" data-quit aria-label="Sair do treino">${ICON.x}</button>
     <div style="display:grid;gap:6px"><span class="eyebrow" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${quizTitle()}</span><div class="progress" style="--c:${c}"><i style="width:${N?100*(qz.i+(qz.answered?1:0))/N:0}%"></i></div></div>
     <span class="qnum">${Math.min(qz.i+1,N)}/${N}</span></div>`;
-  if(!N) return top+`<section class="card result" style="display:grid"><h2>${qz.t==="erros"?"Nenhum erro para refazer":"Nada por aqui"}</h2><p class="muted">${qz.t==="erros"?"O caderno de erros desta matéria está vazio. Ótimo sinal!":"Escolha outro assunto."}</p><button class="btn primary" data-quit>Voltar</button></section>`;
+  if(!N){ blkComplete("Q:"+qz.s+"/"+qz.t); return top+`<section class="card result" style="display:grid"><h2>${qz.t==="erros"?"Nenhum erro para refazer":"Nada por aqui"}</h2><p class="muted">${qz.t==="erros"?"O caderno de erros desta matéria está vazio. Ótimo sinal!":"Escolha outro assunto."}</p>${blkNextHtml("Q:"+qz.s+"/"+qz.t)}<button class="btn" data-quit>Voltar</button></section>` }
   if(qz.i>=N){
     const pct=Math.round(100*qz.score/N);
     const msg=pct>=80?"Excelente! Pronta para este assunto.":pct>=60?"Bom! Refaça o caderno de erros amanhã.":"Volte à lição, revise com calma e tente de novo.";
     return top+`<section class="card result" style="display:grid;--c:${c}"><div class="ring" style="--p:${pct}"><div>${pct}%</div></div>
       <h2>${qz.score} de ${N} certas</h2><p class="muted">${msg}</p>
+      ${blkNextHtml("Q:"+qz.s+"/"+qz.t)}
       <div class="lvl-sum">${[1,2,3].filter(n=>qz.lv[n][1]).map(n=>`<span class="qlvl qlvl-${n}">${LVL[n]}: ${qz.lv[n][0]} de ${qz.lv[n][1]}</span>`).join("")}</div>
       <div class="row" style="justify-content:center"><button class="btn primary" data-again>Treinar de novo</button>${errCount(qz.s)?`<button class="btn" data-open="Q:${qz.s}/erros">Refazer erros (${errCount(qz.s)})</button>`:""}<button class="btn" data-quit>Sair</button></div></section>`;
   }
@@ -1431,6 +1925,7 @@ function answer(k){
     const key=qz.s+"/"+qz.t, pct=Math.round(100*qz.score/qz.list.length);
     if(qz.t!=="erros" && pct>(S.best[key]||0)) setItem("best",key,pct);
     logAct(`Treino ${quizTitle()}: ${qz.score} de ${qz.list.length} (${pct}%)`);
+    blkComplete("Q:"+qz.s+"/"+qz.t);
   }
   render(); document.querySelector("[data-next]")?.focus({preventScroll:true});
   document.querySelector(".fb")?.scrollIntoView({block:"nearest",behavior:"smooth"});
@@ -1439,15 +1934,24 @@ function answer(k){
 /* =========================================================
    Tabuada relâmpago
    ========================================================= */
-let tb={state:"idle",score:0,miss:[],a:0,b:0,ans:"",end:0,iv:null,flash:""};
-function tabNew(){let a,b;do{a=2+Math.floor(Math.random()*9);b=2+Math.floor(Math.random()*9)}while(a===tb.a&&b===tb.b);tb.a=a;tb.b=b;tb.ans=""}
+let tb={state:"idle",score:0,miss:[],a:0,b:0,ans:"",end:0,iv:null,flash:"",tables:null};
+function tabSet(str){ clearInterval(tb.iv); tb={state:"idle",score:0,miss:[],a:0,b:0,ans:"",end:0,iv:null,flash:"",tables:str?str.split(",").map(Number):null} }
+const tabName=()=>tb.tables?"Tabuada do "+tb.tables.join(" e do "):"Tabuada relâmpago";
+const tabLink=()=>"T"+(tb.tables?":"+tb.tables.join(","):"");
+function tabNew(){ // com tabuada escolhida, um dos fatores é sempre dela
+  let a,b;
+  do{ a=tb.tables?pick(tb.tables):2+Math.floor(Math.random()*9); b=2+Math.floor(Math.random()*9); if(!tb.tables&&Math.random()<.5)[a,b]=[b,a] }
+  while(a===tb.a&&b===tb.b);
+  tb.a=a; tb.b=b; tb.ans="";
+}
 function vTabuada(){
-  const head=`<button class="back" data-nav2="jogos">${ICON.left} Laboratório</button><div class="hello"><span class="eyebrow">Aquecimento · 60 segundos</span><h1>Tabuada relâmpago</h1></div>`;
-  if(tb.state==="idle") return head+`<section class="card step" style="justify-items:center;text-align:center"><p class="muted">Responda o máximo de contas em 60 segundos. Pode usar o teclado da tela.</p><p>Recorde: <b>${S.tabBest}</b></p><button class="btn primary" data-tab-start>${ICON.play} Começar</button></section>`;
+  const head=`<button class="back" data-nav2="jogos">${ICON.left} Laboratório</button><div class="hello"><span class="eyebrow">Aquecimento · 60 segundos</span><h1>${tabName()}</h1></div>`;
+  if(tb.state==="idle") return head+`<section class="card step" style="justify-items:center;text-align:center"><p class="muted">Responda o máximo de contas em 60 segundos. Pode usar o teclado da tela. Dá para jogar mais de uma rodada.</p>${tb.tables?"":`<p>Recorde: <b>${S.tabBest}</b></p>`}<button class="btn primary" data-tab-start>${ICON.play} Começar</button></section>`;
   if(tb.state==="end"){
     const uniq=[...new Set(tb.miss)];
     return head+`<section class="card result" style="display:grid"><div class="ring" style="--p:${Math.min(100,tb.score*5)}"><div>${tb.score}</div></div><h2>${tb.score} acertos</h2>
-      ${tb.score>=S.tabBest&&tb.score>0?`<p class="flag">Novo recorde!</p>`:`<p class="muted">Recorde: ${S.tabBest}</p>`}
+      ${tb.tables?"":tb.score>=S.tabBest&&tb.score>0?`<p class="flag">Novo recorde!</p>`:`<p class="muted">Recorde: ${S.tabBest}</p>`}
+      ${blkNextHtml(tabLink())}
       ${uniq.length?`<div class="box warn" style="text-align:left;width:100%"><span class="lbl">Treinar estas</span><p>${uniq.join(" · ")}</p></div>`:""}
       <div class="row" style="justify-content:center"><button class="btn primary" data-tab-start>Jogar de novo</button><button class="btn" data-nav2="praticar">Sair</button></div></section>`;
   }
@@ -1463,7 +1967,7 @@ function tabMount(){
     const left=Math.max(0,(tb.end-Date.now())/1000);
     const tEl=$("#tb-time"); if(!tEl){clearInterval(tb.iv);tb.state="idle";return}
     tEl.textContent=Math.ceil(left)+"s"; $("#tb-bar").style.width=(100*left/60)+"%";
-    if(left<=0){clearInterval(tb.iv); tb.state="end"; if(tb.score>S.tabBest){S.tabBest=tb.score; save("tabBest"); schedulePush()} logAct(`Tabuada relâmpago: ${tb.score} acertos`); render()}
+    if(left<=0){clearInterval(tb.iv); tb.state="end"; if(!tb.tables&&tb.score>S.tabBest){S.tabBest=tb.score; save("tabBest"); schedulePush()} logAct(`${tabName()}: ${tb.score} acertos`); blkComplete(tabLink()); render()}
   },200);
 }
 function tabKey(k){
@@ -1489,18 +1993,20 @@ document.addEventListener("keydown",e=>{
    Cliques (delegação)
    ========================================================= */
 document.addEventListener("click",e=>{
-  const el=e.target.closest("[data-open],[data-subj],[data-lesson],[data-step],[data-opt],[data-next],[data-quit],[data-again],[data-psubj],[data-nav2],[data-start],[data-tab-start],[data-key]");
+  const el=e.target.closest("[data-open],[data-subj],[data-lesson],[data-lesson-at],[data-step],[data-opt],[data-next],[data-quit],[data-again],[data-psubj],[data-nav2],[data-start],[data-tab-start],[data-key]");
   if(!el) return;
   const d=el.dataset;
   if(d.open!==undefined) return openLink(d.open);
   if(d.subj) return go("materia",{s:d.subj});
   if(d.lesson){const [s,id]=d.lesson.split("/"); return go("licao",{s,id,i:0})}
+  if(d.lessonAt){const [s,id,i]=d.lessonAt.split("/"); return go("licao",{s,id,i:+i,from:+i,to:findLesson(s,id).steps.length-1})}
   if(d.step){
-    const p=V.p, l=findLesson(p.s,p.id), ni=p.i+(+d.step);
-    if(ni>=l.steps.length){
-      if(!S.lessons[lessonKey(p.s,p.id)]){setItem("lessons",lessonKey(p.s,p.id),true); logAct(`Concluiu a lição ${l.t} (${SUBJ[p.s].n})`)}
+    const p=V.p, l=findLesson(p.s,p.id), n=l.steps.length, lo=p.from??0, hi=p.to??n-1, ni=p.i+(+d.step);
+    if(ni>hi){
+      if(hi>=n-1&&!S.lessons[lessonKey(p.s,p.id)]){setItem("lessons",lessonKey(p.s,p.id),true); logAct(`Concluiu a lição ${l.t} (${SUBJ[p.s].n})`)}
+      blkComplete(lessonLink(p));
       return go("licao",{...p,fin:true})}
-    if(ni>=0) go("licao",{...p,i:ni}); return;
+    if(ni>=lo) go("licao",{...p,i:ni}); return;
   }
   if(d.opt!==undefined) return answer(+d.opt);
   if(d.next!==undefined){qz.i++; qz.answered=null; render(); window.scrollTo({top:0}); return}
@@ -1509,28 +2015,41 @@ document.addEventListener("click",e=>{
   if(d.psubj){pracSubj=d.psubj; return render()}
   if(d.nav2) return go(d.nav2);
   if(d.start){
-    const [date,i]=d.start.split("|"); const b=dayOf(date)[2][+i];
-    P.mode="foco"; P.left=P.dur(); pStart(); toast(`Bloco começou: ${b[1]}. Bom estudo!`);
-    if(b[3]) openLink(b[3]); return;
+    const [date,i]=d.start.split("|"), st=dayOf(date)[2][+i][3];
+    const k=st.findIndex((x,j)=>!stepDone(stepKey(date,+i,j)));
+    return k<0||!st[k][1] ? go("bloco",{date,i:+i}) : openStep(date,+i,k);
   }
-  if(d.tabStart!==undefined){tb={state:"run",score:0,miss:[],a:0,b:0,ans:"",end:Date.now()+60000,iv:null,flash:""}; tabNew(); return render()}
+  if(d.tabStart!==undefined){tb={state:"run",score:0,miss:[],a:0,b:0,ans:"",end:Date.now()+60000,iv:null,flash:"",tables:tb.tables}; tabNew(); return render()}
   if(d.key) return tabKey(d.key);
+});
+function openStep(date,i,k){ // abre um passo do roteiro e liga o cronômetro do bloco
+  const link=dayOf(date)[2][i][3][k][1];
+  BLK={date,i,k,link}; pomoForBlock(date,i); openLink(link);
+}
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-bloco],[data-step-go],[data-step-ck],[data-blk-done]"); if(!el) return;
+  const d=el.dataset;
+  if(d.bloco){const [date,i]=d.bloco.split("|"); return go("bloco",{date,i:+i})}
+  if(d.stepGo){const [date,i,k]=d.stepGo.split("|"); return openStep(date,+i,+k)}
+  if(d.stepCk){const [date,i,k]=d.stepCk.split("|"), key=stepKey(date,i,k); setStep(key,!stepDone(key)); pomoForBlock(date,+i); return render()}
+  if(d.blkDone){const [date,i]=d.blkDone.split("|"); setItem("checks",blockId(date,i),true); logAct(`Bloco concluído: ${dayOf(date)[2][+i][1]}`,true); render(); toast("Bloco concluído! Muito bem.")}
 });
 document.addEventListener("change",e=>{
   const id=e.target.dataset?.ck; if(!id) return;
   setItem("checks",id,e.target.checked);
   if(e.target.checked){const [date,i]=[id.slice(0,10),+id.slice(11)]; logAct(`Bloco concluído: ${dayOf(date)[2][i][1]}`,true)}
   render();
-  if(e.target.checked) toast("Bloco concluído! Hora da pausa de 10 minutos.");
+  if(e.target.checked) toast("Bloco concluído! Muito bem.");
 });
 
 /* =========================================================
    Pomodoro (fixo na tela, continua mesmo se fechar a página)
    ========================================================= */
 const pstore={get(){try{return JSON.parse(localStorage.getItem("alice:pomo"))||{}}catch(e){return {}}},set(v){try{localStorage.setItem("alice:pomo",JSON.stringify(v))}catch(e){}}};
-const P = Object.assign({mode:"foco",running:false,end:0,left:50*60}, pstore.get());
-P.dur=()=>(P.mode==="foco"?50:10)*60;
-const pSave=()=>pstore.set({mode:P.mode,running:P.running,end:P.end,left:P.left});
+const P = Object.assign({mode:"foco",running:false,end:0,left:50*60,blk:null,next:null}, pstore.get());
+const FOCO=50*60, PAUSA=10*60;
+P.dur=()=>P.mode==="foco"?FOCO:PAUSA;
+const pSave=()=>pstore.set({mode:P.mode,running:P.running,end:P.end,left:P.left,blk:P.blk,next:P.next});
 let actx=null, wake=null, pIv=null;
 function beep(){try{if(!actx) return; const t=actx.currentTime;[0,.35,.7].forEach(o=>{const osc=actx.createOscillator(),g=actx.createGain();osc.frequency.value=P.mode==="foco"?660:880;osc.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,t+o);g.gain.exponentialRampToValueAtTime(.25,t+o+.02);g.gain.exponentialRampToValueAtTime(.0001,t+o+.3);osc.start(t+o);osc.stop(t+o+.32)})}catch(e){}}
 async function keepAwake(on){try{if(on&&"wakeLock" in navigator&&!wake){wake=await navigator.wakeLock.request("screen");wake.addEventListener("release",()=>wake=null)}else if(!on&&wake){await wake.release();wake=null}}catch(e){}}
@@ -1541,29 +2060,77 @@ function pStart(){
 function pPause(){P.left=Math.max(0,Math.round((P.end-Date.now())/1000)); P.running=false; pSave(); keepAwake(false); pDraw()}
 function pReset(){P.running=false; P.left=P.dur(); pSave(); keepAwake(false); pDraw()}
 function pSwap(){P.mode=P.mode==="foco"?"pausa":"foco"; pReset()}
+/* Liga o foco de 50 min para o bloco que ela começou (se já não estiver contando para ele). */
+function pomoForBlock(date,i){
+  const id=`${date}|${i}`;
+  if(P.running&&P.mode==="foco"&&P.blk===id) return;
+  P.mode="foco"; P.blk=id; P.next=null; P.left=FOCO; pStart();
+  toast("Cronômetro ligado: 50 minutos de foco. Bons estudos!");
+}
+function blockTitle(id){ if(!id) return null; const [date,i]=id.split("|"), day=dayOf(date); return day&&day[2][+i]?{date,i:+i,b:day[2][+i],hr:day[1]+(+i)}:null }
+const hhmm=t=>{const d=new Date(t);return pad(d.getHours())+":"+pad(d.getMinutes())};
+/* Fim do foco ou da pausa. Se a página estava fechada, desconta o tempo que já passou. */
 function pFinish(silent){
   if(!silent){beep(); try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}
+  const endedAt=P.running?P.end:Date.now();
   if(P.mode==="foco"){
-    P.mode="pausa"; P.left=P.dur(); pStart();
-    const t=today(), day=dayOf(t); const i=day?day[2].findIndex((b,j)=>!S.checks[blockId(t,j)]):-1;
-    toast("Acabou o bloco! Pausa de 10 minutos: água, lanche, levantar.", i>=0?()=>{setItem("checks",blockId(t,i),true);logAct(`Bloco concluído: ${day[2][i][1]}`,true);render()}:null, "Marcar bloco feito");
+    // o bloco em andamento (ou o primeiro não feito de hoje) é marcado como concluído
+    let cur=blockTitle(P.blk);
+    if(!cur){const t=today(), day=dayOf(t), i=day?day[2].findIndex((b,j)=>!S.checks[blockId(t,j)]):-1; cur=i>=0?blockTitle(`${t}|${i}`):null}
+    if(cur&&!S.checks[blockId(cur.date,cur.i)]){setItem("checks",blockId(cur.date,cur.i),true); logAct(`Bloco concluído: ${cur.b[1]}`,true)}
+    const ni=cur?nextBlockOf(cur.date,cur.i):-1;
+    P.next=cur&&ni>=0?`${cur.date}|${ni}`:null; P.blk=null;
+    P.mode="pausa"; P.left=PAUSA; P.running=true; P.end=endedAt+PAUSA*1000; pSave(); keepAwake(true);
+    if(P.end<=Date.now()) return pFinish(true); // a pausa também já acabou enquanto a página estava fechada
+    showBreakModal(cur);
   } else {
-    P.mode="foco"; P.running=false; P.left=P.dur(); pSave(); keepAwake(false);
-    toast("A pausa acabou. Bora para o próximo bloco!");
+    P.mode="foco"; P.running=false; P.left=FOCO; pSave(); keepAwake(false);
+    showBackModal();
   }
+  if(V.name==="inicio"||V.name==="agenda"||V.name==="bloco") render();
   pDraw();
 }
+function nextHtml(nx){
+  const st=nx.b[3].find((x,k)=>!stepDone(stepKey(nx.date,nx.i,k)))||nx.b[3][0];
+  return `<div class="next-card" style="--c:${SUBJ[nx.b[0]].c}">${pill(nx.b[0])}<b>${nx.b[1]}</b><span class="muted">Começa com: ${st[0]}</span></div>`;
+}
+function showBreakModal(cur){
+  const nx=blockTitle(P.next);
+  modal(`<span class="modal-ic ok">${ICON.cup}</span><h2>Hora da pausa!</h2>
+    <p>${cur?`Você completou 50 minutos de foco em <b>${cur.b[1]}</b>. O bloco foi marcado como concluído.`:"Você completou 50 minutos de foco."}</p>
+    <p class="muted">São 10 minutos para descansar: beba água, faça um lanche, levante e se alongue. Sem celular.</p>
+    ${nx?`<p><b>Quando a pausa acabar, às ${hhmm(P.end)}</b>, a próxima atividade é:</p>${nextHtml(nx)}`
+        :`<p><b>Esse foi o último bloco de hoje.</b> Depois da pausa, é descansar. Parabéns pelo esforço!</p>`}
+    <button class="btn primary block" data-modal-close>Combinado!</button>`);
+}
+function showBackModal(){
+  const nx=blockTitle(P.next);
+  if(!nx) return modal(`<span class="modal-ic ok">${ICON.check}</span><h2>A pausa acabou!</h2><p>A sessão de hoje está concluída. Muito bem!</p><button class="btn primary block" data-modal-close>Fechar</button>`);
+  modal(`<span class="modal-ic">${ICON.brain}</span><h2>A pausa acabou!</h2><p>Hora de voltar. A próxima atividade é:</p>${nextHtml(nx)}
+    <button class="btn primary block" data-modal-go="${P.next}">${ICON.play} Começar agora</button>
+    <button class="btn block" data-modal-close>Daqui a pouco</button>`);
+}
+function modal(html){$("#toast").hidden=true; const m=$("#modal"); m.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true">${html}</div>`; m.hidden=false; setTimeout(()=>m.querySelector("button")?.focus(),50)}
+function closeModal(){$("#modal").hidden=true}
+document.addEventListener("click",e=>{
+  if(e.target.id==="modal"||e.target.closest("[data-modal-close]")) return closeModal();
+  const go_=e.target.closest("[data-modal-go]"); if(!go_) return;
+  closeModal(); const [date,i]=go_.dataset.modalGo.split("|"), st=dayOf(date)[2][+i][3];
+  const k=st.findIndex((x,j)=>!stepDone(stepKey(date,+i,j)));
+  if(k>=0&&st[k][1]) openStep(date,+i,k); else {pomoForBlock(date,+i); go("bloco",{date,i:+i})}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden) closeModal()});
 function pDraw(){
   let left=P.running?Math.max(0,Math.ceil((P.end-Date.now())/1000)):P.left;
-  if(P.running&&left<=0) return pFinish(false);
+  if(P.running&&left<=0){ if(!APP_READY||document.body.classList.contains("locked")) left=0; else return pFinish(false) } // antes de o app abrir (ou no login), espera
   const box=$("#pomo"); box.dataset.mode=P.mode;
   const time=pad(Math.floor(left/60))+":"+pad(left%60);
   $("#p-time").textContent=time;
   $("#p-ring").style.strokeDashoffset=(138.2*(1-left/P.dur())).toFixed(1);
   $("#p-ic").innerHTML=P.mode==="foco"?ICON.brain:ICON.cup;
   $("#p-label").textContent=P.mode==="foco"
-    ?(P.running?"Foco · 50 minutos":left===P.dur()?"Foco · pronta para começar":"Foco · pausado")
-    :(P.running?"Pausa · água, lanche, levantar":"Pausa · 10 minutos");
+    ?(P.running?(blockTitle(P.blk)?`Foco · ${blockTitle(P.blk).b[1]}`:"Foco · 50 minutos"):left===P.dur()?"Foco · pronta para começar":"Foco · pausado")
+    :(P.running?(blockTitle(P.next)?`Pausa · depois: ${blockTitle(P.next).b[1]}`:"Pausa · água, lanche, levantar"):"Pausa · 10 minutos");
   $("#p-play").innerHTML=P.running?ICON.pause:ICON.play;
   $("#p-play").setAttribute("aria-label",P.running?"Pausar":"Começar");
   document.title=P.running?`${time} · ${P.mode==="foco"?"Foco":"Pausa"}`:"ACE";
@@ -1573,7 +2140,6 @@ $("#p-reset").onclick=pReset;
 $("#p-swap").onclick=pSwap;
 $("#p-reset").innerHTML=ICON.reset; $("#p-swap").innerHTML=ICON.swap;
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&P.running){keepAwake(true);pDraw()}});
-if(P.running&&P.end<=Date.now()){P.running=false;P.left=0;pFinish(true)}
 pIv=setInterval(()=>{if(P.running) pDraw()},500);
 pDraw();
 
@@ -1791,7 +2357,7 @@ const GAMEDEF={
 /* ---------- motor dos jogos ---------- */
 let GM=null;
 function startGame(id){
-  if(id==="tabuada") return go("tabuada");
+  if(id==="tabuada"){ tabSet(""); return go("tabuada") }
   GM={id,i:0,n:6,level:1,streak:0,score:0,tries:0,phase:"play",round:null,fb:null};
   GM.round=GAMEDEF[id].gen(1); go("jogo");
 }
@@ -1818,6 +2384,7 @@ function vJogo(){
     return top+`<section class="card result" style="display:grid;--c:${g.c}"><div class="bigstars">${starsHtml(st)}</div>
       <h2>${st===3?"Mandou muito bem!":st===2?"Muito bom!":st===1?"Bom começo!":"Vamos tentar de novo?"}</h2>
       <p class="muted">${Math.round(GM.score*10)/10} de ${GM.n} pontos. Acertar de primeira vale 1 ponto; na segunda tentativa, meio.</p>
+      ${blkNextHtml("G:"+GM.id)}
       <div class="row" style="justify-content:center"><button class="btn primary" data-game="${g.id}">Jogar de novo</button><button class="btn" data-nav2="jogos">Voltar ao laboratório</button></div></section>`;
   }
   const r=GM.round;
@@ -1849,6 +2416,7 @@ function gameNext(){
     const pct=GM.score/GM.n, st=pct>=.9?3:pct>=.65?2:pct>0?1:0, g=GAMES.find(x=>x.id===GM.id);
     if(st>(S.jogos[GM.id]||0)) setItem("jogos",GM.id,st);
     logAct(`Jogo ${g.t}: ${st} ${st===1?"estrela":"estrelas"}`);
+    blkComplete("G:"+GM.id);
   }
   render(); window.scrollTo({top:0});
 }
@@ -1874,7 +2442,7 @@ function syncText(){
 }
 function vProgresso(){
   const nome=STUDENT.nome, [cls,txt]=syncText(), last=S.activity[0];
-  const who = !CONFIGURED ? `<p class="muted">Para acompanhar de outro aparelho, é preciso configurar o login (veja o README).</p>`
+  const who = !CONFIGURED ? `<p class="muted">Para acompanhar de outro aparelho, é preciso ligar o login: preencha SUPABASE_URL e SUPABASE_KEY no index.html.</p>`
     : `<div class="row between"><div style="display:grid"><b>${ROLE==="tutor"?TUTOR.nome:nome}</b><span class="muted" style="font-size:13px">${ROLE==="tutor"?"Tutor":"Aluna"}</span></div>
        <div class="row"><button class="btn" data-syncnow>${ICON.sync} Sincronizar</button><button class="btn" data-logout>Sair</button></div></div>
        ${ROLE==="tutor"&&STUDENTS.length>1?`<div class="chips">${STUDENTS.map(k=>`<button class="chip" aria-pressed="${k.id===STUDENT.id}" data-student="${k.id}">${k.nome}</button>`).join("")}</div>`:""}`;
@@ -1951,7 +2519,7 @@ async function syncNow(){
       if(e2) throw e2;
     }
     setSync("ok");
-    if(after!==before && ["inicio","agenda","materias","materia","praticar","progresso"].includes(V.name)) render();
+    if(after!==before && ["inicio","agenda","bloco","materias","materia","praticar","progresso"].includes(V.name)) render();
   }catch(e){ setSync("err") } finally{ syncing=false }
 }
 
