@@ -1966,7 +1966,7 @@ function authMsg(error){ // traduz os erros do Supabase para a tela de login
   if(/invalid login credentials/i.test(m)) return "Usuário ou senha incorretos.";
   if(/already registered|already exists/i.test(m)) return "Já existe uma conta com esse e-mail. Entre com ela ou use \"Esqueceu a senha?\".";
   if(/signups? not allowed|signup.*disabled/i.test(m)) return "O cadastro de contas novas está desligado. Peça para o tutor.";
-  if(/email not confirmed/i.test(m)) return "Esta conta ainda não foi confirmada. Peça para o tutor.";
+  if(/email not confirmed/i.test(m)) return "Confirme seu e-mail antes de entrar. Procure a mensagem na sua caixa de entrada.";
   if(/password.*(at least|characters|short|weak)/i.test(m)) return "A senha precisa ter pelo menos 6 caracteres.";
   if(/rate limit|too many|security purposes/i.test(m)) return "Muitas tentativas seguidas. Espere alguns minutos e tente de novo.";
   if(/invalid.*email|email.*invalid/i.test(m)) return "Esse e-mail não é válido.";
@@ -1995,6 +1995,7 @@ function showLogin(err,ok){
     authBusy("Entrando…");
     const email=u.includes("@")?u.toLowerCase():`${u.toLowerCase()}@${EMAIL_DOMAIN}`;
     const {data,error}=await SB.auth.signInWithPassword({email,password:p});
+    if(error && /not confirmed/i.test(error.message)) return showConfirmSent(email);
     if(error) return authFail(authMsg(error),"Entrar");
     afterLogin(data.user);
   });
@@ -2014,17 +2015,41 @@ function showSignup(){
     if(p.length<6) return authFail("A senha precisa ter pelo menos 6 caracteres.","Criar conta");
     if(p!==p2) return authFail("As duas senhas estão diferentes.","Criar conta");
     authBusy("Criando conta…");
-    const {data,error}=await SB.auth.signUp({email,password:p,options:{data:{nome}}});
+    const {data,error}=await SB.auth.signUp({email,password:p,options:{data:{nome},emailRedirectTo:SITE}});
     if(error) return authFail(authMsg(error),"Criar conta");
-    // Com "Confirm email" desligado no Supabase, a conta já volta logada.
-    if(data.session) return afterLogin(data.user);
-    // Supabase não diz se o e-mail já existia (por segurança): tenta entrar direto.
-    const r=await SB.auth.signInWithPassword({email,password:p});
-    if(!r.error) return afterLogin(r.data.user);
-    authFail(/not confirmed/i.test(r.error.message)
-      ? "A conta foi criada, mas o Supabase está pedindo confirmação por e-mail. Peça para o tutor desligar \"Confirm email\"."
-      : authMsg(r.error),"Criar conta");
+    if(data.session) return showWelcome(data.user,nome); // "Confirm email" desligado no Supabase: já entra
+    showConfirmSent(email,nome); // só acontece se a confirmação por e-mail estiver ligada no Supabase
   });
+}
+const SITE=location.origin+location.pathname;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+function showWelcome(user,nome){ // conta criada com sucesso
+  const first=esc(String(nome||"").trim().split(/\s+/)[0]);
+  screen(`${brandHead()}<section class="card welcome" style="display:grid;gap:12px;text-align:center;justify-items:center">
+      <span class="big-check">${ICON.check}</span>
+      <span class="eyebrow">Conta criada com sucesso</span>
+      <h2>Bem-vindo(a) ao ACE${first?`, ${first}`:""}!</h2>
+      <p>Sua jornada começa agora. Aqui cada lição estudada, cada exercício resolvido e cada erro corrigido é um passo a mais rumo às suas conquistas.</p>
+      <p class="muted" style="font-style:italic">Estamos juntos nessa. Bons estudos!</p>
+      <button class="btn primary block" id="wl-go">Começar minha jornada ${ICON.arrow}</button></section>`);
+  $("#wl-go").onclick=()=>afterLogin(user);
+}
+function showConfirmSent(email,nome){ // depois do cadastro, quando o Supabase pede confirmação
+  screen(`${brandHead()}<section class="card" style="display:grid;gap:12px;text-align:center;justify-items:center">
+      <span class="big-check">${ICON.check}</span>
+      <h2>${nome?`Quase lá, ${esc(nome)}!`:"Confirme seu e-mail"}</h2>
+      <p>Enviamos um e-mail de confirmação para <b>${esc(email)}</b>.</p>
+      <p class="muted">Abra a mensagem e toque em <b>Confirmar meu e-mail</b> para ativar sua conta. Se não encontrar, confira a caixa de spam ou lixo eletrônico.</p>
+      <p class="box warn" id="au-err" hidden style="width:100%"></p><p class="box tip" id="au-ok" hidden style="width:100%"></p>
+      <button class="btn block" id="au-btn">Reenviar e-mail de confirmação</button>
+      <button class="btn primary block" data-auth="login">Ir para o login</button></section>`);
+  $("#au-btn").onclick=async()=>{
+    authBusy("Reenviando…"); $("#au-ok").hidden=true;
+    const {error}=await SB.auth.resend({type:"signup",email,options:{emailRedirectTo:SITE}});
+    if(error) return authFail(authMsg(error),"Reenviar e-mail de confirmação");
+    $("#au-err").hidden=true; $("#au-ok").hidden=false; $("#au-ok").textContent="Pronto! Enviamos um novo e-mail de confirmação.";
+    const b=$("#au-btn"); b.textContent="Reenviar e-mail de confirmação"; setTimeout(()=>{b.disabled=false},30000); // evita cliques repetidos
+  };
 }
 function showForgot(){
   screen(`${brandHead()}<h2 style="text-align:center">Esqueceu a senha?</h2>
@@ -2036,7 +2061,7 @@ function showForgot(){
     const email=$("#fg-email").value.trim().toLowerCase();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authFail("Digite um e-mail válido.","Enviar link");
     authBusy("Enviando…");
-    const {error}=await SB.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+    const {error}=await SB.auth.resetPasswordForEmail(email,{redirectTo:SITE});
     if(error) return authFail(authMsg(error),"Enviar link");
     showLogin(null,`Se <b>${email.replace(/</g,"&lt;")}</b> tiver uma conta, o link para criar uma senha nova chega em alguns minutos. Olhe também a caixa de spam.`);
   });
@@ -2108,13 +2133,14 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
   const h0=(location.hash||"").slice(1);
   if(!CONFIGURED) return go(["agenda","materias","praticar","progresso"].includes(h0)?h0:"inicio");
   if(!window.supabase) return showProblem("Sem conexão","Não foi possível carregar o sistema de login. Verifique a internet e recarregue a página.");
-  const hs=new URLSearchParams((location.hash||"").slice(1)), recovery=hs.get("type")==="recovery", linkErr=hs.get("error_description");
+  const hs=new URLSearchParams((location.hash||"").slice(1)), recovery=hs.get("type")==="recovery", confirmed=hs.get("type")==="signup", linkErr=hs.get("error_description");
   SB=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
   SB.auth.onAuthStateChange(ev=>{ if(ev==="PASSWORD_RECOVERY") setTimeout(showNewPassword) });
   const {data}=await SB.auth.getSession();
-  if(recovery||linkErr) try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  if(recovery||confirmed||linkErr) try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
   if(recovery && data&&data.session) return showNewPassword();
-  if(linkErr) return showLogin("Esse link não vale mais (ele expira depois de um tempo ou de ser usado). Peça um novo em \"Esqueceu a senha?\".");
+  if(linkErr) return showLogin("Este link expirou ou já foi usado. Para receber um novo link de confirmação, entre com seu e-mail e senha. Para trocar a senha, use \"Esqueceu a senha?\".");
+  if(confirmed && data&&data.session) setTimeout(()=>toast("E-mail confirmado! Bem-vindo(a) ao ACE."),600);
   if(data&&data.session) afterLogin(data.session.user); else showLogin();
 })();
 </script>
