@@ -163,6 +163,7 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 .bl.done .ttl{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--ok)}
 .bl.now{background:linear-gradient(90deg,var(--pen-soft),transparent); margin-inline:-18px; padding-inline:18px; border-radius:0}
 .tag-now{color:var(--pen)}
+.cont{font-size:13px; font-weight:700; color:var(--pen)}
 .mini{margin:4px 0 0; padding-left:20px; font-size:14px; color:var(--muted); line-height:1.4; display:grid; gap:2px}
 .mini li.ok{text-decoration:line-through; text-decoration-color:var(--ok)}
 .mini li::marker{font-weight:700}
@@ -2026,6 +2027,7 @@ function errCount(s){return qPool(s,"erros").length}
 const LVL={1:"Fácil",2:"Média",3:"Difícil"};
 function lvlCount(list){const c={1:0,2:0,3:0}; list.forEach(x=>c[x.q?x.q[4]:x[4]]++); return `${c[1]} fáceis · ${c[2]} médias · ${c[3]} difíceis`}
 function subjLessonsDone(s){const L=LESSONS[s];return [L.filter(l=>S.lessons[lessonKey(s,l.id)]).length,L.length]}
+function contTag(s,t){const o=qzSaved(s,t); return o?`<span class="cont">▶ continuar na ${o.i+1}ª de ${o.ids.length}</span>`:""}
 function badge(pct){if(pct==null) return `<span class="score-badge">novo</span>`;return `<span class="score-badge ${pct>=80?"good":pct>=60?"mid":"low"}">${pct}%</span>`}
 
 let toastT;
@@ -2271,16 +2273,40 @@ function vPraticar(){
     <button class="lab-card" data-nav2="jogos"><div style="display:grid;gap:4px"><span>Matemática em jogo</span><b>Laboratório</b><span>${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas · tabuada, troco, porcentagem, sorte e mapa</span></div><span class="big-ic">${ICON.arrow}</span></button>
     <div class="chips">${ORDER.filter(x=>TOPICS[x]).map(x=>`<button class="chip" style="--c:${SUBJ[x].c}" aria-pressed="${x===s}" data-psubj="${x}">${SUBJ[x].n}</button>`).join("")}</div>
     <div class="topics" style="--c:${SUBJ[s].c}">
-      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span></div>${badge(S.best[s+"/all"])}</button>
-      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span></div>${badge(S.best[s+"/"+k])}</button>`).join("")}
-      <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span></div>${badge(S.best[s+"/dificil"])}</button>
-      <button class="topic" data-open="Q:${s}/erros" style="--c:var(--red)"><div style="display:grid"><b>Caderno de erros</b><span>${errCount(s)} questões para refazer</span></div><span class="score-badge ${errCount(s)?"low":"good"}">${errCount(s)}</span></button>
+      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span>${contTag(s,"all")}</div>${badge(S.best[s+"/all"])}</button>
+      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span>${contTag(s,k)}</div>${badge(S.best[s+"/"+k])}</button>`).join("")}
+      <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span>${contTag(s,"dificil")}</div>${badge(S.best[s+"/dificil"])}</button>
+      <button class="topic" data-open="Q:${s}/erros" style="--c:var(--red)"><div style="display:grid"><b>Caderno de erros</b><span>${errCount(s)} questões para refazer</span>${contTag(s,"erros")}</div><span class="score-badge ${errCount(s)?"low":"good"}">${errCount(s)}</span></button>
     </div>`;
 }
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 let qz=null;
-function startQuiz(s,t){
-  const list=shuffle(qPool(s,t)).sort((a,b)=>a.q[4]-b.q[4]).map(x=>({...x,opts:shuffle(x.q[1].map((o,k)=>({o,ok:k===x.q[2]})))}));
+/* Treino salvo no aparelho: se ela sair no meio, volta na mesma questão, com a mesma ordem. */
+const qzKey=(s,t)=>s+"/"+t;
+function qzSaved(s,t){ const o=store.get("treinos",{})[qzKey(s,t)]; return o&&o.i<o.ids.length?o:null }
+function qzSave(){
+  if(!qz||!qz.list.length) return;
+  const all=store.get("treinos",{}), i=qz.i+(qz.answered?1:0); // questão já respondida conta como feita
+  if(i>=qz.list.length) delete all[qzKey(qz.s,qz.t)];
+  else all[qzKey(qz.s,qz.t)]={ids:qz.list.map(x=>x.id),opts:qz.list.map(x=>x.opts.map(o=>o.k)),i,score:qz.score,lv:qz.lv,at:Date.now()};
+  store.set("treinos",all);
+}
+function qzForget(s,t){ const all=store.get("treinos",{}); delete all[qzKey(s,t)]; store.set("treinos",all) }
+function qzResume(s,t){
+  const o=qzSaved(s,t); if(!o) return startQuiz(s,t,true);
+  const byId=Object.fromEntries(qPool(s,t==="erros"?"all":t).map(x=>[x.id,x]));
+  const list=o.ids.map((id,j)=>{const x=byId[id]; return x&&{...x,opts:o.opts[j].map(k=>({o:x.q[1][k],ok:k===x.q[2],k}))}}).filter(Boolean);
+  qz={s,t,list,i:Math.min(o.i,list.length),score:o.score,answered:null,lv:o.lv};
+  go("quiz");
+}
+function startQuiz(s,t,fresh){
+  const sv=qzSaved(s,t);
+  if(sv&&!fresh) return modal(`<span class="modal-ic">${ICON.play}</span><h2>Continuar de onde parou?</h2>
+    <p>Você parou na <b>questão ${sv.i+1} de ${sv.ids.length}</b> deste treino, com <b>${sv.score} ${sv.score===1?"acerto":"acertos"}</b> até agora.</p>
+    <button class="btn primary block" data-qz-resume="${s}|${t}">${ICON.play} Continuar na questão ${sv.i+1}</button>
+    <button class="btn block" data-qz-restart="${s}|${t}">Começar do zero</button>`);
+  qzForget(s,t);
+  const list=shuffle(qPool(s,t)).sort((a,b)=>a.q[4]-b.q[4]).map(x=>({...x,opts:shuffle(x.q[1].map((o,k)=>({o,ok:k===x.q[2],k})))}));
   qz={s,t,list,i:0,score:0,answered:null,lv:{1:[0,0],2:[0,0],3:[0,0]}};
   go("quiz");
 }
@@ -2312,6 +2338,7 @@ function vQuiz(){
 function answer(k){
   const it=qz.list[qz.i], ok=it.opts[k].ok; qz.answered={k,ok};
   const lv=qz.lv[it.q[4]]; lv[1]++; if(ok) lv[0]++;
+  qzSave();
   if(ok){qz.score++; if(qz.t==="erros") setItem("erros",it.id,null)} else setItem("erros",it.id,1);
   if(qz.i+1>=qz.list.length){
     const key=qz.s+"/"+qz.t, pct=Math.round(100*qz.score/qz.list.length);
@@ -2402,8 +2429,11 @@ document.addEventListener("click",e=>{
   }
   if(d.opt!==undefined) return answer(+d.opt);
   if(d.next!==undefined){qz.i++; qz.answered=null; render(); window.scrollTo({top:0}); return}
-  if(d.quit!==undefined){pracSubj=qz?.s||pracSubj; qz=null; return go("praticar")}
-  if(d.again!==undefined) return startQuiz(qz.s,qz.t);
+  if(d.quit!==undefined){
+    const mid=qz&&qz.list.length&&qz.i<qz.list.length&&(qz.i>0||qz.answered);
+    if(mid){qzSave(); toast(`Progresso salvo. Da próxima vez, você continua na questão ${qz.i+(qz.answered?2:1)}.`)}
+    pracSubj=qz?.s||pracSubj; qz=null; return go("praticar")}
+  if(d.again!==undefined) return startQuiz(qz.s,qz.t,true);
   if(d.psubj){pracSubj=d.psubj; return render()}
   if(d.nav2) return go(d.nav2);
   if(d.start){
@@ -2512,6 +2542,11 @@ document.addEventListener("click",e=>{
   if(k>=0&&st[k][1]) openStep(date,+i,k); else {pomoForBlock(date,+i); go("bloco",{date,i:+i})}
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden) closeModal()});
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-qz-resume]"), n=e.target.closest("[data-qz-restart]"); if(!r&&!n) return;
+  closeModal(); const [s,t]=(r||n).dataset[r?"qzResume":"qzRestart"].split("|");
+  if(r) qzResume(s,t); else startQuiz(s,t,true);
+});
 function pDraw(){
   let left=P.running?Math.max(0,Math.ceil((P.end-Date.now())/1000)):P.left;
   if(P.running&&left<=0){ if(!APP_READY||document.body.classList.contains("locked")) left=0; else return pFinish(false) } // antes de o app abrir (ou no login), espera
