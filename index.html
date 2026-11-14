@@ -2473,7 +2473,13 @@ function qPool(s,t){
 function errCount(s){return qPool(s,"erros").length}
 const LVL={1:"Fácil",2:"Média",3:"Difícil"};
 function lvlCount(list){const c={1:0,2:0,3:0}; list.forEach(x=>c[x.q?x.q[4]:x[4]]++); return `${c[1]} fáceis · ${c[2]} médias · ${c[3]} difíceis`}
-function subjLessonsDone(s){const L=curLessons(s);return [L.filter(l=>S.lessons[lessonKey(s,l.id)]).length,L.length]}
+/* Período de provas atual: lição estudada e nota de treino só contam se foram feitas a partir desta data.
+   O que foi feito antes (na prova anterior) aparece como "estudada na prova anterior". */
+const CICLO=new Date("2026-11-14T00:00:00-03:00").getTime();
+const doneNow=key=>!!S.lessons[key]&&(S.meta["lessons:"+key]||0)>=CICLO;
+const doneBefore=key=>!!S.lessons[key]&&!doneNow(key);
+const bestNow=key=>(S.meta["best:"+key]||0)>=CICLO?S.best[key]:undefined;
+function subjLessonsDone(s){const L=curLessons(s);return [L.filter(l=>doneNow(lessonKey(s,l.id))).length,L.length]}
 function contTag(s,t){const o=qzSaved(s,t); return o?`<span class="cont">▶ continuar na ${o.i+1}ª de ${o.ids.length}</span>`:""}
 function badge(pct){if(pct==null) return `<span class="score-badge">novo</span>`;return `<span class="score-badge ${pct>=80?"good":pct>=60?"mid":"low"}">${pct}%</span>`}
 
@@ -2545,7 +2551,7 @@ function vInicio(){
       <div class="top"><div style="display:grid;gap:6px"><span class="eyebrow">Próxima prova</span><h2>${names}</h2><p class="muted">${dLong(nx.d)} · 7h</p></div>
       <div class="count"><b>${n<=0?"Hoje":n}</b><span>${n<=0?"às 7h":n===1?"dia":"dias"}</span></div></div>
       ${tot?`<div style="display:grid;gap:8px"><div class="row between"><span class="eyebrow">O que cai</span><span class="muted" style="font-size:13px">${dn} de ${tot} lições estudadas</span></div>
-      <div class="lesson-chips">${L.map(l=>`<span class="lchip${S.lessons[lessonKey(s0,l.id)]?" done":""}">${S.lessons[lessonKey(s0,l.id)]?"✓ ":""}${l.t}</span>`).join("")}</div>
+      <div class="lesson-chips">${L.map(l=>`<span class="lchip${doneNow(lessonKey(s0,l.id))?" done":""}">${doneNow(lessonKey(s0,l.id))?"✓ ":""}${l.t}</span>`).join("")}</div>
       <div class="progress" style="--c:${SUBJ[s0].c}"><i style="width:${100*dn/tot}%"></i></div></div>`:""}
       <button class="btn primary" style="background:${SUBJ[s0].c};border-color:${SUBJ[s0].c};color:var(--surface)" data-subj="${s0}">Estudar ${SUBJ[s0].n} ${ICON.arrow}</button>
     </section>`;
@@ -2617,8 +2623,8 @@ function vBloco({date,i}){
 }
 function statsRow(withBtn=true){
   const totB=DAYS.reduce((a,d)=>a+d[2].length,0), doneB=Object.values(S.checks).filter(Boolean).length;
-  const cur=ORDER.flatMap(s=>curLessons(s).map(l=>lessonKey(s,l.id))), totL=cur.length, doneL=cur.filter(k=>S.lessons[k]).length;
-  const bests=Object.values(S.best); const avg=bests.length?Math.round(bests.reduce((a,b)=>a+b,0)/bests.length):null;
+  const cur=ORDER.flatMap(s=>curLessons(s).map(l=>lessonKey(s,l.id))), totL=cur.length, doneL=cur.filter(k=>doneNow(k)).length;
+  const bests=Object.keys(S.best).map(bestNow).filter(v=>v!=null); const avg=bests.length?Math.round(bests.reduce((a,b)=>a+b,0)/bests.length):null;
   return `<section class="stats">
     <div class="stat"><span>Blocos feitos</span><b>${doneB} / ${totB}</b><div class="progress"><i style="width:${100*doneB/totB}%"></i></div></div>
     <div class="stat"><span>Lições estudadas</span><b>${doneL} / ${totL}</b><div class="progress" style="--c:var(--ok)"><i style="width:${100*doneL/totL}%"></i></div></div>
@@ -2680,9 +2686,9 @@ function vMateria({s}){
     ${s==="mat"?`<p>Estas são as lições da prova. Comece pela de <b>tempo</b>: é o foco do professor.</p>`:`<p>Estude cada lição e treine no final.</p>`}</section>`;
   if(!L.length) return head+`<div class="card"><h3>Conteúdo em breve</h3><p class="muted" style="margin-top:6px">A escola ainda vai informar o que cai na prova de Inglês. Assim que chegar, as lições e questões aparecem aqui.</p></div>`;
   return head+`<ol class="path" style="--c:${SUBJ[s].c}">${L.map((l,i)=>{
-      const done=S.lessons[lessonKey(s,l.id)];
+      const k=lessonKey(s,l.id), done=doneNow(k);
       return `<li class="${done?"done":""}"><span class="num">${done?ICON.check:i+1}</span>
-        <button class="lcard" style="--c:${SUBJ[s].c}" data-lesson="${s}/${l.id}"><span>${l.cap} · ${l.steps.length} passos</span><b>${l.t}</b><span>${done?"Estudada":"Começar lição"}</span></button></li>`}).join("")}</ol>
+        <button class="lcard" style="--c:${SUBJ[s].c}" data-lesson="${s}/${l.id}"><span>${l.cap} · ${l.steps.length} passos</span><b>${l.t}</b><span>${done?"Estudada":doneBefore(k)?"Estudada na prova anterior · vale revisar":"Começar lição"}</span></button></li>`}).join("")}</ol>
     ${OL.length?`<details class="card old"><summary><b>Revisão da prova anterior</b> <span class="muted">· ${OL.length} lições</span></summary>
       <div class="plist" style="margin-top:8px">${OL.map(l=>`<button class="prow linkrow" data-lesson="${s}/${l.id}"><span>${l.t}<br><span class="sub">${l.cap}</span></span><span class="muted">${ICON.arrow}</span></button>`).join("")}</div></details>`:""}
     <div class="quick">
@@ -2723,9 +2729,9 @@ function vPraticar(){
     <button class="lab-card" data-nav2="jogos"><div style="display:grid;gap:4px"><span>Matemática em jogo</span><b>Laboratório</b><span>${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas · novo: Relógio maluco (horas, minutos e segundos)</span></div><span class="big-ic">${ICON.arrow}</span></button>
     <div class="chips">${ORDER.filter(x=>TOPICS[x]).map(x=>`<button class="chip" style="--c:${SUBJ[x].c}" aria-pressed="${x===s}" data-psubj="${x}">${SUBJ[x].n}</button>`).join("")}</div>
     <div class="topics" style="--c:${SUBJ[s].c}">
-      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span>${contTag(s,"all")}</div>${badge(S.best[s+"/all"])}</button>
-      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span>${contTag(s,k)}</div>${badge(S.best[s+"/"+k])}</button>`).join("")}
-      <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span>${contTag(s,"dificil")}</div>${badge(S.best[s+"/dificil"])}</button>
+      <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span>${contTag(s,"all")}</div>${badge(bestNow(s+"/all"))}</button>
+      ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span>${contTag(s,k)}</div>${badge(bestNow(s+"/"+k))}</button>`).join("")}
+      <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span>${contTag(s,"dificil")}</div>${badge(bestNow(s+"/dificil"))}</button>
       <button class="topic" data-open="Q:${s}/erros" style="--c:var(--red)"><div style="display:grid"><b>Caderno de erros</b><span>${errCount(s)} questões para refazer</span>${contTag(s,"erros")}</div><span class="score-badge ${errCount(s)?"low":"good"}">${errCount(s)}</span></button>
     </div>
     ${(TOPICS_OLD[s]||[]).length?`<details class="card old"><summary><b>Revisão da prova anterior</b> <span class="muted">· não entra no treino completo</span></summary>
@@ -2794,7 +2800,7 @@ function answer(k){
   if(ok){qz.score++; if(qz.t==="erros") setItem("erros",it.id,null)} else setItem("erros",it.id,1);
   if(qz.i+1>=qz.list.length){
     const key=qz.s+"/"+qz.t, pct=Math.round(100*qz.score/qz.list.length);
-    if(qz.t!=="erros" && pct>(S.best[key]||0)) setItem("best",key,pct);
+    if(qz.t!=="erros" && pct>(bestNow(key)||0)) setItem("best",key,pct);
     logAct(`Treino ${quizTitle()}: ${qz.score} de ${qz.list.length} (${pct}%)`);
     blkComplete("Q:"+qz.s+"/"+qz.t);
   }
@@ -2874,7 +2880,7 @@ document.addEventListener("click",e=>{
   if(d.step){
     const p=V.p, l=findLesson(p.s,p.id), n=l.steps.length, lo=p.from??0, hi=p.to??n-1, ni=p.i+(+d.step);
     if(ni>hi){
-      if(hi>=n-1&&!S.lessons[lessonKey(p.s,p.id)]){setItem("lessons",lessonKey(p.s,p.id),true); logAct(`Concluiu a lição ${l.t} (${SUBJ[p.s].n})`)}
+      if(hi>=n-1&&!doneNow(lessonKey(p.s,p.id))){setItem("lessons",lessonKey(p.s,p.id),true); logAct(`Concluiu a lição ${l.t} (${SUBJ[p.s].n})`)}
       blkComplete(lessonLink(p));
       return go("licao",{...p,fin:true})}
     if(ni>=lo) go("licao",{...p,i:ni}); return;
@@ -3367,9 +3373,9 @@ function vProgresso(){
     return `<section class="card" style="display:grid;gap:10px;--c:${SUBJ[s].c}">
       <div class="row between"><h3 style="color:${SUBJ[s].c}">${SUBJ[s].n}</h3><span class="muted" style="font-size:13px">Prova ${dShort(e.d).toLowerCase()} · ${examDone(e.d)?"feita":whenTxt(e.d)}</span></div>
       <div class="progress"><i style="width:${100*dn/tot}%"></i></div>
-      <div class="plist">${curLessons(s).map(l=>`<div class="prow"><span>${l.t}</span>${S.lessons[lessonKey(s,l.id)]?`<span class="okmark">✓ estudada</span>`:`<span class="muted" style="font-size:13px">pendente</span>`}</div>`).join("")}</div>
+      <div class="plist">${curLessons(s).map(l=>`<div class="prow"><span>${l.t}</span>${doneNow(lessonKey(s,l.id))?`<span class="okmark">✓ estudada</span>`:doneBefore(lessonKey(s,l.id))?`<span class="muted" style="font-size:13px">estudada na prova anterior</span>`:`<span class="muted" style="font-size:13px">pendente</span>`}</div>`).join("")}</div>
       <span class="eyebrow" style="margin-top:6px">Treinos · melhor nota</span>
-      <div class="plist">${[["all","Treino completo"],...TOPICS[s],["dificil","Desafio: só difíceis"]].map(([k,n])=>`<div class="prow"><span>${n}</span>${badge(S.best[s+"/"+k])}</div>`).join("")}
+      <div class="plist">${[["all","Treino completo"],...TOPICS[s],["dificil","Desafio: só difíceis"]].map(([k,n])=>`<div class="prow"><span>${n}</span>${badge(bestNow(s+"/"+k))}</div>`).join("")}
         <div class="prow"><span>Caderno de erros</span><span class="score-badge ${er?"low":"good"}">${er} para refazer</span></div></div>
     </section>`}).join("");
   return `<div class="hello"><span class="eyebrow">Acompanhamento</span><h1>Progresso da <span class="hl">${nome}</span></h1>
