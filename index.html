@@ -164,6 +164,9 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 .bl.now{background:linear-gradient(90deg,var(--pen-soft),transparent); margin-inline:-18px; padding-inline:18px; border-radius:0}
 .tag-now{color:var(--pen)}
 .cont{font-size:13px; font-weight:700; color:var(--pen)}
+details.old summary{cursor:pointer}
+.linkrow{width:100%; background:none; border:0; border-top:1px solid var(--line); text-align:left; font:inherit; color:inherit; cursor:pointer}
+.linkrow:first-child{border-top:0}
 .mini{margin:4px 0 0; padding-left:20px; font-size:14px; color:var(--muted); line-height:1.4; display:grid; gap:2px}
 .mini li.ok{text-decoration:line-through; text-decoration-color:var(--ok)}
 .mini li::marker{font-weight:700}
@@ -538,9 +541,9 @@ const SUBJ = {
   cien:{n:"Ciências",sh:"Ciên.",ic:"C",c:"var(--cien)"}, ing:{n:"Inglês",sh:"Ing.",ic:"En",c:"var(--ing)"}, rev:{n:"Revisão",sh:"Rev.",ic:"R",c:"var(--rev)"}
 };
 const ORDER = ["mat","port","hist","geo","cien","ing"];
-const EXAM_DAYS = [
-  {d:"2026-09-28",s:["port"]},{d:"2026-09-30",s:["mat"]},{d:"2026-10-02",s:["hist"]},
-  {d:"2026-10-06",s:["geo"]},{d:"2026-10-08",s:["cien"]},{d:"2026-10-13",s:["ing"]}
+const EXAM_DAYS = [ // avaliação trimestral do 3º trimestre (Inglês: turma 601)
+  {d:"2026-11-10",s:["ing"]},{d:"2026-11-13",s:["port"]},{d:"2026-11-16",s:["mat"]},
+  {d:"2026-11-17",s:["hist"]},{d:"2026-11-18",s:["geo"]},{d:"2026-11-19",s:["cien"]}
 ];
 const EXAM_HOUR_END = 9; // a prova vai das 7h às 8h40
 
@@ -551,110 +554,47 @@ const EXAM_HOUR_END = 9; // a prova vai das 7h às 8h40
           "L:mat/decimais" lição inteira · "L:mat/decimais@0-2" só os passos 1 a 3 da lição
           "Q:mat/decimais" treino · "G:reta" jogo do Laboratório · null tarefa fora do app (livro, caderno) */
 const DAYS = [
- ["2026-09-25",17,[
-  ["mat","Base: décimos e centésimos","Revisar o que vem antes dos decimais, usando dinheiro.",[
-   ["Aquecimento: tabuada do 6 e do 7","T:6,7",5],["Lição: pré-requisitos","L:mat/base",30],["Treino: pré-requisitos","Q:mat/base",15]]],
-  ["port","Cap. 8: cartaz, anúncio e outdoor","Entender a diferença entre campanha (mudar comportamento) e anúncio (vender).",[
-   ["Ler o capítulo 8 no livro",null,15],["Lição: cartaz, anúncio e outdoor","L:port/generos",20],["Lição: modo imperativo","L:port/imperativo",15]]]]],
- ["2026-09-26",13,[
-  ["mat","Decimais: comparar, somar e subtrair","Completar com zeros para comparar. Vírgula embaixo de vírgula para somar.",[
-   ["Aquecimento: tabuada do 8","T:8",5],["Lição: casas decimais, comparar, somar e subtrair","L:mat/decimais@0-2",25],["Jogo: Reta dos decimais","G:reta",10],["Jogo: Mercadinho (troco)","G:mercado",10]]],
-  ["port","Formação de palavras e ortografia","Justaposição e aglutinação. Depois, homófonas e parônimos.",[
-   ["Lição: formação de palavras","L:port/formacao",20],["Lição: ortografia (homófonas e parônimos)","L:port/ortografia",20],["Treino do capítulo 8","Q:port/cap8",10]]],
-  ["mat","Decimais: multiplicar, dividir e potência","Multiplicar e contar as casas. Dividir igualando as casas.",[
-   ["Aquecimento: tabuada do 9","T:9",5],["Lição: multiplicar, dividir, potência e problemas","L:mat/decimais@3-6",25],["Treino: números decimais","Q:mat/decimais",20]]],
-  ["port","Cap. 9: reportagem, reclamação e figuras","Carta e postagem de reclamação. Metonímia e personificação.",[
-   ["Lição: reportagem e textos de reclamação","L:port/reclamacao",20],["Lição: metonímia e personificação","L:port/figuras",15],["Escrever no caderno uma carta de reclamação curta",null,15]]]]],
- ["2026-09-27",16,[
-  ["port","Subjuntivo, formas nominais e treino geral","Última revisão antes da prova de amanhã.",[
-   ["Lição: subjuntivo e formas nominais","L:port/verbos",20],["Treino completo de Português","Q:port/all",30]]],
-  ["mat","Porcentagem: os atalhos","50% = metade, 25% = um quarto, 10% = dividir por 10.",[
-   ["Aquecimento: tabuada misturada","T",5],["Lição: o que é porcentagem e os atalhos","L:mat/porcentagem@0-2",25],["Jogo: Pinta 100","G:pinta",20]]]]],
- ["2026-09-28",15,[
-  ["mat","Porcentagem e educação financeira","Desconto, acréscimo, à vista x parcelado.",[
-   ["Aquecimento: tabuada do 7","T:7",5],["Lição: desconto, acréscimo e educação financeira","L:mat/porcentagem@3-5",20],["Jogo: Liquidação","G:liquida",10],["Treino: porcentagem","Q:mat/porcentagem",15]]],
-  ["mat","Probabilidade e contagem","Dado, moeda, bolinhas no saco. Desenhar a árvore no papel.",[
-   ["Aquecimento: tabuada misturada","T",5],["Lição: probabilidade e contagem","L:mat/probabilidade",20],["Jogo: Laboratório da sorte","G:sorte",10],["Treino: probabilidade","Q:mat/probabilidade",15]]],
-  ["mat","Plano cartesiano e vistas","Marcar pontos no caderno quadriculado. Ampliar um triângulo ×2.",[
-   ["Lição: plano cartesiano e vistas","L:mat/plano",20],["Jogo: Caça ao tesouro","G:tesouro",15],["Treino: plano cartesiano","Q:mat/plano",15]]]]],
- ["2026-09-29",15,[
-  ["mat","Refazer o caderno de erros","Tudo o que ela errou em Matemática, com calma.",[
-   ["Aquecimento: tabuada misturada","T",10],["Caderno de erros de Matemática","Q:mat/erros",40]]],
+ ["2026-11-14",14,[
+  ["mat","Tempo: horas, minutos e segundos","O foco do professor: converter sem errar. Para a unidade menor, × 60; para a maior, ÷ 60.",[
+   ["Aquecimento: tabuada do 6 (é a do 60!)","T:6",5],["Lição: unidades e conversões de tempo","L:mat/tempo@0-4",25],["Jogo: Relógio maluco","G:relogio",20]]],
+  ["mat","Poliedros e planificações","Faces, vértices e arestas. Prisma tem 2 bases; pirâmide tem 1.",[
+   ["Lição: poliedros, prismas e pirâmides","L:mat/poliedros",25],["Treino: poliedros","Q:mat/poliedros",25]]],
+  ["mat","Noções de álgebra","A igualdade é uma balança. Partilhas com \"a mais\" e com \"o dobro\".",[
+   ["Lição: noções de álgebra","L:mat/algebra",25],["Treino: álgebra","Q:mat/algebra",25]]],
+  ["mat","Outras medidas","Volume, capacidade (L e mL), massa (kg e g) e temperatura.",[
+   ["Lição: outras medidas","L:mat/medidas",25],["Treino: outras medidas","Q:mat/medidas",25]]]]],
+ ["2026-11-15",14,[
+  ["mat","Tempo: duração e horários","Quanto tempo passou, que horas termina e somar tempos.",[
+   ["Aquecimento: tabuada do 6","T:6",5],["Lição: duração, horários e relógios","L:mat/tempo@5-7",20],["Jogo: Relógio maluco","G:relogio",10],["Treino: tempo","Q:mat/tempo",15]]],
+  ["mat","Plano cartesiano e vistas","Revisão do capítulo 9, que também cai na prova.",[
+   ["Rever a lição: plano cartesiano e vistas","L:mat/plano",20],["Jogo: Caça ao tesouro","G:tesouro",10],["Treino: plano cartesiano","Q:mat/plano",20]]],
   ["mat","Simulado de Matemática","Ela resolve sozinha e você só confere no fim.",[
    ["Treino completo de Matemática","Q:mat/all",50]]],
-  ["hist","Cap. 8: Império Romano","Início do Império, sociedade, Pax Romana, pão e circo. Dormir cedo: amanhã tem prova.",[
-   ["Lição: o Império Romano","L:hist/estrutura",30],["Treino: Império Romano","Q:hist/roma",20]]]]],
- ["2026-09-30",15,[
-  ["hist","Cap. 8: cultura e crise de Roma","Heranças romanas, cristianismo, crise e queda em 476.",[
-   ["Lição: cultura e crise de Roma","L:hist/cultura",30],["Treino: Império Romano","Q:hist/roma",20]]],
-  ["hist","Cap. 9: Império Bizantino","Constantinopla, Justiniano, Hagia Sofia, cisma e queda.",[
-   ["Lição: Império Bizantino","L:hist/bizancio",30],["Treino: Império Bizantino","Q:hist/bizancio",20]]],
-  ["geo","Cap. 8: primeira leitura","Só conhecer as formações vegetais, sem treino ainda.",[
-   ["Ler o capítulo 8 no livro",null,15],["Lição: formações vegetais","L:geo/vegetacao",35]]]]],
- ["2026-10-01",15,[
-  ["hist","Simulado de História","No fim, ela explica em voz alta a diferença entre Roma e Bizâncio.",[
-   ["Treino completo de História","Q:hist/all",40],["Explicar em voz alta: Roma x Bizâncio",null,10]]],
-  ["geo","Cap. 8: formações vegetais","Fixar vegetação, clima e exemplo de cada uma.",[
-   ["Montar no caderno a tabela: vegetação, clima, exemplo",null,20],["Treino: formações vegetais","Q:geo/vegetacao",30]]],
-  ["cien","Cap. 8: leitura leve do esqueleto","Funções dos ossos e tipos de articulação. Dormir cedo: amanhã tem prova.",[
-   ["Lição: sistema esquelético","L:cien/esqueleto",35],["Ler o capítulo 8 no livro",null,15]]]]],
- ["2026-10-02",15,[
-  ["geo","Cap. 9: ação humana no clima e na vegetação","Efeito estufa, ilhas de calor, desmatamento, mudanças climáticas.",[
-   ["Lição: ação humana no clima e na vegetação","L:geo/acao",30],["Treino: ação humana","Q:geo/acao",20]]],
-  ["cien","Cap. 8: sistema muscular","Três tipos de músculo. Tendão e ligamento. Bíceps e tríceps.",[
-   ["Lição: sistema muscular","L:cien/musculos",25],["Treino: sistema locomotor","Q:cien/locomotor",25]]]]],
- ["2026-10-03",13,[
-  ["geo","Treino de Geografia","Treino completo e depois o caderno de erros.",[
-   ["Treino completo de Geografia","Q:geo/all",35],["Caderno de erros de Geografia","Q:geo/erros",15]]],
-  ["cien","Cap. 9: matéria e misturas","Homogênea e heterogênea com coisas da cozinha.",[
-   ["Lição: matéria e misturas","L:cien/materia",20],["Na cozinha: água com sal e água com óleo",null,10],["Treino: misturas","Q:cien/misturas",20]]],
-  ["cien","Separação de misturas","Destilação, evaporação, destilação fracionada.",[
-   ["Lição: separação de misturas","L:cien/separacao",30],["Treino: misturas","Q:cien/misturas",20]]]]],
- ["2026-10-04",16,[
-  ["geo","Revisão de Geografia","Refazer os erros e explicar o efeito estufa com as próprias palavras.",[
-   ["Caderno de erros de Geografia","Q:geo/erros",30],["Explicar em voz alta o efeito estufa",null,10],["Rever a lição: ação humana","L:geo/acao",10]]],]],
- ["2026-10-05",15,[
-  ["geo","Treino final de Geografia","Último treino antes da prova de amanhã.",[
-   ["Treino completo de Geografia","Q:geo/all",50]]],
-  ["cien","Treino do cap. 8 de Ciências","Esqueleto e músculos. Dormir cedo: amanhã tem prova de Geografia.",[
-   ["Treino: sistema locomotor","Q:cien/locomotor",50]]]]],
- ["2026-10-06",15,[
-  ["cien","Cap. 9: revisão de misturas","Refazer os tipos de mistura e as separações.",[
-   ["Rever a lição: separação de misturas","L:cien/separacao",25],["Treino: misturas","Q:cien/misturas",25]]],
-  ["cien","Simulado de Ciências","Treino completo, sem consultar.",[["Treino completo de Ciências","Q:cien/all",50]]],
-  ["cien","Caderno de erros de Ciências","Refazer só o que errou.",[["Caderno de erros de Ciências","Q:cien/erros",50]]]]],
- ["2026-10-07",15,[
-  ["cien","Revisão final: locomotor","Ela ensina para você: ossos, articulações, músculos.",[
-   ["Rever a lição: sistema esquelético","L:cien/esqueleto",20],["Rever a lição: sistema muscular","L:cien/musculos",15],["Ela explica para você o que aprendeu",null,15]]],
-  ["cien","Revisão final: misturas","Ela ensina para você: tipos de mistura e como separar.",[
-   ["Rever a lição: matéria e misturas","L:cien/materia",15],["Rever a lição: separação de misturas","L:cien/separacao",20],["Ela explica para você o que aprendeu",null,15]]],
-  ["rev","Bloco leve","Treino rápido e descanso. Dormir cedo.",[["Treino completo de Ciências","Q:cien/all",30],["Descansar",null,20]]]]],
- ["2026-10-08",15,[
-  ["ing","CLIL 14: To infinity and beyond!","Como os cientistas observam e se comunicam com o espaço. Either… or.",[
-   ["Lição: To infinity and beyond!","L:ing/cap14",30],["Treino: CLIL 14","Q:ing/cap14",20]]],
-  ["ing","LANGUAGE 13: My family rocks!","Membros da família e present simple afirmativo (plays, studies, has).",[
-   ["Lição: My family rocks!","L:ing/lang13",25],["Treino: LANGUAGE 13","Q:ing/l13",25]]]]],
- ["2026-10-09",15,[
-  ["ing","CLIL 15: A picture is worth a thousand words","Elementos da comunicação e o artista Eduardo Kobra.",[
-   ["Lição: A picture is worth a thousand words","L:ing/cap15",30],["Treino: CLIL 15","Q:ing/cap15",20]]],
-  ["ing","LANGUAGE 14: I love texting my friends","Atividades de tempo livre e o present simple para falar dos outros.",[
-   ["Lição: I love texting my friends","L:ing/lang14",25],["Treino: LANGUAGE 14","Q:ing/l14",25]]]]],
- ["2026-10-10",13,[
-  ["ing","CLIL 16: Spread the word!","Como a comunicação mudou, por que é importante e as barreiras.",[
-   ["Lição: Spread the word!","L:ing/cap16",30],["Treino: CLIL 16","Q:ing/cap16",20]]],
-  ["ing","LANGUAGE 15: Discovering new hobbies","Present simple negativo (don't/doesn't) e perguntas (Do/Does).",[
-   ["Lição: Discovering new hobbies","L:ing/lang15",30],["Treino: LANGUAGE 15","Q:ing/l15",20]]]]],
- ["2026-10-11",16,[
-  ["ing","Vocabulário e expressões","Revisar as palavras dos capítulos do CLIL e as três estruturas.",[
-   ["Lição: vocabulário e expressões","L:ing/revisao",20],["Treino: vocabulário e expressões","Q:ing/lang",30]]],
-  ["ing","Simulado de Inglês","Ela resolve sozinha e você só confere no fim.",[
-   ["Treino completo de Inglês","Q:ing/all",50]]]]],
- ["2026-10-12",15,[
-  ["ing","Caderno de erros de Inglês","Refazer o que errou e rever o present simple.",[
-   ["Caderno de erros de Inglês","Q:ing/erros",30],["Rever: present simple negativo e perguntas","L:ing/lang15@1-2",20]]],
-  ["rev","Bloco leve","Última revisão da maratona. Dormir cedo: amanhã tem prova de Inglês.",[
-   ["Ela explica para você, em português, o que aprendeu de cada capítulo",null,20],["Descansar",null,30]]]]]
+  ["mat","Caderno de erros e tempo de novo","Refazer o que errou. Dormir cedo: amanhã tem prova às 7h.",[
+   ["Caderno de erros de Matemática","Q:mat/erros",30],["Jogo: Relógio maluco","G:relogio",10],["Separar o material e dormir cedo",null,10]]]]],
+ ["2026-11-16",15,[
+  ["hist","Cap. 10: Mundo islâmico","Maomé, os 5 pilares, os califados e os reinos de Gana, Mali e Songhai.",[
+   ["Lição: mundo islâmico","L:hist/islamico",30],["Treino: mundo islâmico","Q:hist/islamico",20]]],
+  ["hist","Cap. 11: Alta Idade Média","Reinos germânicos, Carlos Magno, feudalismo e a vida na Idade Média.",[
+   ["Lição: Alta Idade Média","L:hist/altaidade",30],["Treino: Alta Idade Média","Q:hist/altaidade",20]]],
+  ["hist","Simulado de História","Dormir cedo: amanhã tem prova de História.",[
+   ["Treino completo de História","Q:hist/all",40],["Explicar em voz alta: os 5 pilares do Islã e as obrigações dos servos",null,10]]]]],
+ ["2026-11-17",15,[
+  ["geo","Cap. 10: Espaço rural","Latifúndio e minifúndio, agricultura, pecuária, extrativismo, êxodo rural.",[
+   ["Lição: espaço rural","L:geo/rural",25],["Treino: espaço rural","Q:geo/rural",25]]],
+  ["geo","Cap. 11: Espaço urbano","Urbanização, metrópoles, problemas urbanos e os três setores da economia.",[
+   ["Lição: espaço urbano","L:geo/urbano",25],["Treino: espaço urbano","Q:geo/urbano",25]]],
+  ["geo","Simulado de Geografia","Dormir cedo: amanhã tem prova de Geografia.",[
+   ["Treino completo de Geografia","Q:geo/all",40],["Caderno de erros de Geografia","Q:geo/erros",10]]]]],
+ ["2026-11-18",15,[
+  ["cien","Cap. 10: Separação de misturas e ambiente","Métodos de separação, ETA, ETE, vazamento de petróleo e filtros de ar.",[
+   ["Lição: separação de misturas e ambiente","L:cien/ambiente",30],["Treino: misturas e ambiente","Q:cien/ambiente",20]]],
+  ["cien","Cap. 11: Transformações e método científico","Física × química, mudanças de estado, método científico e materiais sintéticos.",[
+   ["Lição: transformações e método científico","L:cien/transformacoes",30],["Treino: transformações","Q:cien/transformacoes",20]]],
+  ["cien","Simulado de Ciências","Última prova! Dormir cedo.",[
+   ["Treino completo de Ciências","Q:cien/all",40],["Ela explica para você a diferença entre ETA e ETE",null,10]]]]]
 ];
+
 
 /* ---------- conteúdo das lições ---------- */
 const PLANO_SVG = `<div class="tbl" style="border:0"><svg viewBox="0 0 250 205" width="260" role="img" aria-label="Plano cartesiano com os pontos A(3,2) e B(1,4)">
@@ -859,7 +799,134 @@ const LESSONS = {
      <tr><td>Cone de trânsito</td><td>triângulo</td><td>círculo</td></tr></table></div>
     <p>A <b>planta baixa</b> é a casa vista <b>de cima</b>, como se tirassem o telhado. Ela mostra os cômodos, as portas e as janelas, mas não mostra alturas.</p>
     <div class="box tip"><span class="lbl">Atividade</span><p>Pegue uma caixa de remédio e desenhe como ela aparece de frente, de lado e de cima.</p></div>
-    <details class="try"><summary>Tente você: uma bola vista de qualquer lado parece o quê?</summary><p>Um <b>círculo</b>, de qualquer lado.</p></details>`]]}
+    <details class="try"><summary>Tente você: uma bola vista de qualquer lado parece o quê?</summary><p>Um <b>círculo</b>, de qualquer lado.</p></details>`]]},
+  {id:"tempo",cap:"Cap. 11 · Foco",t:"Medidas de tempo: hora, minuto e segundo",q:"mat/tempo",steps:[
+   ["As unidades de tempo",`<p>Medimos o tempo com várias unidades. As três que mais caem na prova são <b>hora (h)</b>, <b>minuto (min)</b> e <b>segundo (s)</b>.</p>
+    <div class="tbl"><table><tr><th>Unidade</th><th>Vale</th></tr>
+     <tr><td>1 minuto</td><td><b>60 segundos</b></td></tr><tr><td>1 hora</td><td><b>60 minutos</b> = 3 600 segundos</td></tr>
+     <tr><td>1 dia</td><td>24 horas</td></tr><tr><td>1 semana</td><td>7 dias</td></tr>
+     <tr><td>1 ano</td><td>12 meses = 365 dias (366 no bissexto)</td></tr>
+     <tr><td>1 década · 1 século</td><td>10 anos · 100 anos</td></tr></table></div>
+    <div class="box warn"><span class="lbl">O mais importante</span><p>O tempo <b>não</b> conta de 10 em 10 nem de 100 em 100. Hora e minuto andam de <b>60 em 60</b>. Por isso 1 h <b>não</b> é 100 min.</p></div>
+    <div class="box tip"><span class="lbl">Por isso a tabuada do 6 ajuda</span><p>60, 120, 180, 240, 300, 360, 420, 480, 540, 600: são 1 a 10 horas em minutos (ou 1 a 10 minutos em segundos).</p></div>`],
+   ["De hora para minuto (× 60)",`<p>Para passar de uma unidade <b>maior</b> para uma <b>menor</b>, o número fica <b>maior</b>: <b>multiplica por 60</b>.</p>
+    <div class="ex">horas → minutos: <b>× 60</b><br>minutos → segundos: <b>× 60</b><br>horas → segundos: <b>× 3 600</b> (60 × 60)</div>
+    <div class="ex">2 h = 2 × 60 = <b>120 min</b><br>5 h = 5 × 60 = <b>300 min</b><br>3 min = 3 × 60 = <b>180 s</b><br>1 h = 60 × 60 = <b>3 600 s</b><br>2 h = 2 × 3 600 = <b>7 200 s</b></div>
+    <details class="try"><summary>Tente você: quantos minutos têm 4 horas? E quantos segundos têm 7 minutos?</summary><p>4 × 60 = <b>240 min</b>. 7 × 60 = <b>420 s</b>.</p></details>`],
+   ["De minuto para hora (÷ 60)",`<p>Para passar de uma unidade <b>menor</b> para uma <b>maior</b>, o número fica <b>menor</b>: <b>divide por 60</b>.</p>
+    <div class="ex">segundos → minutos: <b>÷ 60</b><br>minutos → horas: <b>÷ 60</b></div>
+    <div class="ex">180 min ÷ 60 = <b>3 h</b><br>240 s ÷ 60 = <b>4 min</b><br>600 s ÷ 60 = <b>10 min</b><br>7 200 s ÷ 3 600 = <b>2 h</b></div>
+    <div class="box tip"><span class="lbl">Truque para conferir</span><p>Convertendo para a unidade maior, o número tem que <b>diminuir</b>. Se 180 min virou 10 800 h, você multiplicou quando devia dividir.</p></div>
+    <details class="try"><summary>Tente você: 360 s são quantos minutos?</summary><p>360 ÷ 60 = <b>6 min</b>.</p></details>`],
+   ["Horas e minutos juntos",`<p>Muitas vezes a resposta tem <b>duas partes</b>, como 2 h 15 min.</p>
+    <p><b>Juntando tudo em minutos:</b> converte as horas e soma os minutos que sobraram.</p>
+    <div class="ex">2 h 15 min = 2 × 60 + 15 = 120 + 15 = <b>135 min</b><br>1 h 40 min = 60 + 40 = <b>100 min</b><br>3 min 20 s = 180 + 20 = <b>200 s</b></div>
+    <p><b>Separando em horas e minutos:</b> divide por 60. O <b>resultado</b> são as horas e o <b>resto</b> são os minutos.</p>
+    <div class="ex">200 min ÷ 60 = 3, resto 20 → <b>3 h 20 min</b><br>135 min ÷ 60 = 2, resto 15 → <b>2 h 15 min</b><br>150 s ÷ 60 = 2, resto 30 → <b>2 min 30 s</b></div>
+    <details class="try"><summary>Tente você: 95 minutos são quantas horas e minutos?</summary><p>95 ÷ 60 = 1, resto 35 → <b>1 h 35 min</b>.</p></details>`],
+   ["Meia hora, um quarto e 1,5 h",`<p>Frações da hora aparecem muito no dia a dia:</p>
+    <div class="tbl"><table><tr><th>Expressão</th><th>Minutos</th></tr>
+     <tr><td>meia hora (1/2 h)</td><td><b>30 min</b></td></tr><tr><td>um quarto de hora (1/4 h)</td><td><b>15 min</b></td></tr>
+     <tr><td>três quartos de hora (3/4 h)</td><td><b>45 min</b></td></tr><tr><td>1/3 de hora</td><td><b>20 min</b></td></tr>
+     <tr><td>1,5 h (uma hora e meia)</td><td><b>90 min</b></td></tr><tr><td>2,5 h</td><td><b>150 min</b></td></tr></table></div>
+    <div class="box warn"><span class="lbl">A pegadinha mais comum</span><p><b>1,5 h não é 1 h 50 min!</b> O 0,5 é meia hora = <b>30 min</b>. Então 1,5 h = 1 h 30 min = 90 min. Do mesmo jeito, 0,25 h = 15 min (um quarto), e não 25 min.</p></div>
+    <details class="try"><summary>Tente você: quantos minutos tem 2,5 h?</summary><p>2,5 × 60 = <b>150 min</b> (2 h 30 min).</p></details>`],
+   ["Quanto tempo durou? (duração)",`<p>Para saber quanto tempo passou entre dois horários, faça <b>horário final − horário inicial</b>. Faça os minutos e as horas separados.</p>
+    <div class="ex">O filme começou às <b>14 h 10</b> e terminou às <b>16 h 45</b>.<br>Minutos: 45 − 10 = 35 · Horas: 16 − 14 = 2 → <b>2 h 35 min</b></div>
+    <p><b>Quando os minutos do fim são menores</b>, "empreste" 1 hora = 60 minutos:</p>
+    <div class="ex">A aula começou às <b>7 h 50</b> e terminou às <b>9 h 20</b>.<br>20 é menor que 50 → 9 h 20 vira <b>8 h 80</b><br>Minutos: 80 − 50 = 30 · Horas: 8 − 7 = 1 → <b>1 h 30 min</b> (90 min)</div>
+    <div class="box tip"><span class="lbl">Outro jeito: contar nos dedos</span><p>De 7 h 50 até 8 h 00 são 10 min. De 8 h 00 até 9 h 00, 1 h. De 9 h 00 até 9 h 20, 20 min. Total: 1 h 30 min.</p></div>
+    <details class="try"><summary>Tente você: de 8 h 45 até 10 h 20, quanto tempo passou?</summary><p>10 h 20 → 9 h 80. 80 − 45 = 35 min; 9 − 8 = 1 h → <b>1 h 35 min</b> (95 min).</p></details>`],
+   ["Somar tempos e achar o horário final",`<p><b>Somar tempos:</b> some minutos com minutos e horas com horas. Se passar de 60 minutos, troque 60 min por 1 h.</p>
+    <div class="ex">1 h 45 min + 2 h 30 min<br>Minutos: 45 + 30 = 75 min = 1 h 15 min<br>Horas: 1 + 2 + 1 = 4 → <b>4 h 15 min</b></div>
+    <p><b>Que horas vai terminar?</b> Some a duração ao horário de início.</p>
+    <div class="ex">Começou às <b>13 h 40</b> e durou <b>50 min</b>.<br>40 + 50 = 90 min = 1 h 30 min → 13 h + 1 h 30 = <b>14 h 30</b></div>
+    <div class="ex">Um bloco de estudo de 50 min começa às 15 h 00 → termina às <b>15 h 50</b>. Com 10 min de pausa, o próximo começa às <b>16 h 00</b>.</div>
+    <details class="try"><summary>Tente você: começou às 9 h 35 e durou 1 h 40 min. Que horas terminou?</summary><p>35 + 40 = 75 min = 1 h 15 → 9 h + 1 h + 1 h 15 = <b>11 h 15</b>.</p></details>`],
+   ["Relógios e o dia de 24 horas",`<p>O dia tem <b>24 horas</b>. Depois do meio-dia, contamos 13 h, 14 h… até 23 h.</p>
+    <div class="tbl"><table><tr><th>Relógio de 12 h</th><th>Relógio de 24 h</th></tr>
+     <tr><td>1 h da tarde</td><td>13 h</td></tr><tr><td>3 h da tarde</td><td>15 h</td></tr><tr><td>7 h da noite</td><td>19 h</td></tr><tr><td>meia-noite</td><td>0 h (ou 24 h)</td></tr></table></div>
+    <p>Para passar da tarde e da noite para o relógio de 24 h, some 12: 6 h da tarde = 6 + 12 = <b>18 h</b>.</p>
+    <p><b>No relógio de ponteiros</b>, o ponteiro pequeno marca as horas e o grande marca os minutos. Cada número do relógio vale <b>5 minutos</b> para o ponteiro grande: no 3 são 15 min, no 6 são 30 min, no 9 são 45 min.</p>
+    <details class="try"><summary>Tente você: 9 h da noite no relógio de 24 h. E o ponteiro grande no 8 marca quantos minutos?</summary><p>9 + 12 = <b>21 h</b>. 8 × 5 = <b>40 minutos</b>.</p></details>`]]},
+  {id:"poliedros",cap:"Cap. 10",t:"Poliedros: prismas e pirâmides",q:"mat/poliedros",steps:[
+   ["Sólidos geométricos",`<p><b>Sólidos geométricos</b> são figuras que ocupam espaço: têm comprimento, largura e altura (três dimensões). Eles se dividem em dois grupos:</p>
+    <ul><li><b>Poliedros:</b> todas as superfícies são <b>planas</b>. Ex.: cubo, caixa de sapato, pirâmide.</li><li><b>Corpos redondos:</b> têm alguma parte <b>arredondada</b> e rolam. Ex.: cilindro (lata), cone (casquinha), esfera (bola).</li></ul>
+    <details class="try"><summary>Tente você: um dado é poliedro ou corpo redondo? E uma lata de refrigerante?</summary><p>O dado (cubo) é <b>poliedro</b>. A lata (cilindro) é <b>corpo redondo</b>.</p></details>`],
+   ["Faces, vértices e arestas",`<p>Todo poliedro tem três elementos:</p>
+    <ul><li><b>Faces:</b> as superfícies planas (os "lados" do sólido).</li><li><b>Arestas:</b> as linhas onde duas faces se encontram.</li><li><b>Vértices:</b> os pontos (as "pontas") onde as arestas se encontram.</li></ul>
+    <div class="ex"><b>Cubo:</b> 6 faces · 12 arestas · 8 vértices</div>
+    <div class="box tip"><span class="lbl">Para conferir: relação de Euler</span><p>Em prismas e pirâmides vale <b>V + F = A + 2</b>. No cubo: 8 + 6 = 12 + 2 ✓.</p></div>
+    <details class="try"><summary>Tente você: uma caixa de sapato tem quantas faces, arestas e vértices?</summary><p>É um prisma como o cubo: <b>6 faces, 12 arestas e 8 vértices</b>.</p></details>`],
+   ["Prismas",`<p>O <b>prisma</b> tem <b>duas bases iguais e paralelas</b> (uma em cima, outra embaixo), e as faces laterais são <b>retângulos</b> (ou quadrados). O nome vem da forma da base:</p>
+    <div class="tbl"><table><tr><th>Prisma</th><th>Base</th><th>Faces</th><th>Vértices</th><th>Arestas</th></tr>
+     <tr><td>triangular</td><td>triângulo (3 lados)</td><td>5</td><td>6</td><td>9</td></tr>
+     <tr><td>quadrangular</td><td>quadrado/retângulo (4)</td><td>6</td><td>8</td><td>12</td></tr>
+     <tr><td>pentagonal</td><td>pentágono (5)</td><td>7</td><td>10</td><td>15</td></tr>
+     <tr><td>hexagonal</td><td>hexágono (6)</td><td>8</td><td>12</td><td>18</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Regra (base com n lados)</span><p>Faces = n + 2 · Vértices = 2 × n · Arestas = 3 × n</p></div>
+    <details class="try"><summary>Tente você: um prisma hexagonal tem quantas arestas?</summary><p>3 × 6 = <b>18 arestas</b>.</p></details>`],
+   ["Pirâmides",`<p>A <b>pirâmide</b> tem <b>uma base só</b>, e as faces laterais são <b>triângulos</b> que se encontram num ponto lá em cima, o <b>vértice</b> da pirâmide. O nome também vem da base:</p>
+    <div class="tbl"><table><tr><th>Pirâmide</th><th>Faces</th><th>Vértices</th><th>Arestas</th></tr>
+     <tr><td>triangular</td><td>4</td><td>4</td><td>6</td></tr><tr><td>quadrangular</td><td>5</td><td>5</td><td>8</td></tr>
+     <tr><td>pentagonal</td><td>6</td><td>6</td><td>10</td></tr><tr><td>hexagonal</td><td>7</td><td>7</td><td>12</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Regra (base com n lados)</span><p>Faces = n + 1 · Vértices = n + 1 · Arestas = 2 × n</p></div>
+    <div class="box warn"><span class="lbl">Não confunda</span><p>Prisma: <b>2 bases</b>, laterais retângulos. Pirâmide: <b>1 base</b>, laterais triângulos.</p></div>
+    <details class="try"><summary>Tente você: as pirâmides do Egito têm base quadrada. Quantas faces elas têm?</summary><p>Pirâmide quadrangular: 4 triângulos + 1 quadrado = <b>5 faces</b>.</p></details>`],
+   ["Planificações",`<p>A <b>planificação</b> é o "molde" do sólido aberto e esticado no papel. Se recortar e dobrar, o sólido se monta.</p>
+    <div class="tbl"><table><tr><th>Sólido</th><th>A planificação tem</th></tr>
+     <tr><td>cubo</td><td>6 quadrados</td></tr><tr><td>prisma triangular</td><td>2 triângulos + 3 retângulos</td></tr>
+     <tr><td>bloco retangular (caixa)</td><td>6 retângulos (iguais 2 a 2)</td></tr>
+     <tr><td>pirâmide quadrangular</td><td>1 quadrado + 4 triângulos</td></tr><tr><td>pirâmide triangular</td><td>4 triângulos</td></tr>
+     <tr><td>cilindro</td><td>2 círculos + 1 retângulo</td></tr><tr><td>cone</td><td>1 círculo + 1 setor (parte de círculo)</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Atividade</span><p>Desmonte uma caixa de creme dental ou de remédio e veja a planificação de um prisma.</p></div>
+    <details class="try"><summary>Tente você: uma planificação com 1 quadrado e 4 triângulos forma qual sólido?</summary><p>Uma <b>pirâmide de base quadrada</b>.</p></details>`]]},
+  {id:"algebra",cap:"Cap. 10",t:"Noções de álgebra",q:"mat/algebra",steps:[
+   ["A igualdade é uma balança",`<p>Uma <b>igualdade</b> (sinal de =) funciona como uma <b>balança em equilíbrio</b>: o que está de um lado vale o mesmo que o outro lado.</p>
+    <div class="ex">5 + 3 = 8 → equilíbrio<br>? + 4 = 10 → que número deixa a balança equilibrada? <b>6</b></div>
+    <p>Na álgebra, o valor desconhecido ganha uma letra ou um símbolo, como <b>x</b>, <b>n</b> ou ▢.</p>`],
+   ["Propriedades da igualdade",`<p>A balança continua equilibrada se você fizer <b>a mesma coisa dos dois lados</b>:</p>
+    <ul><li><b>somar</b> o mesmo número dos dois lados;</li><li><b>subtrair</b> o mesmo número dos dois lados;</li><li><b>multiplicar</b> os dois lados pelo mesmo número;</li><li><b>dividir</b> os dois lados pelo mesmo número (diferente de zero).</li></ul>
+    <div class="ex">x + 5 = 12 → tira 5 dos dois lados → x = 12 − 5 → <b>x = 7</b><br>x − 4 = 9 → soma 4 dos dois lados → <b>x = 13</b><br>3 × x = 18 → divide os dois lados por 3 → <b>x = 6</b><br>x ÷ 2 = 8 → multiplica os dois lados por 2 → <b>x = 16</b></div>
+    <div class="box tip"><span class="lbl">Sempre confira</span><p>Troque o x pelo número achado: 7 + 5 = 12 ✓.</p></div>
+    <details class="try"><summary>Tente você: 4 × n = 28. Quanto vale n?</summary><p>28 ÷ 4 → <b>n = 7</b>. Confere: 4 × 7 = 28 ✓.</p></details>`],
+   ["Problemas com igualdade",`<p>Transforme o problema numa igualdade e resolva com as propriedades:</p>
+    <div class="ex">"Pensei num número, somei 15 e deu 40."<br>n + 15 = 40 → n = 40 − 15 → <b>n = 25</b></div>
+    <div class="ex">"Comprei 3 cadernos iguais e paguei R$ 36."<br>3 × c = 36 → c = 36 ÷ 3 → <b>R$ 12 cada</b></div>
+    <div class="ex">"O dobro de um número mais 4 é 20."<br>2 × n + 4 = 20 → tira 4: 2 × n = 16 → divide por 2: <b>n = 8</b></div>
+    <details class="try"><summary>Tente você: o triplo de um número menos 5 é 25. Que número é?</summary><p>3 × n − 5 = 25 → 3 × n = 30 → <b>n = 10</b>.</p></details>`],
+   ["Partilhas em partes desiguais: \"a mais\"",`<p>Às vezes temos que dividir algo, mas uma pessoa recebe <b>mais</b> que a outra.</p>
+    <div class="ex"><b>Problema:</b> Ana e Bia vão dividir 30 figurinhas. Ana vai ficar com 6 a mais que Bia.<br>1º tira a diferença: 30 − 6 = 24<br>2º divide o resto igualmente: 24 ÷ 2 = 12 → <b>Bia fica com 12</b><br>3º devolve a diferença: 12 + 6 = 18 → <b>Ana fica com 18</b><br>Confere: 12 + 18 = 30 ✓ e 18 − 12 = 6 ✓</div>
+    <details class="try"><summary>Tente você: dividir R$ 50 entre dois irmãos, e o mais velho recebe R$ 10 a mais.</summary><p>50 − 10 = 40 → 40 ÷ 2 = 20. Mais novo: <b>R$ 20</b>; mais velho: <b>R$ 30</b>.</p></details>`],
+   ["Partilhas: \"o dobro\" e \"o triplo\"",`<p>Quando uma parte é <b>o dobro</b> da outra, pense em <b>partes iguais</b>:</p>
+    <div class="ex"><b>Problema:</b> 36 balas entre Caio e Duda. Duda fica com o dobro de Caio.<br>Caio = 1 parte · Duda = 2 partes → total 3 partes<br>36 ÷ 3 = 12 → <b>Caio 12</b>, <b>Duda 24</b><br>Confere: 12 + 24 = 36 ✓ e 24 é o dobro de 12 ✓</div>
+    <div class="ex"><b>O triplo:</b> 40 reais, João fica com o triplo de Lia.<br>Lia 1 parte + João 3 partes = 4 partes → 40 ÷ 4 = 10 → <b>Lia 10</b>, <b>João 30</b></div>
+    <div class="box tip"><span class="lbl">Desenhe barrinhas</span><p>Desenhe uma barrinha para cada parte. Fica fácil ver quantas partes são ao todo.</p></div>
+    <details class="try"><summary>Tente você: 45 figurinhas, Léo fica com o dobro de Rui. Quanto cada um?</summary><p>3 partes → 45 ÷ 3 = 15. Rui <b>15</b>, Léo <b>30</b>.</p></details>`]]},
+  {id:"medidas",cap:"Cap. 11",t:"Outras medidas: volume, capacidade, massa e temperatura",q:"mat/medidas",steps:[
+   ["Volume",`<p><b>Volume</b> é o espaço que um objeto ocupa. Medimos contando <b>cubinhos</b>: o centímetro cúbico (<b>cm³</b>) é um cubinho de 1 cm de lado; o metro cúbico (<b>m³</b>) é um cubo de 1 m de lado.</p>
+    <p>No bloco retangular (caixa), o volume é <b>comprimento × largura × altura</b>:</p>
+    <div class="ex">Caixa de 5 cm × 3 cm × 2 cm → 5 × 3 × 2 = <b>30 cm³</b><br>Cubo de 4 cm de lado → 4 × 4 × 4 = <b>64 cm³</b></div>
+    <details class="try"><summary>Tente você: um aquário de 10 cm × 5 cm × 4 cm tem que volume?</summary><p>10 × 5 × 4 = <b>200 cm³</b>.</p></details>`],
+   ["Capacidade",`<p><b>Capacidade</b> é quanto cabe dentro de um recipiente: garrafa, balde, piscina. A unidade principal é o <b>litro (L)</b>, e o <b>mililitro (mL)</b> é mil vezes menor.</p>
+    <div class="ex"><b>1 L = 1 000 mL</b><br>2 L = 2 000 mL · 0,5 L = 500 mL · 1,5 L = 1 500 mL<br>250 mL = 0,25 L (um quarto de litro)</div>
+    <div class="box tip"><span class="lbl">Volume e capacidade se ligam</span><p><b>1 cm³ = 1 mL</b> e <b>1 dm³ = 1 L</b>. Uma caixa de 1 000 cm³ cabe exatamente 1 litro.</p></div>
+    <details class="try"><summary>Tente você: quantos copos de 200 mL enchem uma garrafa de 2 L?</summary><p>2 L = 2 000 mL → 2 000 ÷ 200 = <b>10 copos</b>.</p></details>`],
+   ["Massa",`<p><b>Massa</b> é a quantidade de matéria (no dia a dia, falamos "peso"). Unidades:</p>
+    <div class="tbl"><table><tr><th>Unidade</th><th>Equivale a</th></tr><tr><td>1 tonelada (t)</td><td>1 000 kg</td></tr><tr><td>1 quilograma (kg)</td><td>1 000 g</td></tr><tr><td>1 grama (g)</td><td>1 000 mg</td></tr></table></div>
+    <div class="ex">3 kg = 3 000 g · 0,5 kg = 500 g · 2 500 g = 2,5 kg · 250 g = 0,25 kg</div>
+    <div class="box tip"><span class="lbl">Quilo = mil</span><p>Assim como no metro e no litro: <b>quilo</b> quer dizer 1 000 vezes, <b>mili</b> quer dizer 1 000 vezes menor.</p></div>
+    <details class="try"><summary>Tente você: quantos pacotes de 250 g formam 1 kg?</summary><p>1 kg = 1 000 g → 1 000 ÷ 250 = <b>4 pacotes</b>.</p></details>`],
+   ["Temperatura",`<p>Temperatura mede o quanto algo está <b>quente ou frio</b>. Usamos o <b>termômetro</b> e a unidade <b>grau Celsius (°C)</b>.</p>
+    <div class="tbl"><table><tr><th>Situação</th><th>Temperatura</th></tr><tr><td>a água congela</td><td>0 °C</td></tr><tr><td>corpo humano saudável</td><td>cerca de 36,5 °C</td></tr><tr><td>febre</td><td>a partir de 37,8 °C</td></tr><tr><td>a água ferve (ao nível do mar)</td><td>100 °C</td></tr></table></div>
+    <p>Temperaturas abaixo de zero levam o sinal de menos: <b>−5 °C</b> (cinco graus abaixo de zero).</p>
+    <div class="ex">De manhã fazia 18 °C e à tarde 27 °C → aumentou <b>9 °C</b><br>Estava 2 °C e caiu 5 °C → ficou <b>−3 °C</b></div>
+    <details class="try"><summary>Tente você: a temperatura era 15 °C e subiu 8 °C. Quanto ficou?</summary><p>15 + 8 = <b>23 °C</b>.</p></details>`],
+   ["Qual medida usar?",`<div class="tbl"><table><tr><th>Quero saber</th><th>Grandeza</th><th>Unidade</th></tr>
+     <tr><td>quanto tempo dura o filme</td><td>tempo</td><td>h, min, s</td></tr><tr><td>quanto cabe na garrafa</td><td>capacidade</td><td>L, mL</td></tr>
+     <tr><td>quanto pesa o saco de arroz</td><td>massa</td><td>kg, g</td></tr><tr><td>quanto espaço a caixa ocupa</td><td>volume</td><td>cm³, m³</td></tr>
+     <tr><td>se está quente ou frio</td><td>temperatura</td><td>°C</td></tr></table></div>
+    <details class="try"><summary>Tente você: um remédio de 5 mL mede o quê?</summary><p><b>Capacidade</b> (quantidade de líquido).</p></details>`]]}
  ],
  port:[
   {id:"generos",cap:"Cap. 8",t:"Cartaz, anúncio e outdoor",q:"port/cap8",steps:[
@@ -1076,7 +1143,51 @@ const LESSONS = {
     <ul><li>A língua mais falada era o <b>grego</b> (em Roma era o latim).</li><li>Arte de <b>mosaicos</b>: imagens feitas com pedrinhas coloridas, que decoravam as igrejas.</li><li><b>Ícones</b>: pinturas de santos, muito usadas na religião.</li></ul>
     <details class="try"><summary>Tente você: que língua se falava em Roma e em Bizâncio?</summary><p>Roma: <b>latim</b>. Bizâncio: <b>grego</b>.</p></details>`],
    ["Queda e linha do tempo",`<p>Em <b>1453</b>, os <b>turcos otomanos</b> tomaram Constantinopla. Foi o fim do Império Bizantino e, para muitos historiadores, o <b>fim da Idade Média</b>.</p>
-    <div class="tbl"><table><tr><th>Ano</th><th>Fato</th></tr><tr><td>27 a.C.</td><td>início do Império Romano (Otávio Augusto)</td></tr><tr><td>313</td><td>tolerância aos cristãos</td></tr><tr><td>380</td><td>cristianismo religião oficial</td></tr><tr><td>395</td><td>divisão do Império</td></tr><tr><td>476</td><td>queda de Roma</td></tr><tr><td>1054</td><td>Cisma do Oriente</td></tr><tr><td>1453</td><td>queda de Constantinopla</td></tr></table></div>`]]}
+    <div class="tbl"><table><tr><th>Ano</th><th>Fato</th></tr><tr><td>27 a.C.</td><td>início do Império Romano (Otávio Augusto)</td></tr><tr><td>313</td><td>tolerância aos cristãos</td></tr><tr><td>380</td><td>cristianismo religião oficial</td></tr><tr><td>395</td><td>divisão do Império</td></tr><tr><td>476</td><td>queda de Roma</td></tr><tr><td>1054</td><td>Cisma do Oriente</td></tr><tr><td>1453</td><td>queda de Constantinopla</td></tr></table></div>`]]},
+  {id:"islamico",cap:"Cap. 10",t:"Mundo islâmico",q:"hist/islamico",steps:[
+   ["A Arábia antes do Islã",`<p>A <b>Península Arábica</b> é uma região de muito deserto. Antes do Islã, viviam ali:</p>
+    <ul><li><b>beduínos:</b> pastores <b>nômades</b> que andavam pelo deserto com seus camelos;</li><li>comerciantes das cidades, como <b>Meca</b>, que organizavam <b>caravanas</b>.</li></ul>
+    <p>Os árabes eram <b>politeístas</b> (adoravam vários deuses) e se dividiam em muitas tribos. Em Meca ficava a <b>Caaba</b>, um santuário que recebia peregrinos.</p>`],
+   ["Maomé e a formação do Islã",`<p><b>Maomé</b> (Muhammad) nasceu em Meca, por volta de <b>570</b>. Segundo a tradição, recebeu revelações de <b>Alá</b> (Deus) e começou a pregar uma religião <b>monoteísta</b>: o <b>Islã</b>. Quem segue o Islã é <b>muçulmano</b>.</p>
+    <ul><li>Em <b>622</b>, perseguido em Meca, ele foi para <b>Medina</b>. Essa fuga se chama <b>Hégira</b> e marca o <b>ano 1 do calendário islâmico</b>.</li><li>Em <b>630</b>, voltou e conquistou Meca. A Caaba virou o centro do Islã.</li><li>Morreu em <b>632</b>, com a Arábia unificada pela religião.</li></ul>
+    <p>O livro sagrado é o <b>Alcorão</b>.</p>
+    <div class="box tip"><span class="lbl">Os 5 pilares do Islã</span><ol><li>Fé: só existe um Deus, Alá, e Maomé é seu profeta</li><li>Orar 5 vezes por dia, voltado para Meca</li><li>Dar esmola aos pobres</li><li>Jejum no mês do <b>Ramadã</b></li><li>Peregrinar a <b>Meca</b> pelo menos uma vez na vida</li></ol></div>
+    <details class="try"><summary>Tente você: o que foi a Hégira?</summary><p>A ida de Maomé de <b>Meca para Medina, em 622</b>. Marca o início do calendário islâmico.</p></details>`],
+   ["A expansão e os califados",`<p>Depois da morte de Maomé, os líderes chamados <b>califas</b> governaram e <b>expandiram o Islã</b> muito rápido, por conquistas e pelo comércio. Esse governo se chama <b>califado</b>.</p>
+    <div class="tbl"><table><tr><th>Califado</th><th>Capital</th><th>Destaque</th></tr>
+     <tr><td>Ortodoxo (ou dos califas eleitos)</td><td>Medina</td><td>os primeiros califas, conquistaram a Pérsia e o Egito</td></tr>
+     <tr><td>Omíada</td><td>Damasco</td><td>chegou até a <b>Península Ibérica</b> (Espanha e Portugal) em <b>711</b></td></tr>
+     <tr><td>Abássida</td><td>Bagdá</td><td>auge da cultura e da ciência, Casa da Sabedoria</td></tr></table></div>
+    <p>Divergências sobre quem deveria suceder Maomé dividiram os muçulmanos em <b>sunitas</b> e <b>xiitas</b>.</p>
+    <details class="try"><summary>Tente você: os muçulmanos chegaram à Península Ibérica em qual califado?</summary><p>No califado <b>Omíada</b>, em 711.</p></details>`],
+   ["Heranças culturais",`<p>Os muçulmanos guardaram e desenvolveram conhecimentos de gregos, persas e indianos:</p>
+    <ul><li><b>Algarismos indo-arábicos</b> (0, 1, 2, 3…) e a <b>álgebra</b>;</li><li>avanços em <b>astronomia</b>, <b>medicina</b> e química;</li><li>arquitetura com arcos, cúpulas e mosaicos (arabescos);</li><li>muitas palavras do português: <b>açúcar, alface, algodão, almofada, arroz, azeite</b> (as que começam com "al" ou "a").</li></ul>`],
+   ["Reinos africanos: Gana, Mali e Songhai",`<p>No oeste da África, ao sul do deserto do Saara, existiram reinos ricos graças ao <b>comércio transaariano</b>: caravanas trocavam <b>ouro</b> do sul pelo <b>sal</b> do norte. Pelo comércio, o <b>Islã</b> chegou a esses reinos.</p>
+    <div class="tbl"><table><tr><th>Reino</th><th>Destaques</th></tr>
+     <tr><td><b>Gana</b></td><td>o mais antigo; chamado de "terra do ouro"; enriqueceu cobrando impostos sobre o comércio de ouro e sal</td></tr>
+     <tr><td><b>Mali</b></td><td>fundado por <b>Sundiata Keita</b>; o rei <b>Mansa Musa</b> fez uma famosa peregrinação a Meca levando muito ouro; a cidade de <b>Tombuctu</b> virou centro de estudos</td></tr>
+     <tr><td><b>Songhai</b></td><td>o maior dos três; capital <b>Gao</b>; dominou Tombuctu; caiu no fim do século XVI, conquistado pelo Marrocos</td></tr></table></div>
+    <p>A história desses povos foi muito transmitida pela <b>tradição oral</b>, pelos <b>griôs</b>, contadores de histórias.</p>
+    <details class="try"><summary>Tente você: o que era trocado no comércio transaariano?</summary><p>Principalmente <b>ouro</b> (do sul) e <b>sal</b> (do norte).</p></details>`]]},
+  {id:"altaidade",cap:"Cap. 11",t:"Alta Idade Média",q:"hist/altaidade",steps:[
+   ["A Idade Média",`<p>A <b>Idade Média</b> vai da queda do Império Romano do Ocidente (<b>476</b>) até a queda de Constantinopla (<b>1453</b>). Ela é dividida em duas partes:</p>
+    <div class="ex"><b>Alta Idade Média:</b> séculos V a X (de 476 até por volta do ano 1000)<br><b>Baixa Idade Média:</b> séculos XI a XV</div>
+    <div class="box warn"><span class="lbl">Não confunda</span><p>"Alta" é a parte <b>mais antiga</b>, a do começo. Este capítulo é sobre ela.</p></div>`],
+   ["Os reinos germânicos",`<p>Os <b>povos germânicos</b> (os romanos os chamavam de "bárbaros") ocuparam as terras do antigo Império Romano do Ocidente e formaram vários <b>reinos</b>:</p>
+    <div class="ex"><b>francos</b> (na atual França) · <b>visigodos</b> (Península Ibérica) · <b>ostrogodos</b> e depois <b>lombardos</b> (Itália) · <b>anglos e saxões</b> (Inglaterra) · <b>vândalos</b> (norte da África)</div>
+    <ul><li>Suas leis eram baseadas nos <b>costumes</b>, passados de forma oral.</li><li>O chefe guerreiro era cercado de guerreiros fiéis: o <b>comitatus</b>, base da ideia de lealdade em troca de proteção.</li><li>Viviam principalmente da <b>agricultura</b> e da criação de animais.</li></ul>`],
+   ["O Reino Franco e Carlos Magno",`<p>O reino germânico mais forte foi o dos <b>francos</b>.</p>
+    <ul><li>O rei <b>Clóvis</b> se converteu ao <b>cristianismo</b> e ganhou o apoio da Igreja.</li><li><b>Carlos Magno</b> ampliou muito o reino e, no ano <b>800</b>, foi coroado <b>imperador pelo papa</b>: o <b>Império Carolíngio</b>.</li><li>Incentivou escolas e a cópia de livros nos mosteiros.</li><li>Depois da sua morte, o império foi dividido entre os netos (<b>Tratado de Verdun, 843</b>).</li></ul>
+    <details class="try"><summary>Tente você: quem coroou Carlos Magno imperador, e em que ano?</summary><p>O <b>papa</b>, no ano <b>800</b>.</p></details>`],
+   ["O feudalismo",`<p>Com as invasões e a insegurança, as pessoas saíram das cidades e foram para o campo (<b>ruralização</b>). Surgiu o <b>feudalismo</b>, organizado em torno do <b>feudo</b> (a terra) e do poder dos <b>senhores feudais</b>.</p>
+    <ul><li><b>Suserano e vassalo:</b> o suserano dava um feudo ao vassalo; o vassalo jurava <b>fidelidade</b> e ajuda militar.</li><li>Economia <b>agrária</b> e <b>autossuficiente</b>: produzia quase tudo o que consumia; pouco comércio e pouca moeda.</li><li>O feudo tinha o <b>manso senhorial</b> (do senhor), o <b>manso servil</b> (lotes dos servos) e as <b>terras comunais</b> (bosques e pastos de uso comum).</li></ul>`],
+   ["Sociedade e obrigações dos servos",`<p>A sociedade feudal era <b>estamental</b>: quase não dava para mudar de grupo.</p>
+    <div class="tbl"><table><tr><th>Grupo</th><th>Função</th></tr><tr><td><b>Clero</b></td><td>os que rezam</td></tr><tr><td><b>Nobreza</b></td><td>os que guerreiam (senhores feudais, cavaleiros)</td></tr><tr><td><b>Servos</b> (camponeses)</td><td>os que trabalham</td></tr></table></div>
+    <p>Os <b>servos</b> estavam presos à terra e pagavam obrigações ao senhor:</p>
+    <div class="tbl"><table><tr><th>Obrigação</th><th>O que era</th></tr><tr><td><b>Corveia</b></td><td>trabalhar alguns dias por semana nas terras do senhor</td></tr><tr><td><b>Talha</b></td><td>entregar parte da produção</td></tr><tr><td><b>Banalidades</b></td><td>pagar para usar o moinho, o forno e outras instalações do senhor</td></tr></table></div>
+    <details class="try"><summary>Tente você: trabalhar de graça nas terras do senhor era qual obrigação?</summary><p><b>Corveia</b>.</p></details>`],
+   ["Cultura e cotidiano",`<ul><li>A <b>Igreja Católica</b> era a instituição mais poderosa: a maior dona de terras e a guardiã do conhecimento.</li><li>Nos <b>mosteiros</b>, os <b>monges copistas</b> copiavam livros à mão, em <b>latim</b>.</li><li>A visão de mundo era <b>teocêntrica</b>: Deus no centro de tudo.</li><li>A arte era religiosa; as igrejas tinham paredes grossas e janelas pequenas (<b>estilo românico</b>).</li><li>No dia a dia do campo, a vida seguia o calendário das colheitas e das festas religiosas. Os nobres viviam em <b>castelos</b> e os servos em casas simples.</li></ul>
+    <details class="try"><summary>Tente você: o que quer dizer "teocentrismo"?</summary><p><b>Deus no centro</b> de tudo (theo = Deus).</p></details>`]]}
  ],
  geo:[
   {id:"vegetacao",cap:"Cap. 8",t:"Formações vegetais",q:"geo/vegetacao",steps:[
@@ -1126,7 +1237,42 @@ const LESSONS = {
    ["Consequências das mudanças climáticas",`<ul><li><b>Derretimento de geleiras</b> e <b>aumento do nível do mar</b>, ameaçando cidades do litoral.</li><li><b>Secas e enchentes</b> mais fortes e frequentes.</li><li><b>Ondas de calor.</b></li><li>Espécies de animais e plantas ameaçadas.</li></ul>
     <details class="try"><summary>Tente você: por que o nível do mar sobe?</summary><p>Por causa do <b>derretimento das geleiras</b>: a água vai para os oceanos.</p></details>`],
    ["O que fazer",`<ul><li><b>Reflorestar</b> e proteger as florestas.</li><li>Usar <b>energias renováveis</b>: <b>solar</b> (do Sol) e <b>eólica</b> (do vento).</li><li>Usar <b>transporte público</b> e bicicleta.</li><li>Economizar energia e água.</li><li>Criar e proteger <b>áreas de conservação</b>.</li></ul>
-    <div class="box tip"><span class="lbl">Explique com suas palavras</span><p>Conte para alguém da família o que é o efeito estufa e por que ele ficou perigoso. Se você consegue explicar, você aprendeu.</p></div>`]]}
+    <div class="box tip"><span class="lbl">Explique com suas palavras</span><p>Conte para alguém da família o que é o efeito estufa e por que ele ficou perigoso. Se você consegue explicar, você aprendeu.</p></div>`]]},
+  {id:"rural",cap:"Cap. 10",t:"Espaço rural",q:"geo/rural",steps:[
+   ["O que é o espaço rural",`<p>O <b>espaço rural</b> é o <b>campo</b>: áreas com plantações, criações de animais, matas e pequenas comunidades. Ele produz <b>alimentos e matérias-primas</b> para as cidades e para as indústrias.</p>
+    <p>Campo e cidade dependem um do outro: o campo manda alimentos e matérias-primas; a cidade manda máquinas, adubos, remédios e serviços.</p>`],
+   ["Organização: tamanho das propriedades",`<div class="tbl"><table><tr><th>Tipo</th><th>Como é</th></tr>
+     <tr><td><b>Latifúndio</b></td><td>propriedade <b>muito grande</b>, de um só dono; muitas vezes com monocultura para exportar</td></tr>
+     <tr><td><b>Minifúndio</b></td><td>propriedade <b>pequena</b>, geralmente com agricultura familiar</td></tr></table></div>
+    <p>No Brasil existe <b>concentração de terras</b>: poucas pessoas têm muita terra e muitas pessoas têm pouca ou nenhuma. Isso causa <b>conflitos pela terra</b> e a luta pela <b>reforma agrária</b>.</p>
+    <div class="ex"><b>Agricultura familiar:</b> a família trabalha na terra; produz grande parte dos alimentos do dia a dia (feijão, mandioca, verduras, leite).<br><b>Agronegócio:</b> grandes empresas, muitas máquinas e tecnologia, produção em larga escala (soja, milho, cana, carne).</div>`],
+   ["Atividades econômicas rurais",`<p><b>Agricultura</b> (plantar):</p>
+    <ul><li><b>de subsistência:</b> para o consumo da própria família;</li><li><b>comercial:</b> para vender;</li><li><b>monocultura:</b> planta um só produto em grande área; <b>policultura:</b> vários produtos.</li></ul>
+    <p><b>Pecuária</b> (criar animais):</p>
+    <ul><li><b>extensiva:</b> animais soltos em grandes pastos, pouca tecnologia;</li><li><b>intensiva:</b> animais confinados, com ração, vacinas e tecnologia; produz mais em menos espaço.</li></ul>
+    <p><b>Extrativismo</b> (retirar da natureza): <b>vegetal</b> (madeira, açaí, castanha), <b>animal</b> (pesca) e <b>mineral</b> (minérios).</p>
+    <details class="try"><summary>Tente você: gado solto em grandes pastos é pecuária extensiva ou intensiva?</summary><p><b>Extensiva</b>.</p></details>`],
+   ["Mudanças no campo",`<ul><li><b>Mecanização:</b> tratores e colheitadeiras substituem trabalhadores.</li><li><b>Agroindústria:</b> indústrias ligadas ao campo, que transformam os produtos (usinas de açúcar, laticínios, frigoríficos).</li><li><b>Êxodo rural:</b> com menos emprego no campo, muitas pessoas se mudaram para as cidades.</li><li><b>Problemas ambientais:</b> desmatamento para abrir pastos e lavouras, uso de <b>agrotóxicos</b>, erosão do solo.</li><li><b>Agricultura orgânica:</b> produção sem agrotóxicos e adubos químicos.</li></ul>
+    <details class="try"><summary>Tente você: o que é êxodo rural?</summary><p>A <b>saída de pessoas do campo para a cidade</b>.</p></details>`]]},
+  {id:"urbano",cap:"Cap. 11",t:"Espaço urbano",q:"geo/urbano",steps:[
+   ["Urbanização",`<p><b>Urbanização</b> é o <b>aumento da população que vive nas cidades</b> em comparação com o campo.</p>
+    <ul><li>Ela aconteceu junto com a <b>industrialização</b>: as fábricas nas cidades atraíam trabalhadores.</li><li>Ao mesmo tempo, a mecanização tirava empregos do campo (<b>êxodo rural</b>).</li><li>No Brasil, a urbanização acelerou a partir de <b>1950</b>. Hoje, a grande maioria dos brasileiros (mais de 80%) vive em cidades.</li></ul>`],
+   ["Cidades grandes",`<div class="tbl"><table><tr><th>Termo</th><th>O que é</th></tr>
+     <tr><td><b>Metrópole</b></td><td>cidade grande e importante, que influencia outras cidades (ex.: São Paulo, Rio de Janeiro)</td></tr>
+     <tr><td><b>Região metropolitana</b></td><td>a metrópole e as cidades vizinhas ligadas a ela</td></tr>
+     <tr><td><b>Conurbação</b></td><td>quando cidades crescem tanto que se "grudam" e não se vê onde uma termina</td></tr>
+     <tr><td><b>Megacidade</b></td><td>cidade com mais de 10 milhões de habitantes</td></tr></table></div>`],
+   ["Problemas urbanos",`<p>Quando a cidade cresce rápido e sem planejamento, surgem problemas:</p>
+    <ul><li><b>moradias precárias</b> e favelas, muitas em áreas de risco;</li><li><b>trânsito</b> intenso e transporte público insuficiente;</li><li><b>poluição</b> do ar, da água e sonora;</li><li><b>enchentes</b>, por causa do asfalto e do lixo que entope bueiros;</li><li>falta de saneamento básico, desemprego e violência.</li></ul>
+    <details class="try"><summary>Tente você: por que as enchentes são mais comuns nas cidades?</summary><p>O <b>asfalto e o concreto</b> não deixam a água entrar no solo, e o lixo entope os bueiros.</p></details>`],
+   ["Atividades econômicas urbanas",`<p>As atividades econômicas são divididas em três <b>setores</b>:</p>
+    <div class="tbl"><table><tr><th>Setor</th><th>Atividades</th><th>Onde predomina</th></tr>
+     <tr><td><b>Primário</b></td><td>agricultura, pecuária, extrativismo</td><td>campo</td></tr>
+     <tr><td><b>Secundário</b></td><td><b>indústria</b> (transforma matéria-prima em produto) e construção</td><td>cidade</td></tr>
+     <tr><td><b>Terciário</b></td><td><b>comércio e serviços</b>: lojas, escolas, hospitais, bancos, transporte</td><td>cidade</td></tr></table></div>
+    <p>Nas cidades, o setor que mais emprega hoje é o <b>terciário</b> (comércio e serviços).</p>
+    <div class="ex"><b>Tipos de indústria:</b> <b>de base</b> (aço, petróleo: produz matéria-prima para outras indústrias) · <b>de bens de capital</b> (máquinas para outras fábricas) · <b>de bens de consumo</b> (roupas, alimentos, celulares: vendidos para as pessoas)</div>
+    <details class="try"><summary>Tente você: uma escola e um hospital pertencem a qual setor?</summary><p>Setor <b>terciário</b> (serviços).</p></details>`]]}
  ],
  cien:[
   {id:"esqueleto",cap:"Cap. 8",t:"Sistema esquelético",q:"cien/locomotor",steps:[
@@ -1195,7 +1341,48 @@ const LESSONS = {
     <details class="try"><summary>Tente você: quero separar água e sal e ficar com a água. Qual método?</summary><p><b>Destilação simples.</b> Na evaporação, a água se perderia.</p></details>`],
    ["Escolhendo o método",`<ol><li>A mistura é <b>heterogênea</b> (dá para ver as partes)? Use catação, peneira, filtro, decantação ou ímã.</li><li>É <b>homogênea</b>? Use evaporação ou destilação.</li><li>Tem as duas coisas? Faça <b>em etapas</b>: primeiro a parte heterogênea, depois a homogênea.</li></ol>
     <div class="ex"><b>Água + areia + sal dissolvido</b><br>1º filtração → tira a areia<br>2º evaporação (ou destilação) → separa o sal da água</div>
-    <details class="try"><summary>Tente você: ímã serve para separar água e areia?</summary><p><b>Não</b>: a areia não é atraída pelo ímã. Use filtração ou decantação.</p></details>`]]}
+    <details class="try"><summary>Tente você: ímã serve para separar água e areia?</summary><p><b>Não</b>: a areia não é atraída pelo ímã. Use filtração ou decantação.</p></details>`]]},
+  {id:"ambiente",cap:"Cap. 10",t:"Separação de misturas e ambiente",q:"cien/ambiente",steps:[
+   ["Revisão: misturas heterogêneas",`<p>Na mistura <b>heterogênea</b> dá para ver mais de uma fase. Por isso, muitas vezes, basta um método físico simples para separar.</p>
+    <div class="tbl"><table><tr><th>Método</th><th>Como funciona</th><th>Exemplo</th></tr>
+     <tr><td>Catação</td><td>separar com a mão ou pinça</td><td>pedrinhas do feijão</td></tr>
+     <tr><td>Peneiração</td><td>a peneira segura os grãos maiores</td><td>areia e pedras</td></tr>
+     <tr><td>Ventilação</td><td>um vento leva a parte mais leve</td><td>casca e grão de arroz</td></tr>
+     <tr><td>Imantação</td><td>o ímã atrai o ferro</td><td>limalha de ferro e areia</td></tr>
+     <tr><td>Filtração</td><td>o filtro segura o sólido e deixa passar o líquido (ou o gás)</td><td>água e areia; café</td></tr>
+     <tr><td>Decantação</td><td>esperar o mais denso (pesado) ir para o fundo</td><td>água barrenta</td></tr>
+     <tr><td>Funil de decantação</td><td>separa dois líquidos que não se misturam</td><td>água e óleo</td></tr>
+     <tr><td>Centrifugação</td><td>girar rápido acelera a decantação</td><td>centrífuga de roupas; separar partes do sangue</td></tr></table></div>`],
+   ["ETA: tratamento de água",`<p>A água dos rios e represas não pode ser bebida direto. Na <b>ETA (Estação de Tratamento de Água)</b> ela passa por várias etapas, quase todas de separação de misturas:</p>
+    <ol><li><b>Captação</b> da água do rio ou represa.</li><li><b>Coagulação e floculação:</b> produtos químicos fazem a sujeira se juntar em <b>flocos</b>.</li><li><b>Decantação:</b> os flocos, mais pesados, vão para o fundo.</li><li><b>Filtração:</b> a água passa por camadas de areia, cascalho e carvão.</li><li><b>Desinfecção:</b> o <b>cloro</b> mata micro-organismos.</li><li><b>Fluoretação:</b> o flúor ajuda a proteger os dentes.</li><li><b>Distribuição</b> para as casas.</li></ol>
+    <details class="try"><summary>Tente você: em que etapa da ETA os flocos de sujeira vão para o fundo?</summary><p>Na <b>decantação</b>.</p></details>`],
+   ["ETE: tratamento de esgoto",`<p>O esgoto das casas não pode ir direto para os rios. Na <b>ETE (Estação de Tratamento de Esgoto)</b>:</p>
+    <ol><li><b>Grades:</b> seguram o lixo grande (plásticos, panos) → é uma <b>peneiração</b>.</li><li><b>Caixa de areia:</b> a areia se deposita no fundo.</li><li><b>Decantação:</b> a parte sólida (lodo) vai para o fundo.</li><li><b>Tratamento biológico:</b> <b>bactérias</b> decompõem a matéria orgânica.</li><li>A água tratada volta para o rio com muito menos poluição.</li></ol>
+    <div class="box warn"><span class="lbl">Não confunda</span><p><b>ETA</b> = água que vamos <b>beber</b>. <b>ETE</b> = <b>esgoto</b> que vamos limpar antes de devolver à natureza.</p></div>`],
+   ["Vazamento de petróleo e filtros de ar",`<p><b>Vazamento de petróleo no mar:</b> o óleo <b>não se mistura</b> com a água e <b>flutua</b> (mistura heterogênea). Ele forma uma mancha que mata peixes e aves.</p>
+    <ul><li><b>Boias de contenção</b> cercam a mancha para ela não se espalhar.</li><li>O óleo é <b>bombeado/sugado</b> da superfície.</li><li>Materiais <b>absorventes</b> (até serragem e cabelo) seguram o óleo.</li></ul>
+    <p><b>Filtros de ar:</b> o ar também pode ser uma mistura heterogênea, com <b>poeira e fuligem</b>. Filtros fazem uma <b>filtração</b> e seguram as partículas:</p>
+    <div class="ex">aspirador de pó · ar-condicionado · máscaras · filtros nas chaminés das fábricas · filtro de ar dos carros</div>
+    <details class="try"><summary>Tente você: por que o petróleo forma uma mancha em cima da água?</summary><p>Porque ele <b>não se mistura</b> com a água e é <b>menos denso</b>, então flutua.</p></details>`]]},
+  {id:"transformacoes",cap:"Cap. 11",t:"Transformações da matéria e método científico",q:"cien/transformacoes",steps:[
+   ["Transformações físicas",`<p>Na <b>transformação física</b>, a matéria muda de forma, tamanho ou estado, mas <b>continua sendo a mesma substância</b>. Não aparece substância nova.</p>
+    <div class="ex">gelo derretendo (continua sendo água) · rasgar papel · amassar latinha · dissolver açúcar na água · quebrar um copo</div>
+    <p><b>Mudanças de estado físico</b> são transformações físicas:</p>
+    <div class="tbl"><table><tr><th>Nome</th><th>Mudança</th></tr><tr><td>Fusão</td><td>sólido → líquido</td></tr><tr><td>Solidificação</td><td>líquido → sólido</td></tr><tr><td>Vaporização</td><td>líquido → gasoso</td></tr><tr><td>Condensação</td><td>gasoso → líquido</td></tr><tr><td>Sublimação</td><td>sólido → gasoso direto</td></tr></table></div>`],
+   ["Transformações químicas",`<p>Na <b>transformação química</b> (reação química), as substâncias se transformam em <b>substâncias novas</b>, com outras propriedades.</p>
+    <div class="ex">queimar papel ou madeira · ferro enferrujando · cozinhar um ovo · bolo crescendo com fermento · fruta apodrecendo · digestão dos alimentos</div>
+    <div class="box tip"><span class="lbl">Pistas de transformação química</span><ul><li>mudança de <b>cor</b></li><li>liberação de <b>gás</b> (bolhas)</li><li>liberação de <b>luz ou calor</b></li><li>mudança de <b>cheiro</b></li><li>formação de um <b>sólido</b> novo</li></ul></div>
+    <details class="try"><summary>Tente você: um prego enferrujando é transformação física ou química?</summary><p><b>Química</b>: forma uma substância nova, a ferrugem (mudou de cor).</p></details>`],
+   ["O método científico",`<p>Os cientistas seguem um caminho organizado para descobrir coisas: o <b>método científico</b>.</p>
+    <ol><li><b>Observação:</b> perceber um fato.</li><li><b>Problema (pergunta):</b> por que isso acontece?</li><li><b>Hipótese:</b> uma possível resposta, que ainda vai ser testada.</li><li><b>Experimento:</b> um teste para ver se a hipótese está certa.</li><li><b>Análise dos resultados.</b></li><li><b>Conclusão:</b> a hipótese foi confirmada ou não? Os resultados são divulgados.</li></ol>
+    <div class="ex"><b>Exemplo:</b> o pão mofou rápido (observação). Por que? (problema). Talvez por causa da umidade (hipótese). Guardo um pão em lugar seco e outro em lugar úmido (experimento). O úmido mofou antes (resultado). A umidade ajuda o mofo (conclusão).</div>
+    <details class="try"><summary>Tente você: "talvez seja por causa da umidade" é qual etapa?</summary><p><b>Hipótese</b>: uma resposta provável, que ainda vai ser testada.</p></details>`],
+   ["Materiais sintéticos",`<p><b>Materiais naturais</b> vêm prontos da natureza ou quase: madeira, algodão, lã, couro, borracha natural.</p>
+    <p><b>Materiais sintéticos</b> são <b>produzidos pelo ser humano</b> em laboratórios e indústrias, por meio de <b>transformações químicas</b>, muitas vezes a partir do <b>petróleo</b>:</p>
+    <div class="ex">plásticos · náilon · poliéster · borracha sintética · isopor · muitos medicamentos</div>
+    <ul><li><b>Vantagens:</b> são baratos, leves, resistentes e podem ser feitos com as propriedades que precisamos.</li><li><b>Problemas:</b> muitos <b>demoram centenas de anos para se decompor</b> e poluem mares e solos. Por isso é importante <b>reduzir, reutilizar e reciclar</b>.</li></ul>
+    <p>Os cientistas usam o método científico para estudar e criar novos materiais, como plásticos biodegradáveis.</p>
+    <details class="try"><summary>Tente você: uma camiseta de algodão é feita de material natural ou sintético? E uma de poliéster?</summary><p>Algodão: <b>natural</b>. Poliéster: <b>sintético</b>.</p></details>`]]}
  ],
  ing:[
   {id:"lang13",cap:"LANGUAGE · Ch. 13",t:"My family rocks!",q:"ing/l13",steps:[
@@ -1407,13 +1594,28 @@ const LESSONS = {
 };
 
 const TOPICS = {
-  mat:[["base","Pré-requisitos"],["decimais","Números decimais"],["porcentagem","Porcentagem"],["probabilidade","Probabilidade"],["plano","Plano cartesiano"]],
+  mat:[["tempo","Cap. 11 · Tempo: hora, minuto e segundo"],["plano","Cap. 9 · Plano cartesiano e vistas"],["poliedros","Cap. 10 · Poliedros e planificações"],["algebra","Cap. 10 · Noções de álgebra"],["medidas","Cap. 11 · Volume, capacidade, massa e temperatura"]],
   port:[["cap8","Cap. 8 · Para convencer"],["cap9","Cap. 9 · O consumidor atento"]],
-  hist:[["roma","Cap. 8 · Império Romano"],["bizancio","Cap. 9 · Império Bizantino"]],
-  geo:[["vegetacao","Cap. 8 · Formações vegetais"],["acao","Cap. 9 · Ação humana no clima e na vegetação"]],
-  cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]],
+  hist:[["islamico","Cap. 10 · Mundo islâmico"],["altaidade","Cap. 11 · Alta Idade Média"]],
+  geo:[["rural","Cap. 10 · Espaço rural"],["urbano","Cap. 11 · Espaço urbano"]],
+  cien:[["ambiente","Cap. 10 · Separação de misturas e ambiente"],["transformacoes","Cap. 11 · Transformações e método científico"]],
   ing:[["l13","LANGUAGE 13 · My family rocks!"],["l14","LANGUAGE 14 · I love texting my friends"],["l15","LANGUAGE 15 · Discovering new hobbies"],["cap14","CLIL 14 · To infinity and beyond!"],["cap15","CLIL 15 · A picture is worth a thousand words"],["cap16","CLIL 16 · Spread the word!"],["lang","CLIL · vocabulário e expressões"]]
 };
+
+/* Treinos da prova anterior (parcial): continuam no Praticar para revisar, mas fora do treino completo. */
+const TOPICS_OLD = {
+  mat:[["base","Pré-requisitos"],["decimais","Números decimais"],["porcentagem","Porcentagem"],["probabilidade","Probabilidade"]],
+  hist:[["roma","Cap. 8 · Império Romano"],["bizancio","Cap. 9 · Império Bizantino"]],
+  geo:[["vegetacao","Cap. 8 · Formações vegetais"],["acao","Cap. 9 · Ação humana no clima e na vegetação"]],
+  cien:[["locomotor","Cap. 8 · Sistema locomotor"],["misturas","Cap. 9 · Misturas"]]
+};
+/* Lições que caem na próxima prova de cada matéria, na ordem de estudo. As outras ficam como revisão. */
+const LESSON_NOW = {
+  mat:["tempo","plano","poliedros","algebra","medidas"],
+  hist:["islamico","altaidade"], geo:["rural","urbano"], cien:["ambiente","transformacoes"]
+};
+const curLessons=s=>LESSON_NOW[s]?LESSON_NOW[s].map(id=>findLesson(s,id)):LESSONS[s];
+const oldLessons=s=>LESSON_NOW[s]?LESSONS[s].filter(l=>!LESSON_NOW[s].includes(l.id)):[];
 
 /* Cada questão: [pergunta, [5 alternativas — a certa sempre primeiro, elas são embaralhadas], 0, explicação, nível]
    nível: 1 = fácil · 2 = média · 3 = difícil. Questões novas entram sempre no FIM da lista do assunto,
@@ -1948,6 +2150,246 @@ const Q = {
   ["\"Stuart has a big stamp collection.\" Pete is the opposite:",["Pete doesn't have a big stamp collection.","Pete doesn't has a big stamp collection.","Pete don't have a big stamp collection.","Pete hasn't got stamp.","Pete not have a big stamp collection."],0,"doesn't + have (sem s).",3],
   ["Unscramble: \"he / do / magic / tricks / Does\"",["Does he do magic tricks?","He does do magic tricks?","Do he does magic tricks?","Does do he magic tricks?","Magic tricks does he do?"],0,"Does + sujeito + verbo: Does he do magic tricks?",3],
   ["What do a message exchange and an interview have in common?",["They have questions and answers","They are always very long","They are only on paper","They have no people","They always have a signature"],0,"Os dois têm perguntas e respostas entre pessoas.",3]
+ ],
+ "mat/tempo":[
+  ["1 hora tem quantos minutos?",["60","100","30","24","3 600"],0,"1 h = 60 min.",1],
+  ["1 minuto tem quantos segundos?",["60","100","10","30","3 600"],0,"1 min = 60 s.",1],
+  ["1 dia tem quantas horas?",["24","12","60","7","30"],0,"1 dia = 24 h.",1],
+  ["2 horas são quantos minutos?",["120","200","60","90","100"],0,"2 × 60 = 120 min.",1],
+  ["3 minutos são quantos segundos?",["180","300","30","90","360"],0,"3 × 60 = 180 s.",1],
+  ["Meia hora são quantos minutos?",["30","50","15","20","45"],0,"Metade de 60 = 30 min.",1],
+  ["Um quarto de hora são quantos minutos?",["15","25","4","20","45"],0,"60 ÷ 4 = 15 min.",1],
+  ["120 segundos são quantos minutos?",["2","12","20","1","120"],0,"120 ÷ 60 = 2 min.",1],
+  ["180 minutos são quantas horas?",["3","18","1,8","2","30"],0,"180 ÷ 60 = 3 h.",1],
+  ["Para passar de horas para minutos, devemos:",["multiplicar por 60","dividir por 60","multiplicar por 100","somar 60","dividir por 100"],0,"Unidade maior para menor: o número cresce, multiplica por 60.",1],
+  ["Para passar de segundos para minutos, devemos:",["dividir por 60","multiplicar por 60","dividir por 100","subtrair 60","multiplicar por 10"],0,"Unidade menor para maior: o número diminui, divide por 60.",1],
+  ["Uma semana tem quantos dias?",["7","5","10","30","12"],0,"1 semana = 7 dias.",1],
+  ["5 horas são quantos minutos?",["300","500","250","360","56"],0,"5 × 60 = 300 min.",2],
+  ["7 minutos são quantos segundos?",["420","700","360","480","67"],0,"7 × 60 = 420 s.",2],
+  ["240 segundos são quantos minutos?",["4","24","2,4","40","6"],0,"240 ÷ 60 = 4 min.",2],
+  ["1 h 30 min são quantos minutos?",["90","130","80","100","110"],0,"60 + 30 = 90 min.",2],
+  ["2 h 15 min são quantos minutos?",["135","215","125","150","115"],0,"2 × 60 + 15 = 120 + 15 = 135 min.",2],
+  ["3 min 20 s são quantos segundos?",["200","320","180","230","380"],0,"3 × 60 + 20 = 180 + 20 = 200 s.",2],
+  ["100 minutos são:",["1 h 40 min","1 h","1 h 10 min","2 h","1 h 60 min"],0,"100 ÷ 60 = 1, resto 40 → 1 h 40 min.",2],
+  ["150 segundos são:",["2 min 30 s","1 min 50 s","2 min 50 s","15 min","1 min 30 s"],0,"150 ÷ 60 = 2, resto 30 → 2 min 30 s.",2],
+  ["200 minutos são:",["3 h 20 min","2 h","2 h 20 min","3 h","3 h 40 min"],0,"200 ÷ 60 = 3, resto 20 → 3 h 20 min.",2],
+  ["Três quartos de hora são quantos minutos?",["45","75","34","30","40"],0,"3 × 15 = 45 min.",2],
+  ["1,5 hora é igual a:",["1 h 30 min","1 h 50 min","1 h 5 min","150 min","1 h 15 min"],0,"0,5 h é meia hora = 30 min. Pegadinha: não é 1 h 50!",2],
+  ["Quantos minutos tem 2,5 horas?",["150","250","130","205","125"],0,"2,5 × 60 = 150 min (2 h 30 min).",2],
+  ["O filme começou às 14 h 10 e terminou às 16 h 45. Quanto durou?",["2 h 35 min","2 h 55 min","3 h 35 min","2 h 25 min","1 h 35 min"],0,"Minutos: 45 − 10 = 35. Horas: 16 − 14 = 2.",2],
+  ["Uma aula de 50 minutos começa às 15 h. A que horas termina?",["15 h 50","16 h","15 h 05","16 h 50","15 h 30"],0,"15 h + 50 min = 15 h 50.",2],
+  ["Ana dormiu às 21 h e acordou às 6 h. Quantas horas dormiu?",["9 horas","15 horas","8 horas","7 horas","10 horas"],0,"De 21 h a 24 h são 3 h; de 0 h a 6 h são 6 h. Total 9 h.",2],
+  ["3 h da tarde no relógio de 24 horas é:",["15 h","13 h","3 h","18 h","21 h"],0,"Tarde: soma 12 → 3 + 12 = 15 h.",2],
+  ["No relógio de ponteiros, o ponteiro grande no 6 marca:",["30 minutos","6 minutos","60 minutos","15 minutos","45 minutos"],0,"Cada número vale 5 minutos: 6 × 5 = 30.",2],
+  ["Quantos segundos tem 1 hora?",["3 600","360","600","6 000","1 600"],0,"60 × 60 = 3 600 s.",3],
+  ["2 horas são quantos segundos?",["7 200","1 200","720","3 600","120"],0,"2 × 3 600 = 7 200 s.",3],
+  ["A aula começou às 7 h 50 e terminou às 9 h 20. Quanto durou?",["1 h 30 min","1 h 70 min","2 h 30 min","1 h 50 min","1 h 10 min"],0,"9 h 20 = 8 h 80. 80 − 50 = 30 min; 8 − 7 = 1 h.",3],
+  ["De 8 h 45 até 10 h 20 passam quantos minutos?",["95","135","75","105","85"],0,"10 h 20 = 9 h 80 → 1 h 35 min = 95 min.",3],
+  ["1 h 45 min + 2 h 30 min =",["4 h 15 min","3 h 75 min","3 h 15 min","4 h 75 min","4 h 05 min"],0,"45 + 30 = 75 min = 1 h 15 min; 1 + 2 + 1 = 4 h.",3],
+  ["Começou às 9 h 35 e durou 1 h 40 min. Que horas terminou?",["11 h 15","10 h 75","11 h 75","10 h 15","11 h 05"],0,"35 + 40 = 75 min = 1 h 15 → 9 + 1 + 1 = 11 h 15.",3],
+  ["0,25 hora são quantos minutos?",["15","25","2,5","40","20"],0,"0,25 = um quarto → 15 min. Pegadinha: não é 25!",3],
+  ["Um terço de hora são quantos minutos?",["20","30","33","13","15"],0,"60 ÷ 3 = 20 min.",3],
+  ["Qual é o MAIOR tempo?",["1 h 30 min","80 min","5 000 s","1,2 h","4 800 s"],0,"1 h 30 = 90 min; 80 min; 5 000 s ≈ 83 min; 1,2 h = 72 min; 4 800 s = 80 min.",3],
+  ["Um trem sai às 22 h 40 e a viagem dura 3 h. A que horas chega?",["1 h 40 da madrugada","25 h 40","1 h 40 da tarde","23 h 40","0 h 40"],0,"22 h 40 + 3 h = 25 h 40, mas o dia tem 24 h: 25 − 24 = 1 h 40.",3],
+  ["Uma corrida durou 260 segundos. Quanto é isso?",["4 min 20 s","2 min 60 s","4 min 2 s","26 min","3 min 80 s"],0,"260 ÷ 60 = 4, resto 20 → 4 min 20 s.",3],
+  ["Um bloco de estudo tem 50 min e a pausa 10 min. Quantos blocos cabem de 14 h às 18 h?",["4","3","5","6","2"],0,"Cada bloco + pausa = 60 min; de 14 h a 18 h são 4 h → 4 blocos.",3],
+  ["Quantos minutos tem um dia inteiro?",["1 440","2 400","1 400","240","864"],0,"24 × 60 = 1 440 min.",3],
+  ["Alice estudou 45 min de manhã e 1 h 20 min à tarde. Quanto estudou no total?",["2 h 05 min","1 h 65 min","2 h 25 min","1 h 05 min","2 h 65 min"],0,"45 + 80 = 125 min = 2 h 05 min.",3],
+  ["Um século tem quantos anos?",["100","10","1 000","50","12"],0,"Década = 10 anos; século = 100 anos.",2],
+  ["A pizza ficou 25 min no forno e saiu às 20 h 10. A que horas entrou?",["19 h 45","19 h 85","20 h 35","19 h 55","19 h 35"],0,"20 h 10 = 19 h 70. 70 − 25 = 45 → 19 h 45.",3]
+ ],
+ "mat/poliedros":[
+  ["Quantas faces tem um cubo?",["6","8","12","4","5"],0,"Um dado tem 6 faces.",1],
+  ["Quantos vértices tem um cubo?",["8","6","12","4","10"],0,"As 8 pontas do cubo.",1],
+  ["Quantas arestas tem um cubo?",["12","8","6","10","24"],0,"4 em cima, 4 embaixo e 4 em pé.",1],
+  ["Qual destes é um corpo redondo?",["esfera","cubo","pirâmide","prisma","caixa de sapato"],0,"Corpos redondos rolam: esfera, cilindro, cone.",1],
+  ["Qual destes é um poliedro?",["pirâmide","cilindro","cone","esfera","bola"],0,"Poliedros só têm faces planas.",1],
+  ["As faces laterais de uma pirâmide são:",["triângulos","retângulos","círculos","quadrados sempre","pentágonos"],0,"Pirâmide: laterais triangulares que se encontram no vértice.",1],
+  ["Um prisma tem quantas bases?",["2","1","3","nenhuma","4"],0,"Prisma: duas bases iguais e paralelas.",1],
+  ["Os pontos onde as arestas se encontram se chamam:",["vértices","faces","bases","lados","diagonais"],0,"Vértices são as \"pontas\".",2],
+  ["A linha onde duas faces se encontram se chama:",["aresta","vértice","base","face","raio"],0,"Aresta.",2],
+  ["Quantas faces tem uma pirâmide de base quadrada?",["5","4","6","8","9"],0,"4 triângulos + 1 quadrado = 5.",2],
+  ["Quantas faces tem um prisma triangular?",["5","6","3","9","4"],0,"2 triângulos + 3 retângulos = 5.",2],
+  ["A planificação de um cubo tem:",["6 quadrados","4 quadrados","6 triângulos","8 quadrados","2 círculos"],0,"Uma face para cada lado do cubo.",2],
+  ["A planificação do cilindro tem:",["2 círculos e 1 retângulo","3 círculos","1 círculo e 4 triângulos","6 retângulos","2 triângulos e 3 retângulos"],0,"As tampas e a parte lateral enrolada.",2],
+  ["Uma planificação com 1 quadrado e 4 triângulos monta:",["uma pirâmide quadrangular","um cubo","um prisma triangular","um cilindro","um cone"],0,"Base quadrada + 4 faces triangulares.",2],
+  ["Quantas arestas tem um prisma hexagonal?",["18","12","6","24","8"],0,"Prisma com base de n lados: 3 × n = 3 × 6 = 18.",3],
+  ["Quantos vértices tem um prisma pentagonal?",["10","5","15","7","12"],0,"2 × n = 2 × 5 = 10.",3],
+  ["Quantas arestas tem uma pirâmide hexagonal?",["12","18","7","6","10"],0,"Pirâmide: 2 × n = 2 × 6 = 12.",3],
+  ["Quantos vértices tem uma pirâmide pentagonal?",["6","5","10","15","7"],0,"n + 1 = 6 (5 da base + 1 em cima).",3],
+  ["Em prismas e pirâmides vale V + F = A + 2. Se um poliedro tem 6 vértices e 5 faces, quantas arestas tem?",["9","11","8","13","10"],0,"6 + 5 = A + 2 → A = 9 (é o prisma triangular).",3],
+  ["Qual sólido tem 4 faces, todas triangulares?",["pirâmide triangular","prisma triangular","cubo","pirâmide quadrangular","cone"],0,"A pirâmide de base triangular tem 4 triângulos.",3]
+ ],
+ "mat/algebra":[
+  ["? + 4 = 10. Qual é o número?",["6","14","4","10","40"],0,"10 − 4 = 6.",1],
+  ["Se x + 5 = 12, então x vale:",["7","17","5","12","60"],0,"Tira 5 dos dois lados: 12 − 5 = 7.",1],
+  ["Se 3 × x = 18, então x vale:",["6","15","21","54","3"],0,"Divide os dois lados por 3: 18 ÷ 3 = 6.",1],
+  ["Uma balança em equilíbrio representa:",["uma igualdade","uma soma errada","uma divisão","um número negativo","uma fração"],0,"Os dois lados valem o mesmo.",1],
+  ["Se x − 4 = 9, então x vale:",["13","5","36","4","9"],0,"Soma 4 dos dois lados: 9 + 4 = 13.",2],
+  ["Se x ÷ 2 = 8, então x vale:",["16","4","10","6","2"],0,"Multiplica os dois lados por 2: 8 × 2 = 16.",2],
+  ["Se 4 × n = 28, então n vale:",["7","24","32","112","6"],0,"28 ÷ 4 = 7.",2],
+  ["Qual operação mantém a igualdade?",["somar o mesmo número dos dois lados","somar só no lado esquerdo","multiplicar só um lado","apagar um lado","trocar o sinal de igual"],0,"Sempre a mesma coisa nos dois lados.",2],
+  ["Pensei num número, somei 15 e deu 40. Que número pensei?",["25","55","15","40","35"],0,"n + 15 = 40 → n = 25.",2],
+  ["3 cadernos iguais custaram R$ 36. Quanto custou cada um?",["R$ 12","R$ 33","R$ 108","R$ 9","R$ 39"],0,"3 × c = 36 → c = 12.",2],
+  ["Ana e Bia dividem 30 figurinhas. Ana fica com 6 a mais. Quantas fica Bia?",["12","18","15","24","6"],0,"(30 − 6) ÷ 2 = 12. Ana fica com 18.",2],
+  ["36 balas: Duda fica com o dobro de Caio. Quantas fica Caio?",["12","18","24","9","6"],0,"3 partes: 36 ÷ 3 = 12 (Caio); Duda 24.",2],
+  ["O dobro de um número mais 4 é 20. Que número é?",["8","12","16","10","6"],0,"2n + 4 = 20 → 2n = 16 → n = 8.",3],
+  ["O triplo de um número menos 5 é 25. Que número é?",["10","20","30","7","15"],0,"3n − 5 = 25 → 3n = 30 → n = 10.",3],
+  ["R$ 50 entre dois irmãos: o mais velho recebe R$ 10 a mais. Quanto recebe o mais velho?",["R$ 30","R$ 20","R$ 25","R$ 35","R$ 40"],0,"(50 − 10) ÷ 2 = 20 (mais novo); mais velho 30.",3],
+  ["R$ 40: João fica com o triplo de Lia. Quanto fica João?",["R$ 30","R$ 10","R$ 20","R$ 13","R$ 120"],0,"4 partes: 40 ÷ 4 = 10 (Lia); João 30.",3],
+  ["45 figurinhas: Léo fica com o dobro de Rui. Quanto fica Léo?",["30","15","22","90","25"],0,"3 partes de 15: Rui 15, Léo 30.",3],
+  ["Três irmãos dividem 60 reais. O segundo recebe o dobro do primeiro e o terceiro o triplo do primeiro. Quanto recebe o primeiro?",["R$ 10","R$ 20","R$ 30","R$ 15","R$ 12"],0,"1 + 2 + 3 = 6 partes → 60 ÷ 6 = 10.",3],
+  ["Se 2 × x + 3 = 3 × 5, quanto vale x?",["6","12","9","4","15"],0,"3 × 5 = 15 → 2x + 3 = 15 → 2x = 12 → x = 6.",3],
+  ["Numa balança, 3 caixas iguais + 2 kg equilibram 14 kg. Quanto pesa cada caixa?",["4 kg","5 kg","3 kg","12 kg","6 kg"],0,"3c + 2 = 14 → 3c = 12 → c = 4.",3]
+ ],
+ "mat/medidas":[
+  ["1 litro tem quantos mililitros?",["1 000","100","10","10 000","500"],0,"1 L = 1 000 mL.",1],
+  ["1 quilograma tem quantos gramas?",["1 000","100","10","500","10 000"],0,"1 kg = 1 000 g.",1],
+  ["A água congela a:",["0 °C","100 °C","10 °C","−100 °C","36 °C"],0,"0 °C é o ponto de congelamento.",1],
+  ["A água ferve (ao nível do mar) a:",["100 °C","0 °C","50 °C","1 000 °C","37 °C"],0,"100 °C.",1],
+  ["Para medir quanto cabe numa garrafa, usamos:",["litros","quilos","metros","graus","horas"],0,"Capacidade: L e mL.",1],
+  ["Para medir o \"peso\" de um saco de arroz, usamos:",["quilogramas","litros","graus Celsius","minutos","metros cúbicos"],0,"Massa: kg e g.",1],
+  ["2 L são quantos mL?",["2 000","200","20","20 000","1 200"],0,"2 × 1 000 = 2 000 mL.",2],
+  ["Meio litro são quantos mL?",["500","50","5 000","250","150"],0,"1 000 ÷ 2 = 500 mL.",2],
+  ["3 kg são quantos gramas?",["3 000","300","30","30 000","1 300"],0,"3 × 1 000 = 3 000 g.",2],
+  ["2 500 g são quantos kg?",["2,5","25","250","0,25","2,05"],0,"2 500 ÷ 1 000 = 2,5 kg.",2],
+  ["1 tonelada tem quantos quilos?",["1 000","100","10 000","500","10"],0,"1 t = 1 000 kg.",2],
+  ["Volume de uma caixa de 5 cm × 3 cm × 2 cm:",["30 cm³","10 cm³","15 cm³","60 cm³","25 cm³"],0,"5 × 3 × 2 = 30 cm³.",2],
+  ["A temperatura normal do corpo humano é cerca de:",["36,5 °C","20 °C","45 °C","100 °C","0 °C"],0,"Cerca de 36,5 °C.",2],
+  ["Estava 18 °C e subiu para 27 °C. Quanto aumentou?",["9 °C","45 °C","7 °C","11 °C","27 °C"],0,"27 − 18 = 9 °C.",2],
+  ["Volume de um cubo de 4 cm de lado:",["64 cm³","16 cm³","12 cm³","48 cm³","24 cm³"],0,"4 × 4 × 4 = 64 cm³.",3],
+  ["Quantos copos de 200 mL enchem uma garrafa de 2 L?",["10","5","20","100","4"],0,"2 000 ÷ 200 = 10.",3],
+  ["1 cm³ equivale a:",["1 mL","1 L","10 mL","1 g sempre","100 mL"],0,"1 cm³ = 1 mL; 1 000 cm³ = 1 L.",3],
+  ["Estava 2 °C e a temperatura caiu 5 °C. Quanto ficou?",["−3 °C","3 °C","7 °C","−7 °C","0 °C"],0,"2 − 5 = −3 °C (três abaixo de zero).",3],
+  ["Quantos pacotes de 250 g formam 1,5 kg?",["6","4","5","15","3"],0,"1,5 kg = 1 500 g → 1 500 ÷ 250 = 6.",3],
+  ["Um aquário de 20 cm × 10 cm × 10 cm cabe quantos litros?",["2 L","20 L","200 L","0,2 L","2 000 L"],0,"20 × 10 × 10 = 2 000 cm³ = 2 000 mL = 2 L.",3]
+ ],
+ "hist/islamico":[
+  ["Quem fundou o Islã?",["Maomé","Carlos Magno","Justiniano","Clóvis","Mansa Musa"],0,"Maomé (Muhammad), nascido em Meca por volta de 570.",1],
+  ["Como se chama o livro sagrado do Islã?",["Alcorão","Bíblia","Torá","Código de Justiniano","Talmude"],0,"Alcorão.",1],
+  ["Quem segue o Islã é chamado de:",["muçulmano","cristão","beduíno","califa","griô"],0,"Muçulmano.",1],
+  ["Os beduínos eram:",["pastores nômades do deserto","reis africanos","monges copistas","senhores feudais","comerciantes de Bagdá"],0,"Andavam pelo deserto com camelos.",1],
+  ["O Islã é uma religião:",["monoteísta","politeísta","sem deuses","igual à religião romana","só africana"],0,"Acredita em um só Deus, Alá.",1],
+  ["Em que cidade Maomé nasceu?",["Meca","Medina","Bagdá","Damasco","Constantinopla"],0,"Meca, onde fica a Caaba.",1],
+  ["O que foi a Hégira?",["a ida de Maomé de Meca para Medina, em 622","a conquista da Península Ibérica","a construção da Caaba","a morte de Maomé","a divisão entre sunitas e xiitas"],0,"Marca o ano 1 do calendário islâmico.",2],
+  ["Qual destes é um dos 5 pilares do Islã?",["jejum no mês do Ramadã","peregrinar a Roma","adorar vários deuses","pagar a corveia","copiar livros em latim"],0,"Fé, orações, esmola, jejum no Ramadã e peregrinação a Meca.",2],
+  ["Os líderes que governaram depois de Maomé eram chamados de:",["califas","faraós","papas","imperadores romanos","senhores feudais"],0,"Califas; o governo deles era o califado.",2],
+  ["Qual califado tinha capital em Bagdá e foi o auge da ciência?",["Abássida","Omíada","Ortodoxo","Carolíngio","Bizantino"],0,"Califado Abássida, com a Casa da Sabedoria.",2],
+  ["Os muçulmanos chegaram à Península Ibérica em 711 no califado:",["Omíada","Abássida","Ortodoxo","de Gana","Carolíngio"],0,"Califado Omíada, capital Damasco.",2],
+  ["Qual herança vem dos árabes?",["os algarismos indo-arábicos (0, 1, 2…)","o latim","o feudalismo","o Código de Justiniano","a pirâmide do Egito"],0,"Também a álgebra e palavras como açúcar e alface.",2],
+  ["O comércio transaariano trocava principalmente:",["ouro e sal","café e açúcar","petróleo e ferro","seda e porcelana","soja e milho"],0,"Ouro do sul e sal do norte.",2],
+  ["Qual reino africano ficou conhecido como \"terra do ouro\"?",["Gana","Songhai","Egito","Bizâncio","Franco"],0,"Gana enriqueceu com o comércio do ouro.",2],
+  ["Qual rei do Mali fez uma famosa peregrinação a Meca levando muito ouro?",["Mansa Musa","Sundiata Keita","Carlos Magno","Clóvis","Justiniano"],0,"Mansa Musa.",3],
+  ["Tombuctu era famosa por ser:",["um centro de estudos e comércio","a capital do Império Romano","um castelo feudal","uma igreja bizantina","um porto viking"],0,"Ficava no Mali e depois foi dominada pelo Songhai.",3],
+  ["Qual era a capital do reino Songhai?",["Gao","Tombuctu","Meca","Bagdá","Kumbi Saleh"],0,"Gao.",3],
+  ["Como o Islã chegou aos reinos do oeste africano?",["pelo comércio das caravanas","pelos vikings","pelos monges copistas","pelos portugueses no século XX","pelo Império Romano"],0,"Os comerciantes muçulmanos levaram a religião.",3],
+  ["Os griôs eram:",["contadores de histórias que guardavam a tradição oral","guerreiros germânicos","califas","monges","senhores feudais"],0,"A tradição oral guardou a história dos reinos africanos.",3],
+  ["A divisão entre sunitas e xiitas aconteceu por causa:",["da disputa sobre quem deveria suceder Maomé","da invasão germânica","do comércio de ouro","do fim do feudalismo","do Cisma de 1054"],0,"Divergência sobre a sucessão.",3]
+ ],
+ "hist/altaidade":[
+  ["A Idade Média começa em 476 com:",["a queda do Império Romano do Ocidente","a queda de Constantinopla","a Hégira","a coroação de Carlos Magno","o descobrimento do Brasil"],0,"E termina em 1453, com a queda de Constantinopla.",1],
+  ["A Alta Idade Média é:",["a primeira parte da Idade Média (séculos V a X)","a parte final da Idade Média","a Idade Antiga","o período do Império Romano","o século XX"],0,"Alta = mais antiga.",1],
+  ["Quem eram os \"bárbaros\" para os romanos?",["os povos germânicos","os árabes","os gregos","os egípcios","os bizantinos"],0,"Romanos chamavam de bárbaros quem não falava latim nem grego.",1],
+  ["No feudalismo, a terra era chamada de:",["feudo","califado","manso real","império","metrópole"],0,"Feudo.",1],
+  ["Na sociedade feudal, quem eram \"os que rezam\"?",["o clero","a nobreza","os servos","os califas","os comerciantes"],0,"Clero reza, nobreza guerreia, servos trabalham.",1],
+  ["Os camponeses presos à terra eram os:",["servos","patrícios","califas","vassalos-reis","monges"],0,"Servos.",1],
+  ["Qual povo germânico formou o reino mais forte?",["os francos","os vândalos","os beduínos","os saxões","os lombardos"],0,"O Reino Franco.",2],
+  ["O rei franco que se converteu ao cristianismo foi:",["Clóvis","Carlos Magno","Maomé","Otávio Augusto","Mansa Musa"],0,"Clóvis ganhou o apoio da Igreja.",2],
+  ["Carlos Magno foi coroado imperador pelo papa no ano:",["800","476","1453","622","843"],0,"Império Carolíngio.",2],
+  ["O comitatus era:",["a relação de lealdade entre o chefe guerreiro e seus guerreiros","um imposto dos servos","uma igreja","um livro sagrado","um reino africano"],0,"Base da ideia de fidelidade do feudalismo.",2],
+  ["A relação feudal entre quem dava e quem recebia a terra era de:",["suserano e vassalo","patrício e plebeu","califa e beduíno","papa e imperador","rei e griô"],0,"O suserano dava o feudo; o vassalo jurava fidelidade.",2],
+  ["A economia feudal era principalmente:",["agrária e autossuficiente","industrial","baseada em bancos","de exportação de petróleo","urbana e comercial"],0,"Produzia quase tudo o que consumia.",2],
+  ["A corveia era:",["trabalhar alguns dias nas terras do senhor","entregar parte da produção","pagar para usar o moinho","rezar no mosteiro","lutar na guerra"],0,"Corveia = trabalho nas terras do senhor.",2],
+  ["A talha era:",["entregar ao senhor parte da produção","trabalhar no castelo","pagar para usar o forno","uma arma","uma igreja"],0,"Talha = parte da produção.",3],
+  ["Pagar para usar o moinho e o forno do senhor era a:",["banalidade","corveia","talha","Hégira","esmola"],0,"Banalidades.",3],
+  ["Por que as pessoas foram das cidades para o campo no início da Idade Média?",["por causa da insegurança e das invasões","porque o campo tinha fábricas","por causa do petróleo","porque as cidades eram novas","por causa do Islã"],0,"Ruralização: o campo protegido pelos senhores parecia mais seguro.",3],
+  ["Quem copiava os livros à mão nos mosteiros?",["os monges copistas","os servos","os cavaleiros","os califas","os comerciantes"],0,"Em latim, guardando o conhecimento.",3],
+  ["O teocentrismo medieval significa:",["Deus no centro de tudo","o ser humano no centro","o rei no centro","o dinheiro no centro","a ciência no centro"],0,"Theo = Deus.",3],
+  ["A sociedade feudal era estamental, ou seja:",["era quase impossível mudar de grupo social","todos eram iguais","qualquer um virava nobre facilmente","não tinha religião","era governada por califas"],0,"Cada um ficava no estamento em que nasceu.",3],
+  ["O Tratado de Verdun (843):",["dividiu o Império Carolíngio","criou o Islã","terminou a Idade Média","fundou Constantinopla","criou o feudo"],0,"Dividiu o império entre os netos de Carlos Magno.",3]
+ ],
+ "geo/rural":[
+  ["O espaço rural é:",["o campo","o centro da cidade","uma indústria","uma metrópole","um shopping"],0,"Campo: plantações, criações, matas.",1],
+  ["Plantar alimentos é a atividade chamada:",["agricultura","pecuária","indústria","comércio","extrativismo mineral"],0,"Agricultura.",1],
+  ["Criar animais é a atividade chamada:",["pecuária","agricultura","indústria","turismo","serviço"],0,"Pecuária.",1],
+  ["Latifúndio é:",["uma propriedade rural muito grande","uma propriedade pequena","uma cidade","uma fábrica","um rio"],0,"Minifúndio é a pequena.",1],
+  ["Agricultura de subsistência produz:",["para o consumo da própria família","só para exportar","só soja","em fábricas","só flores"],0,"Subsistência = para sobreviver.",1],
+  ["Retirar açaí e castanha da floresta é:",["extrativismo vegetal","pecuária intensiva","indústria de base","agricultura orgânica","extrativismo mineral"],0,"Extrativismo vegetal.",2],
+  ["Pecuária intensiva é quando os animais:",["ficam confinados, com ração e tecnologia","ficam soltos em grandes pastos","vivem na floresta","são caçados","vivem nas cidades"],0,"Produz mais em menos espaço.",2],
+  ["Monocultura é:",["plantar um só produto em grande área","plantar vários produtos","criar animais","produzir em fábricas","plantar só na cidade"],0,"Ex.: grandes áreas só de soja.",2],
+  ["O que é êxodo rural?",["saída de pessoas do campo para a cidade","saída da cidade para o campo","aumento das florestas","um tipo de pecuária","uma indústria"],0,"Muitas vezes por falta de emprego no campo.",2],
+  ["A mecanização do campo:",["substitui trabalhadores por máquinas","aumenta o número de trabalhadores","acaba com as plantações","só existe nas cidades","usa só ferramentas manuais"],0,"Tratores e colheitadeiras.",2],
+  ["Agroindústria é:",["indústria ligada ao campo, que transforma produtos agrícolas","uma fazenda sem máquinas","uma loja na cidade","um tipo de extrativismo","um banco rural"],0,"Ex.: usinas de açúcar, laticínios.",2],
+  ["Quem produz grande parte dos alimentos do dia a dia, como feijão e mandioca, no Brasil?",["a agricultura familiar","só os latifúndios de soja","as indústrias","as metrópoles","os bancos"],0,"Agricultura familiar.",3],
+  ["A concentração de terras no Brasil significa que:",["poucas pessoas têm muita terra","todos têm a mesma quantidade de terra","não existe campo","as terras são só do governo","não há conflitos"],0,"Causa conflitos e a luta pela reforma agrária.",3],
+  ["Agricultura orgânica é a produção:",["sem agrotóxicos e adubos químicos","com muitos agrotóxicos","só de soja","feita em fábricas","em estufas de plástico sempre"],0,"Sem químicos sintéticos.",3],
+  ["Um problema ambiental do campo é:",["o uso excessivo de agrotóxicos","o trânsito de carros","os prédios altos","as ilhas de calor","o metrô"],0,"Também desmatamento e erosão.",3],
+  ["O campo envia para a cidade principalmente:",["alimentos e matérias-primas","carros e celulares","bancos e escolas","metrôs","shoppings"],0,"E recebe máquinas, adubos e serviços.",3],
+  ["O agronegócio se caracteriza por:",["grandes empresas, tecnologia e produção em larga escala","produção só para a família","nenhuma máquina","produção só de verduras","trabalho só manual"],0,"Soja, milho, cana e carne.",3],
+  ["Extrair minério de ferro é:",["extrativismo mineral","extrativismo vegetal","pecuária","agricultura","indústria de serviços"],0,"Extrativismo mineral.",2]
+ ],
+ "geo/urbano":[
+  ["Urbanização é:",["o aumento da população que vive nas cidades","o aumento das florestas","a saída das pessoas da cidade","a criação de fazendas","a construção de rios"],0,"Proporção urbana cresce em relação à rural.",1],
+  ["O que atraiu muitas pessoas para as cidades?",["a industrialização e os empregos","o fim das escolas","a falta de transporte","o desmatamento","as plantações de soja"],0,"Fábricas ofereciam trabalho.",1],
+  ["Indústria pertence ao setor:",["secundário","primário","terciário","quaternário","rural"],0,"Transforma matéria-prima em produto.",1],
+  ["Comércio e serviços pertencem ao setor:",["terciário","primário","secundário","rural","extrativista"],0,"Lojas, escolas, hospitais, bancos.",1],
+  ["Agricultura e pecuária pertencem ao setor:",["primário","secundário","terciário","industrial","urbano"],0,"Setor primário.",1],
+  ["Metrópole é:",["uma cidade grande que influencia outras cidades","uma pequena vila","uma fazenda","uma floresta","um país"],0,"Ex.: São Paulo.",2],
+  ["Conurbação acontece quando:",["cidades crescem e se juntam","uma cidade desaparece","o campo vira floresta","as fábricas fecham","um rio seca"],0,"Não dá para ver onde uma termina.",2],
+  ["A urbanização no Brasil acelerou a partir de:",["1950","1500","1200","2020","1800"],0,"Com a industrialização.",2],
+  ["Qual é um problema urbano?",["trânsito intenso","falta de cidades","excesso de florestas","poucos carros","poucas pessoas"],0,"Também poluição, enchentes, moradias precárias.",2],
+  ["Megacidade é a cidade com:",["mais de 10 milhões de habitantes","menos de 1 000 habitantes","só fábricas","só fazendas","nenhum habitante"],0,"Ex.: São Paulo, Tóquio.",2],
+  ["Uma escola e um hospital pertencem a qual setor?",["terciário","primário","secundário","extrativista","agropecuário"],0,"Serviços.",2],
+  ["Hoje, a maior parte dos brasileiros vive:",["nas cidades","no campo","nas florestas","no litoral só","em fazendas"],0,"Mais de 80% vivem em áreas urbanas.",2],
+  ["Por que as enchentes são frequentes nas grandes cidades?",["asfalto não deixa a água entrar no solo e o lixo entope bueiros","porque chove menos","porque há muitas florestas","porque não há rios","porque o solo é de areia"],0,"Impermeabilização do solo.",3],
+  ["A indústria que produz aço e derivados de petróleo para outras indústrias é a:",["indústria de base","indústria de bens de consumo","agroindústria familiar","indústria de serviços","pecuária"],0,"Matéria-prima para outras fábricas.",3],
+  ["Roupas, alimentos e celulares são produzidos pela indústria de:",["bens de consumo","base","bens de capital","extração","serviços"],0,"Vendidos direto para as pessoas.",3],
+  ["Máquinas que equipam outras fábricas são feitas pela indústria de:",["bens de capital","bens de consumo","base apenas mineral","serviços","comércio"],0,"Bens de capital.",3],
+  ["Região metropolitana é:",["a metrópole e as cidades vizinhas ligadas a ela","uma fazenda grande","uma área sem cidades","só o centro de uma cidade","um bairro rural"],0,"Cidades integradas à metrópole.",3],
+  ["Qual relação entre êxodo rural e urbanização?",["pessoas saindo do campo fizeram as cidades crescerem","não têm relação","o êxodo rural esvaziou as cidades","a urbanização aumentou o campo","as duas acabaram com as indústrias"],0,"O êxodo rural alimentou a urbanização.",3]
+ ],
+ "cien/ambiente":[
+  ["Para separar pedrinhas do feijão usamos:",["catação","destilação","imantação","centrifugação","evaporação"],0,"Separar com a mão.",1],
+  ["Para separar limalha de ferro da areia usamos:",["imantação","filtração","decantação","ventilação","catação de água"],0,"O ímã atrai o ferro.",1],
+  ["ETA significa:",["Estação de Tratamento de Água","Estação de Tratamento de Esgoto","Empresa de Transporte Aéreo","Escola Técnica Ambiental","Estação de Terra e Ar"],0,"Água para beber.",1],
+  ["ETE significa:",["Estação de Tratamento de Esgoto","Estação de Tratamento de Água","Escola de Tecnologia","Energia Térmica Elétrica","Estação de Teste"],0,"Limpa o esgoto.",1],
+  ["Água e óleo formam uma mistura:",["heterogênea","homogênea","pura","gasosa","simples"],0,"Dá para ver as duas fases.",1],
+  ["Separar casca e grão de arroz soprando é a:",["ventilação","imantação","filtração","decantação","destilação"],0,"O vento leva a parte leve.",2],
+  ["Para separar água e óleo usamos:",["funil de decantação","ímã","peneira","ventilação","catação"],0,"Os líquidos não se misturam; a torneira separa.",2],
+  ["A centrifugação:",["gira rápido para acelerar a decantação","usa um ímã","sopra o ar","esquenta a mistura","congela a mistura"],0,"Ex.: centrífuga de roupas.",2],
+  ["Na ETA, o cloro serve para:",["matar micro-organismos","dar cor","separar o óleo","juntar a sujeira em flocos","tirar o sal"],0,"Desinfecção.",2],
+  ["Na ETA, a etapa em que a água passa por areia, cascalho e carvão é a:",["filtração","decantação","coagulação","fluoretação","captação"],0,"Filtração.",2],
+  ["Na ETE, as grades seguram:",["o lixo grande, como plásticos e panos","o cloro","o flúor","as bactérias boas","a água limpa"],0,"Funciona como uma peneiração.",2],
+  ["Num vazamento de petróleo, o óleo:",["flutua sobre a água","afunda imediatamente","se dissolve na água","vira sal","evapora na hora"],0,"Não se mistura e é menos denso.",2],
+  ["Um aspirador de pó e uma máscara usam qual método?",["filtração (de ar)","destilação","imantação","decantação","evaporação"],0,"O filtro segura as partículas sólidas do ar.",2],
+  ["Na ETA, a coagulação e a floculação servem para:",["juntar a sujeira em flocos","matar bactérias","adicionar flúor","esquentar a água","separar o óleo"],0,"Depois os flocos decantam.",3],
+  ["Qual a ordem correta de algumas etapas da ETA?",["floculação → decantação → filtração → cloração","cloração → captação → filtração → floculação","filtração → captação → decantação","decantação → captação → floculação","fluoretação → captação → filtração"],0,"Primeiro juntar, depois decantar, filtrar e desinfetar.",3],
+  ["Na ETE, quem decompõe a matéria orgânica do esgoto?",["bactérias","o cloro","as grades","o flúor","o ímã"],0,"Tratamento biológico.",3],
+  ["Para conter uma mancha de petróleo no mar, usam-se:",["boias de contenção","ímãs gigantes","peneiras","centrífugas","cloro"],0,"Depois o óleo é sugado e absorvido.",3],
+  ["Diferença entre ETA e ETE:",["ETA trata a água para beber; ETE trata o esgoto","as duas são iguais","ETE trata água para beber","ETA trata só esgoto","nenhuma usa decantação"],0,"Não confunda!",3],
+  ["Por que os filtros nas chaminés das fábricas ajudam o ambiente?",["seguram partículas poluentes do ar","aumentam a fumaça","produzem petróleo","esquentam o ar","criam chuva ácida"],0,"Filtração de mistura sólido + gás.",3]
+ ],
+ "cien/transformacoes":[
+  ["Gelo derretendo é uma transformação:",["física","química","biológica","nuclear","impossível"],0,"Continua sendo água.",1],
+  ["Queimar papel é uma transformação:",["química","física","de estado","de tamanho","reversível sempre"],0,"Forma cinzas e gases: substâncias novas.",1],
+  ["Rasgar uma folha de papel é transformação:",["física","química","biológica","nuclear","de cor"],0,"O papel continua papel.",1],
+  ["A passagem do sólido para o líquido se chama:",["fusão","condensação","solidificação","sublimação","vaporização"],0,"Fusão.",1],
+  ["Plástico e náilon são materiais:",["sintéticos","naturais","minerais puros","vegetais","animais"],0,"Produzidos pelo ser humano.",1],
+  ["Madeira, algodão e lã são materiais:",["naturais","sintéticos","plásticos","de petróleo","artificiais sempre"],0,"Vêm da natureza.",1],
+  ["Ferro enferrujando é transformação:",["química","física","de estado","sem mudança","de tamanho"],0,"Forma ferrugem, uma substância nova.",2],
+  ["Qual destas é uma pista de transformação química?",["liberação de gás (bolhas) e mudança de cor","mudar de tamanho","mudar de forma","mudar de lugar","ficar molhado"],0,"Também luz, calor, cheiro novo.",2],
+  ["Cozinhar um ovo é transformação:",["química","física","de estado apenas","reversível","nenhuma"],0,"Não volta a ser ovo cru.",2],
+  ["A água fervendo e virando vapor é:",["vaporização, transformação física","transformação química","solidificação","fusão","sublimação"],0,"O vapor continua sendo água.",2],
+  ["A passagem do gasoso para o líquido se chama:",["condensação","vaporização","fusão","sublimação","solidificação"],0,"Ex.: gotas no copo gelado.",2],
+  ["No método científico, a hipótese é:",["uma possível resposta que ainda vai ser testada","o resultado final","a primeira observação","o experimento","uma lei já provada"],0,"Testada no experimento.",2],
+  ["Qual é a ordem correta do método científico?",["observação → problema → hipótese → experimento → conclusão","conclusão → hipótese → observação","experimento → observação → problema","hipótese → conclusão → observação","problema → conclusão → experimento"],0,"Observação, pergunta, hipótese, teste, análise, conclusão.",2],
+  ["Muitos materiais sintéticos são feitos a partir do:",["petróleo","algodão","ouro","sal","granito"],0,"Plásticos e náilon vêm do petróleo.",2],
+  ["Dissolver açúcar na água é transformação:",["física","química","nuclear","de cor","biológica"],0,"O açúcar continua lá; dá para recuperá-lo evaporando a água.",3],
+  ["O bolo crescer com fermento é transformação:",["química","física","de estado","de tamanho apenas","nenhuma"],0,"O fermento produz gás: substância nova.",3],
+  ["A sublimação é a passagem:",["do sólido direto para o gasoso","do líquido para o sólido","do gasoso para o líquido","do líquido para o gasoso","do sólido para o líquido"],0,"Ex.: naftalina, gelo-seco.",3],
+  ["Um problema dos materiais sintéticos como o plástico é:",["demorar centenas de anos para se decompor","ser muito pesado","ser sempre caro","não existir","ser natural"],0,"Por isso: reduzir, reutilizar, reciclar.",3],
+  ["\"Guardei um pão em lugar seco e outro em lugar úmido.\" Essa etapa é:",["o experimento","a hipótese","a observação","a conclusão","o problema"],0,"É o teste da hipótese.",3],
+  ["Materiais sintéticos são obtidos por meio de:",["transformações químicas em indústrias e laboratórios","catação na natureza","peneiração","mudança de estado","nenhuma transformação"],0,"Criam substâncias novas.",3]
  ]
 };
 
@@ -2026,7 +2468,7 @@ function qPool(s,t){
 function errCount(s){return qPool(s,"erros").length}
 const LVL={1:"Fácil",2:"Média",3:"Difícil"};
 function lvlCount(list){const c={1:0,2:0,3:0}; list.forEach(x=>c[x.q?x.q[4]:x[4]]++); return `${c[1]} fáceis · ${c[2]} médias · ${c[3]} difíceis`}
-function subjLessonsDone(s){const L=LESSONS[s];return [L.filter(l=>S.lessons[lessonKey(s,l.id)]).length,L.length]}
+function subjLessonsDone(s){const L=curLessons(s);return [L.filter(l=>S.lessons[lessonKey(s,l.id)]).length,L.length]}
 function contTag(s,t){const o=qzSaved(s,t); return o?`<span class="cont">▶ continuar na ${o.i+1}ª de ${o.ids.length}</span>`:""}
 function badge(pct){if(pct==null) return `<span class="score-badge">novo</span>`;return `<span class="score-badge ${pct>=80?"good":pct>=60?"mid":"low"}">${pct}%</span>`}
 
@@ -2092,7 +2534,7 @@ function vInicio(){
   if(nx){
     const s0=nx.s[0], n=daysBetween(t,nx.d);
     const names=nx.s.map(s=>SUBJ[s].n).join(" e ");
-    const L=LESSONS[s0]; const [dn,tot]=subjLessonsDone(s0);
+    const L=curLessons(s0); const [dn,tot]=subjLessonsDone(s0);
     hero=`<section class="hero" style="--c:${SUBJ[s0].c}">
       <div class="top"><div style="display:grid;gap:6px"><span class="eyebrow">Próxima prova</span><h2>${names}</h2><p class="muted">${dLong(nx.d)} · 7h</p></div>
       <div class="count"><b>${n<=0?"Hoje":n}</b><span>${n<=0?"às 7h":n===1?"dia":"dias"}</span></div></div>
@@ -2169,7 +2611,7 @@ function vBloco({date,i}){
 }
 function statsRow(withBtn=true){
   const totB=DAYS.reduce((a,d)=>a+d[2].length,0), doneB=Object.values(S.checks).filter(Boolean).length;
-  const totL=ORDER.reduce((a,s)=>a+LESSONS[s].length,0), doneL=Object.values(S.lessons).filter(Boolean).length;
+  const cur=ORDER.flatMap(s=>curLessons(s).map(l=>lessonKey(s,l.id))), totL=cur.length, doneL=cur.filter(k=>S.lessons[k]).length;
   const bests=Object.values(S.best); const avg=bests.length?Math.round(bests.reduce((a,b)=>a+b,0)/bests.length):null;
   return `<section class="stats">
     <div class="stat"><span>Blocos feitos</span><b>${doneB} / ${totB}</b><div class="progress"><i style="width:${100*doneB/totB}%"></i></div></div>
@@ -2226,15 +2668,17 @@ function vMaterias(){
     </button>`}).join("")}</div>`;
 }
 function vMateria({s}){
-  const e=EXAM_DAYS.find(x=>x.s.includes(s)); const L=LESSONS[s];
+  const e=EXAM_DAYS.find(x=>x.s.includes(s)); const L=curLessons(s), OL=oldLessons(s);
   const head=`<button class="back" data-nav2="materias">${ICON.left} Matérias</button>
     <section class="subj-head" style="--c:${SUBJ[s].c}"><span class="eyebrow">Prova ${dLong(e.d).toLowerCase()} · ${examDone(e.d)?"feita":whenTxt(e.d)}</span><h1>${SUBJ[s].n}</h1>
-    ${s==="mat"?`<p>Siga a ordem. Cada lição depende da anterior, começando pelos pré-requisitos.</p>`:`<p>Estude cada lição e treine no final.</p>`}</section>`;
+    ${s==="mat"?`<p>Estas são as lições da prova. Comece pela de <b>tempo</b>: é o foco do professor.</p>`:`<p>Estude cada lição e treine no final.</p>`}</section>`;
   if(!L.length) return head+`<div class="card"><h3>Conteúdo em breve</h3><p class="muted" style="margin-top:6px">A escola ainda vai informar o que cai na prova de Inglês. Assim que chegar, as lições e questões aparecem aqui.</p></div>`;
   return head+`<ol class="path" style="--c:${SUBJ[s].c}">${L.map((l,i)=>{
       const done=S.lessons[lessonKey(s,l.id)];
       return `<li class="${done?"done":""}"><span class="num">${done?ICON.check:i+1}</span>
         <button class="lcard" style="--c:${SUBJ[s].c}" data-lesson="${s}/${l.id}"><span>${l.cap} · ${l.steps.length} passos</span><b>${l.t}</b><span>${done?"Estudada":"Começar lição"}</span></button></li>`}).join("")}</ol>
+    ${OL.length?`<details class="card old"><summary><b>Revisão da prova anterior</b> <span class="muted">· ${OL.length} lições</span></summary>
+      <div class="plist" style="margin-top:8px">${OL.map(l=>`<button class="prow linkrow" data-lesson="${s}/${l.id}"><span>${l.t}<br><span class="sub">${l.cap}</span></span><span class="muted">${ICON.arrow}</span></button>`).join("")}</div></details>`:""}
     <div class="quick">
       <button class="qcard" data-open="Q:${s}/all"><span class="eyebrow">${qPool(s,"all").length} questões</span><b>Treino completo</b></button>
       <button class="qcard" data-open="Q:${s}/erros"><span class="eyebrow">${errCount(s)} para refazer</span><b>Caderno de erros</b></button>
@@ -2270,14 +2714,16 @@ let pracSubj="mat";
 function vPraticar(){
   const s=pracSubj;
   return `<div class="hello"><span class="eyebrow">Treino</span><h1>Praticar</h1><p class="muted">Uma questão por vez, com a explicação logo depois. As questões começam fáceis e vão ficando mais difíceis. O que ela errar vai para o caderno de erros.</p></div>
-    <button class="lab-card" data-nav2="jogos"><div style="display:grid;gap:4px"><span>Matemática em jogo</span><b>Laboratório</b><span>${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas · tabuada, troco, porcentagem, sorte e mapa</span></div><span class="big-ic">${ICON.arrow}</span></button>
+    <button class="lab-card" data-nav2="jogos"><div style="display:grid;gap:4px"><span>Matemática em jogo</span><b>Laboratório</b><span>${GAMES.reduce((a,g)=>a+gameStars(g.id),0)} de ${GAMES.length*3} estrelas · novo: Relógio maluco (horas, minutos e segundos)</span></div><span class="big-ic">${ICON.arrow}</span></button>
     <div class="chips">${ORDER.filter(x=>TOPICS[x]).map(x=>`<button class="chip" style="--c:${SUBJ[x].c}" aria-pressed="${x===s}" data-psubj="${x}">${SUBJ[x].n}</button>`).join("")}</div>
     <div class="topics" style="--c:${SUBJ[s].c}">
       <button class="topic" data-open="Q:${s}/all"><div style="display:grid"><b>Treino completo</b><span>${qPool(s,"all").length} questões de todos os assuntos · ${lvlCount(qPool(s,"all"))}</span>${contTag(s,"all")}</div>${badge(S.best[s+"/all"])}</button>
       ${TOPICS[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões · ${lvlCount(Q[s+"/"+k]||[])}</span>${contTag(s,k)}</div>${badge(S.best[s+"/"+k])}</button>`).join("")}
       <button class="topic" data-open="Q:${s}/dificil"><div style="display:grid"><b>Desafio: só difíceis</b><span>${qPool(s,"dificil").length} questões difíceis de todos os assuntos</span>${contTag(s,"dificil")}</div>${badge(S.best[s+"/dificil"])}</button>
       <button class="topic" data-open="Q:${s}/erros" style="--c:var(--red)"><div style="display:grid"><b>Caderno de erros</b><span>${errCount(s)} questões para refazer</span>${contTag(s,"erros")}</div><span class="score-badge ${errCount(s)?"low":"good"}">${errCount(s)}</span></button>
-    </div>`;
+    </div>
+    ${(TOPICS_OLD[s]||[]).length?`<details class="card old"><summary><b>Revisão da prova anterior</b> <span class="muted">· não entra no treino completo</span></summary>
+      <div class="topics" style="--c:${SUBJ[s].c};margin-top:10px">${TOPICS_OLD[s].map(([k,n])=>`<button class="topic" data-open="Q:${s}/${k}"><div style="display:grid"><b>${n}</b><span>${(Q[s+"/"+k]||[]).length} questões</span>${contTag(s,k)}</div>${badge(S.best[s+"/"+k])}</button>`).join("")}</div></details>`:""}`;
 }
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 let qz=null;
@@ -2310,7 +2756,7 @@ function startQuiz(s,t,fresh){
   qz={s,t,list,i:0,score:0,answered:null,lv:{1:[0,0],2:[0,0],3:[0,0]}};
   go("quiz");
 }
-function quizTitle(){const {s,t}=qz; if(t==="all") return `${SUBJ[s].n} · treino completo`; if(t==="erros") return `${SUBJ[s].n} · caderno de erros`; if(t==="dificil") return `${SUBJ[s].n} · desafio difícil`; const tp=TOPICS[s].find(x=>x[0]===t); return tp?tp[1]:SUBJ[s].n}
+function quizTitle(){const {s,t}=qz; if(t==="all") return `${SUBJ[s].n} · treino completo`; if(t==="erros") return `${SUBJ[s].n} · caderno de erros`; if(t==="dificil") return `${SUBJ[s].n} · desafio difícil`; const tp=[...TOPICS[s],...(TOPICS_OLD[s]||[])].find(x=>x[0]===t); return tp?tp[1]:SUBJ[s].n}
 function vQuiz(){
   if(!qz) return vPraticar();
   const c=SUBJ[qz.s].c, N=qz.list.length;
@@ -2577,6 +3023,7 @@ pDraw();
    ========================================================= */
 const GAMES=[
   {id:"tabuada",cap:"Base",t:"Tabuada relâmpago",ic:"×",c:"var(--mat)",d:"60 segundos de contas rápidas."},
+  {id:"relogio",cap:"Cap. 11 · Tempo",t:"Relógio maluco",ic:"60",c:"var(--port)",d:"Horas, minutos e segundos: converta e calcule quanto tempo passou."},
   {id:"reta",cap:"Cap. 7 · Decimais",t:"Reta dos decimais",ic:"0,5",c:"var(--pen)",d:"Coloque o número no lugar certo da reta."},
   {id:"mercado",cap:"Cap. 7 · Decimais",t:"Mercadinho",ic:"R$",c:"var(--geo)",d:"Separe o troco certo com moedas e notas."},
   {id:"pinta",cap:"Cap. 8 · Porcentagem",t:"Pinta 100",ic:"%",c:"var(--port)",d:"Pinte a parte certa do quadro."},
@@ -2584,7 +3031,7 @@ const GAMES=[
   {id:"sorte",cap:"Cap. 8 · Probabilidade",t:"Laboratório da sorte",ic:"?",c:"var(--cien)",d:"Descubra a chance de cada sorteio."},
   {id:"tesouro",cap:"Cap. 9 · Plano cartesiano",t:"Caça ao tesouro",ic:"x,y",c:"var(--hist)",d:"Encontre os pontos no mapa."}
 ];
-const GAMES_FOR={base:["tabuada"],decimais:["reta","mercado"],porcentagem:["pinta","liquida"],probabilidade:["sorte"],plano:["tesouro"]};
+const GAMES_FOR={tempo:["relogio"],base:["tabuada"],decimais:["reta","mercado"],porcentagem:["pinta","liquida"],probabilidade:["sorte"],plano:["tesouro"]};
 const STAR='<svg viewBox="0 0 24 24" class="star"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
 const starsHtml=(n,of=3)=>`<span class="stars">${[...Array(of)].map((x,i)=>`<i class="${i<n?"on":""}">${STAR}</i>`).join("")}</span>`;
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
@@ -2694,6 +3141,39 @@ const GAMEDEF={
    reveal(){grid.querySelectorAll("i").forEach((c,i)=>{c.classList.toggle("ans",i<target)})}};
  }},
 
+ relogio:{gen(l){
+  const P=n=>String(n).padStart(2,"0"), hm=(h,m)=>`${h} h ${P(m)}`;
+  let prompt,hint,answer,res,label="min";
+  const kind=l===1?pick(["h2m","m2s","s2m","m2h"]):l===2?pick(["hm2m","ms2s","dec2m","m2hm","s2ms"]):pick(["dur","dur","fim","h2s"]);
+  if(kind==="h2m"){const h=rnd(1,6); res=h*60; prompt=`<span class="bign">${h} h</span> são quantos <b>minutos</b>?`; hint=`Cada hora tem 60 minutos. Faça ${h} × 60.`; answer=`${h} × 60 = <b>${res} min</b>.`}
+  else if(kind==="m2s"){const m=rnd(1,8); res=m*60; label="s"; prompt=`<span class="bign">${m} min</span> são quantos <b>segundos</b>?`; hint=`Cada minuto tem 60 segundos. Faça ${m} × 60.`; answer=`${m} × 60 = <b>${res} s</b>.`}
+  else if(kind==="s2m"){const m=rnd(1,8); res=m; prompt=`<span class="bign">${m*60} s</span> são quantos <b>minutos</b>?`; hint=`Segundos para minutos: divida por 60. Quantas vezes 60 cabe em ${m*60}?`; answer=`${m*60} ÷ 60 = <b>${m} min</b>.`}
+  else if(kind==="m2h"){const h=rnd(1,6); res=h; label="h"; prompt=`<span class="bign">${h*60} min</span> são quantas <b>horas</b>?`; hint=`Minutos para horas: divida por 60.`; answer=`${h*60} ÷ 60 = <b>${h} h</b>.`}
+  else if(kind==="hm2m"){const h=rnd(1,3), m=pick([10,15,20,30,40,45,50]); res=h*60+m; prompt=`<span class="bign">${h} h ${m} min</span> são quantos <b>minutos</b>?`; hint=`Primeiro ${h} h em minutos (${h} × 60), depois some os ${m} min.`; answer=`${h} × 60 + ${m} = ${h*60} + ${m} = <b>${res} min</b>.`}
+  else if(kind==="ms2s"){const m=rnd(1,5), s=pick([10,15,20,30,40,45]); res=m*60+s; label="s"; prompt=`<span class="bign">${m} min ${s} s</span> são quantos <b>segundos</b>?`; hint=`Primeiro ${m} min em segundos (${m} × 60), depois some os ${s} s.`; answer=`${m} × 60 + ${s} = ${m*60} + ${s} = <b>${res} s</b>.`}
+  else if(kind==="dec2m"){const [d,txt]=pick([[0.5,"0,5"],[1.5,"1,5"],[2.5,"2,5"],[0.25,"0,25"],[0.75,"0,75"],[3.5,"3,5"]]); res=d*60; prompt=`<span class="bign">${txt} h</span> são quantos <b>minutos</b>?`; hint=`Cuidado: 0,5 h é meia hora (30 min) e 0,25 h é um quarto de hora (15 min). Faça ${txt} × 60.`; answer=`${txt} × 60 = <b>${res} min</b>${d%1===0.5?` (${Math.floor(d)} h 30 min, não ${Math.floor(d)} h 50!)`:""}.`}
+  else if(kind==="m2hm"){const h=rnd(1,4), m=pick([5,15,20,25,35,40,50]); res=m; prompt=`<span class="bign">${h*60+m} min</span> = ${h} h e quantos <b>minutos</b>?`; hint=`${h} h = ${h*60} min. Quanto sobra de ${h*60+m}?`; answer=`${h*60+m} − ${h*60} = <b>${m} min</b>. Então ${h*60+m} min = ${h} h ${m} min.`}
+  else if(kind==="s2ms"){const m=rnd(1,5), s=pick([10,20,30,40,50]); res=s; label="s"; prompt=`<span class="bign">${m*60+s} s</span> = ${m} min e quantos <b>segundos</b>?`; hint=`${m} min = ${m*60} s. Quanto sobra de ${m*60+s}?`; answer=`${m*60+s} − ${m*60} = <b>${s} s</b>. Então são ${m} min ${s} s.`}
+  else if(kind==="h2s"){const h=rnd(1,3); res=h*3600; label="s"; prompt=`<span class="bign">${h} h</span> são quantos <b>segundos</b>?`; hint=`1 h = 60 min e 1 min = 60 s, então 1 h = 60 × 60 = 3 600 s.`; answer=`${h} × 3 600 = <b>${res} s</b>.`}
+  else if(kind==="dur"){
+    const h1=rnd(7,15), m1=pick([10,20,30,40,45,50]), dur=pick([40,50,70,80,90,95,100,110,125]);
+    const t2=h1*60+m1+dur, h2=Math.floor(t2/60), m2=t2%60; res=dur;
+    const ev=pick(["A aula","O filme","O treino","A prova","O jogo"]);
+    prompt=`${ev} começou às <span class="bign">${hm(h1,m1)}</span> e terminou às <span class="bign">${hm(h2,m2)}</span>. Quantos <b>minutos</b> durou?`;
+    hint=m2<m1?`Os minutos do fim (${m2}) são menores que os do começo (${m1}): empreste 1 hora. ${hm(h2,m2)} vira ${h2-1} h ${m2+60}.`:`Faça minutos − minutos e horas − horas, depois passe tudo para minutos.`;
+    const H=Math.floor(dur/60), M=dur%60; answer=`Durou ${H?`${H} h ${M} min = ${H} × 60 + ${M} = `:""}<b>${dur} min</b>.`;
+  } else { // fim: que horas termina (resposta: os minutos do horário final)
+    const h1=rnd(8,16), m1=pick([15,25,35,40,45,50]), dur=pick([25,30,35,40,45,50]);
+    const t2=h1*60+m1+dur, h2=Math.floor(t2/60), m2=t2%60; res=m2;
+    prompt=`Começou às <span class="bign">${hm(h1,m1)}</span> e durou <b>${dur} min</b>. Terminou às ${h2} h e quantos <b>minutos</b>?`;
+    hint=`${m1} + ${dur} = ${m1+dur} min.${m1+dur>=60?` Passou de 60: tire 60 e some 1 hora.`:""}`;
+    answer=`${m1} + ${dur} = ${m1+dur}${m1+dur>=60?` = 1 h ${P(m1+dur-60)}`:""} → terminou às <b>${hm(h2,m2)}</b>.`;
+  }
+  let val="";
+  return {prompt,hint,answer,
+   mount(el,ctx){ el.innerHTML=keypadHtml("Resposta",""); keypadMount(el,ctx,"",v=>val=v) },
+   check(){const v=parseBR(val);return {ok:v===res,info:`Você respondeu ${val} ${label}.`}}};
+ }},
  liquida:{gen(l){
   const coisas=["O tênis","A mochila","O fone","A bicicleta","O jogo","O estojo","A bola","A camiseta"];
   let price,pct;
@@ -2881,7 +3361,7 @@ function vProgresso(){
     return `<section class="card" style="display:grid;gap:10px;--c:${SUBJ[s].c}">
       <div class="row between"><h3 style="color:${SUBJ[s].c}">${SUBJ[s].n}</h3><span class="muted" style="font-size:13px">Prova ${dShort(e.d).toLowerCase()} · ${examDone(e.d)?"feita":whenTxt(e.d)}</span></div>
       <div class="progress"><i style="width:${100*dn/tot}%"></i></div>
-      <div class="plist">${LESSONS[s].map(l=>`<div class="prow"><span>${l.t}</span>${S.lessons[lessonKey(s,l.id)]?`<span class="okmark">✓ estudada</span>`:`<span class="muted" style="font-size:13px">pendente</span>`}</div>`).join("")}</div>
+      <div class="plist">${curLessons(s).map(l=>`<div class="prow"><span>${l.t}</span>${S.lessons[lessonKey(s,l.id)]?`<span class="okmark">✓ estudada</span>`:`<span class="muted" style="font-size:13px">pendente</span>`}</div>`).join("")}</div>
       <span class="eyebrow" style="margin-top:6px">Treinos · melhor nota</span>
       <div class="plist">${[["all","Treino completo"],...TOPICS[s],["dificil","Desafio: só difíceis"]].map(([k,n])=>`<div class="prow"><span>${n}</span>${badge(S.best[s+"/"+k])}</div>`).join("")}
         <div class="prow"><span>Caderno de erros</span><span class="score-badge ${er?"low":"good"}">${er} para refazer</span></div></div>
