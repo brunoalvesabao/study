@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#5236F6">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -89,6 +90,9 @@ main{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:20px cal
 
 @media (min-width:960px){
   .tabbar{display:none}
+  .side .sync-btn{margin-top:auto}
+  .side .sync-btn.spin svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .side{display:flex; flex-direction:column; gap:6px; position:fixed; top:0; bottom:0; left:0; width:240px; padding:28px 16px;
     background:var(--surface); border-right:1px solid var(--line)}
   .side .brand{display:flex; gap:12px; align-items:center; padding:0 8px 22px}
@@ -472,6 +476,7 @@ body.locked main{margin-left:auto; margin-right:auto; max-width:460px; padding-i
   <button class="nav" data-nav="materias"></button>
   <button class="nav" data-nav="praticar"></button>
   <button class="nav" data-nav="progresso"></button>
+  <button class="nav sync-btn" data-syncnow title="Buscar a versão mais nova do app e sincronizar o progresso"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg><span>Sincronizar</span></button>
 </aside>
 
 <main id="main"></main>
@@ -2515,6 +2520,7 @@ function stackTables(){
 }
 function render(){
   APP_READY=true;
+  if(UPDATE_READY&&updSafe()){ location.reload(); return }
   document.querySelectorAll("[data-nav]").forEach(b=>{ if(b.dataset.nav===TOP[V.name]) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current") });
   const html = ({inicio:vInicio,agenda:vAgenda,materias:vMaterias,materia:vMateria,licao:vLicao,bloco:vBloco,praticar:vPraticar,quiz:vQuiz,tabuada:vTabuada,jogos:vJogos,jogo:vJogo,progresso:vProgresso})[V.name](V.p);
   const banner=ROLE==="tutor"?`<div class="flag" style="background:var(--pen-soft);color:var(--pen)">Modo tutor · acompanhando ${STUDENT.nome}. Treinos feitos aqui não contam para ela.</div>`:"";
@@ -3349,7 +3355,7 @@ function syncText(){
 }
 function vProgresso(){
   const nome=STUDENT.nome, [cls,txt]=syncText(), last=S.activity[0];
-  const who = !CONFIGURED ? `<p class="muted">Para acompanhar de outro aparelho, é preciso ligar o login: preencha SUPABASE_URL e SUPABASE_KEY no index.html.</p>`
+  const who = !CONFIGURED ? `<button class="btn" data-syncnow>${ICON.sync} Atualizar o app</button><p class="muted">Para acompanhar de outro aparelho, é preciso ligar o login: preencha SUPABASE_URL e SUPABASE_KEY no index.html.</p>`
     : `<div class="row between"><div style="display:grid"><b>${ROLE==="tutor"?TUTOR.nome:nome}</b><span class="muted" style="font-size:13px">${ROLE==="tutor"?"Tutor":"Aluna"}</span></div>
        <div class="row"><button class="btn" data-syncnow>${ICON.sync} Sincronizar</button><button class="btn" data-logout>Sair</button></div></div>
        ${ROLE==="tutor"&&STUDENTS.length>1?`<div class="chips">${STUDENTS.map(k=>`<button class="chip" aria-pressed="${k.id===STUDENT.id}" data-student="${k.id}">${k.nome}</button>`).join("")}</div>`:""}`;
@@ -3597,11 +3603,38 @@ async function logout(){
 }
 document.addEventListener("click",async e=>{
   const el=e.target.closest("[data-syncnow],[data-logout],[data-student]"); if(!el) return;
-  if(el.dataset.syncnow!==undefined) return syncNow();
+  if(el.dataset.syncnow!==undefined){ checkUpdate(true); return syncNow() }
   if(el.dataset.logout!==undefined) return logout();
   if(el.dataset.student){await pickStudent(el.dataset.student); render(); syncNow()}
 });
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible") syncNow()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncNow(); checkUpdate(false)}});
+
+/* =========================================================
+   Atualização do app: compara o código que está rodando com o do servidor.
+   Se mudou, recarrega sozinho numa tela segura (nunca no meio de um treino,
+   jogo, tabuada ou lição: lá só avisa, e atualiza quando ela sair).
+   ========================================================= */
+const MY_CODE=[...document.scripts].find(x=>!x.src&&x.textContent.includes("function checkUpdate"))?.textContent||"";
+let UPDATE_READY=false, checkingUpd=false;
+const updSafe=()=>!["quiz","jogo","tabuada","licao"].includes(V.name)&&$("#modal").hidden;
+async function checkUpdate(manual){
+  if(location.protocol==="file:"||checkingUpd) return;
+  const btn=document.querySelector(".side .sync-btn"); checkingUpd=true; if(manual&&btn) btn.classList.add("spin");
+  try{
+    const r=await fetch(location.pathname,{cache:"reload"}); // busca no servidor e já troca a cópia guardada pelo navegador
+    if(!r.ok) throw new Error(r.status);
+    const doc=new DOMParser().parseFromString(await r.text(),"text/html");
+    const code=[...doc.scripts].find(x=>!x.src&&x.textContent.includes("function checkUpdate"))?.textContent;
+    if(code&&code!==MY_CODE){
+      UPDATE_READY=true;
+      if(manual||updSafe()){ toast("Nova versão do ACE encontrada. Atualizando…"); setTimeout(()=>location.reload(),800) }
+      else toast("Tem uma versão nova do ACE. Ela vai atualizar quando você sair desta tela.",()=>location.reload(),"Atualizar agora");
+    } else if(manual) toast("Tudo em dia: este é o ACE mais recente e o progresso foi sincronizado.");
+  }catch(e){ if(manual) toast("Não deu para verificar agora. Confira a internet e tente de novo.") }
+  finally{ checkingUpd=false; if(btn) btn.classList.remove("spin") }
+}
+setTimeout(()=>checkUpdate(false),4000);
+setInterval(()=>{if(document.visibilityState==="visible") checkUpdate(false)},5*60*1000);
 
 /* ---------- início ---------- */
 (async function boot(){
