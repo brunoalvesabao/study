@@ -187,6 +187,8 @@ details.old summary{cursor:pointer}
 .go-btn{width:40px; height:40px; border-radius:12px; border:1px solid var(--line); background:var(--surface); display:grid; place-items:center; cursor:pointer; color:var(--pen)}
 .go-btn:hover{border-color:var(--pen)}
 
+.base-card{border-left:4px solid var(--c); margin-bottom:14px; display:grid; gap:6px}
+.row2{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px; margin-top:6px}
 .quick{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
 .qcard{display:grid; gap:4px; text-align:left; cursor:pointer; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
 .qcard:hover{border-color:var(--pen)}
@@ -575,8 +577,10 @@ const DAYS = [
    ["Rever a lição: plano cartesiano e vistas","L:mat/plano",20],["Jogo: Caça ao tesouro","G:tesouro",10],["Treino: plano cartesiano","Q:mat/plano",20]]],
   ["mat","Simulado de Matemática","Ela resolve sozinha e você só confere no fim.",[
    ["Treino completo de Matemática","Q:mat/all",50]]],
-  ["mat","Caderno de erros e tempo de novo","Refazer o que errou. Dormir cedo: amanhã tem prova às 7h.",[
-   ["Caderno de erros de Matemática","Q:mat/erros",30],["Jogo: Relógio maluco","G:relogio",10],["Separar o material e dormir cedo",null,10]]]]],
+  ["mat","Caderno de erros e tempo de novo","Refazer o que errou e mais uma rodada de tempo.",[
+   ["Caderno de erros de Matemática","Q:mat/erros",30],["Jogo: Relógio maluco","G:relogio",10],["Pausa: água e lanche",null,10]]],
+  ["mat","Divisão: reforço de base","Lição com vídeo e no mínimo 50 questões. Ela confere cada conta com a prova real. Depois, material separado e dormir cedo: a prova é amanhã às 7h.",[
+   ["Lição: divisão sem medo (com vídeo)","L:mat/divisao",20],["Treino: divisão (fazer pelo menos 50)","Q:mat/divisao",45],["Separar o material e dormir cedo",null,10]]]]],
  ["2026-11-16",15,[
   ["hist","Cap. 10: Mundo islâmico","Maomé, os 5 pilares, os califados e os reinos de Gana, Mali e Songhai.",[
    ["Lição: mundo islâmico","L:hist/islamico",30],["Treino: mundo islâmico","Q:hist/islamico",20]]],
@@ -805,6 +809,51 @@ const LESSONS = {
     <p>A <b>planta baixa</b> é a casa vista <b>de cima</b>, como se tirassem o telhado. Ela mostra os cômodos, as portas e as janelas, mas não mostra alturas.</p>
     <div class="box tip"><span class="lbl">Atividade</span><p>Pegue uma caixa de remédio e desenhe como ela aparece de frente, de lado e de cima.</p></div>
     <details class="try"><summary>Tente você: uma bola vista de qualquer lado parece o quê?</summary><p>Um <b>círculo</b>, de qualquer lado.</p></details>`]]},
+  {id:"divisao",cap:"Base · Reforço",t:"Divisão sem medo",q:"mat/divisao",steps:[
+   ["O que é dividir",`<p><b>Dividir</b> é separar uma quantidade em <b>partes iguais</b>. A divisão responde a duas perguntas:</p>
+    <ul><li><b>Repartir:</b> tenho 12 balas para 3 amigas. Quanto cada uma ganha? → 12 ÷ 3 = <b>4</b>.</li><li><b>Quantas vezes cabe:</b> tenho 12 balas e faço saquinhos de 3. Quantos saquinhos? → 12 ÷ 3 = <b>4</b>.</li></ul>
+    <p>As duas perguntas usam a mesma conta. Na prova, leia com calma e procure palavras como <b>repartir, dividir igualmente, cada um, quantos grupos, quantas caixas</b>.</p>
+    <div class="box tip"><span class="lbl">Vídeo de apoio</span><p>Antes ou depois da lição, assista ao vídeo que um amigo da família indicou. Depois volte aqui e faça o treino.</p>
+     <p><a class="btn" href="https://youtu.be/_Ur59IV_2Ik" target="_blank" rel="noopener">Assistir ao vídeo sobre divisão</a></p></div>`],
+   ["Os nomes da divisão",`<p>Cada número da divisão tem um nome:</p>
+    <div class="ex">17 ÷ 5 = 3 e sobra 2<br><b>17</b> é o <b>dividendo</b> (o que vai ser dividido)<br><b>5</b> é o <b>divisor</b> (em quantas partes, ou o tamanho de cada grupo)<br><b>3</b> é o <b>quociente</b> (o resultado)<br><b>2</b> é o <b>resto</b> (o que sobrou)</div>
+    <div class="box tip"><span class="lbl">Para lembrar</span><p><b>Dividendo</b> é o que está sendo <b>dividido</b>: as duas palavras se parecem. O <b>quociente</b> é a resposta.</p></div>
+    <details class="try"><summary>Tente você: em 40 ÷ 8 = 5, quem é o divisor?</summary><p>O <b>8</b>. O 40 é o dividendo e o 5 é o quociente.</p></details>`],
+   ["Divisão é a tabuada ao contrário",`<p>Para dividir, pergunte: <b>o divisor vezes quanto dá o dividendo?</b></p>
+    <div class="ex">56 ÷ 7 → 7 × <b>?</b> = 56 → 7 × 8 = 56 → resposta <b>8</b><br>72 ÷ 9 → 9 × <b>?</b> = 72 → 9 × 8 = 72 → resposta <b>8</b><br>48 ÷ 6 → 6 × <b>?</b> = 48 → 6 × 8 = 48 → resposta <b>8</b></div>
+    <p>Por isso a tabuada é tão importante: quem sabe a tabuada sabe dividir. Se travar, conte de 7 em 7 (7, 14, 21, 28…) até chegar no número, contando quantos pulos deu.</p>
+    <div class="box warn"><span class="lbl">Casos especiais</span><p>Qualquer número dividido por <b>1</b> dá ele mesmo (9 ÷ 1 = 9). Um número dividido por <b>ele mesmo</b> dá 1 (12 ÷ 12 = 1). <b>Zero</b> dividido por qualquer número dá 0 (0 ÷ 7 = 0).</p></div>
+    <details class="try"><summary>Tente você: quanto é 63 ÷ 9 e 42 ÷ 6?</summary><p>9 × 7 = 63 → <b>7</b>. 6 × 7 = 42 → <b>7</b>.</p></details>`],
+   ["Divisão exata e divisão com resto",`<p>Quando não sobra nada, a divisão é <b>exata</b> (resto 0). Quando sobra, ela tem <b>resto</b>.</p>
+    <div class="ex">17 ÷ 5: na tabuada do 5, o maior que não passa de 17 é 5 × 3 = 15.<br>17 − 15 = 2 → quociente <b>3</b>, resto <b>2</b>.</div>
+    <div class="box warn"><span class="lbl">Regra de ouro</span><p>O <b>resto é sempre menor que o divisor</b>. Se sobrar 5 numa divisão por 5, dava para fazer mais um grupo: a conta está errada.</p></div>
+    <details class="try"><summary>Tente você: quanto é 47 ÷ 5?</summary><p>5 × 9 = 45 e sobra 2 → <b>9 e resto 2</b>.</p></details>`],
+   ["Conta armada, passo a passo",`<p>Para números maiores, usamos a <b>conta armada</b> (na chave). Dividimos da <b>esquerda para a direita</b>, uma casa de cada vez. Veja 72 ÷ 4:</p>
+    <div class="ex"><b>1.</b> Comece pelo 7: 7 ÷ 4 = <b>1</b> (4 × 1 = 4). Sobra 7 − 4 = 3.<br><b>2.</b> Baixe o 2 ao lado do 3: fica <b>32</b>.<br><b>3.</b> 32 ÷ 4 = <b>8</b> (4 × 8 = 32). Sobra 0.<br>Resultado: <b>18</b></div>
+    <p>O ciclo é sempre o mesmo, e se repete até acabar os algarismos:</p>
+    <div class="box tip"><span class="lbl">Divide, multiplica, subtrai, baixa</span><ol><li><b>Divide:</b> quantas vezes o divisor cabe?</li><li><b>Multiplica:</b> divisor × o número que você achou.</li><li><b>Subtrai:</b> quanto sobrou.</li><li><b>Baixa</b> o próximo algarismo.</li></ol></div>
+    <div class="ex">252 ÷ 4 → o 2 não dá para dividir por 4, então use <b>25</b>: 25 ÷ 4 = <b>6</b> (24), sobra 1 → baixa o 2: 12 ÷ 4 = <b>3</b> → resultado <b>63</b></div>
+    <details class="try"><summary>Tente você: quanto é 85 ÷ 5?</summary><p>8 ÷ 5 = 1, sobra 3. Baixa o 5: 35 ÷ 5 = 7. Resultado <b>17</b>.</p></details>`],
+   ["Cuidado com o zero no quociente",`<p>Este é o erro mais comum! Quando o número que você formou é <b>menor que o divisor</b>, escreva <b>0</b> no quociente e baixe o próximo algarismo.</p>
+    <div class="ex">618 ÷ 6<br><b>1.</b> 6 ÷ 6 = <b>1</b>, sobra 0.<br><b>2.</b> Baixa o 1: 1 ÷ 6 não dá → escreva <b>0</b> no quociente.<br><b>3.</b> Baixa o 8: fica 18. 18 ÷ 6 = <b>3</b>.<br>Resultado: <b>103</b> (e não 13!)</div>
+    <div class="box warn"><span class="lbl">Como perceber o erro</span><p>Cada algarismo que você baixa precisa colocar <b>um algarismo</b> no quociente, mesmo que seja 0. Se você esquecer o zero, a prova real mostra: 6 × 13 = 78, bem longe de 618.</p></div>
+    <details class="try"><summary>Tente você: quanto é 824 ÷ 4?</summary><p>8 ÷ 4 = 2. Baixa o 2: 2 ÷ 4 não dá → <b>0</b>. Baixa o 4: 24 ÷ 4 = 6. Resultado <b>206</b>.</p></details>`],
+   ["Divisor com dois algarismos",`<p>Quando o divisor tem dois algarismos, faça uma <b>tabuada rápida</b> dele no canto da folha:</p>
+    <div class="ex">156 ÷ 12<br>12 × 1 = 12 · 12 × 2 = 24 · 12 × 3 = 36 · … · 12 × 10 = 120<br><b>1.</b> 15 ÷ 12 = <b>1</b> (12), sobra 3.<br><b>2.</b> Baixa o 6: 36 ÷ 12 = <b>3</b>.<br>Resultado: <b>13</b> · Confere: 12 × 13 = 156</div>
+    <div class="box tip"><span class="lbl">Dica para estimar</span><p>Arredonde: 12 é quase 10. Em 36 ÷ 12, pense "36 ÷ 10 dá uns 3" e teste 12 × 3 = 36. Se passar, diminua 1; se sobrar mais que o divisor, aumente 1.</p></div>
+    <details class="try"><summary>Tente você: quanto é 384 ÷ 16?</summary><p>38 ÷ 16 = 2 (32), sobra 6. Baixa o 4: 64 ÷ 16 = 4. Resultado <b>24</b>.</p></details>`],
+   ["Prova real: confira sempre",`<p>Dá para saber se a divisão está certa <b>sem a ajuda de ninguém</b>:</p>
+    <div class="box tip"><span class="lbl">Prova real</span><p><b>divisor × quociente + resto = dividendo</b></p></div>
+    <div class="ex">72 ÷ 4 = 18 → 4 × 18 = 72 ✔<br>47 ÷ 5 = 9 e resto 2 → 5 × 9 + 2 = 45 + 2 = 47 ✔</div>
+    <p>A mesma ideia resolve as questões que pedem o <b>dividendo</b>: "o divisor é 6, o quociente é 9 e o resto é 4" → 6 × 9 + 4 = <b>58</b>.</p>
+    <details class="try"><summary>Tente você: numa divisão, o divisor é 8, o quociente é 23 e o resto é 5. Qual é o dividendo?</summary><p>8 × 23 + 5 = 184 + 5 = <b>189</b>.</p></details>`],
+   ["Problemas: e o resto?",`<p>Em problemas, pense no que o resto significa:</p>
+    <div class="tbl"><table><tr><th>Situação</th><th>Conta</th><th>Resposta</th></tr>
+     <tr><td>130 pessoas, vans de 12 lugares. Quantas vans?</td><td>130 ÷ 12 = 10, resto 10</td><td><b>11 vans</b>: as 10 pessoas que sobram também precisam ir</td></tr>
+     <tr><td>100 botões, 8 por camisa. Quantas camisas completas?</td><td>100 ÷ 8 = 12, resto 4</td><td><b>12 camisas</b>: os 4 botões não completam outra</td></tr>
+     <tr><td>200 minutos em horas e minutos</td><td>200 ÷ 60 = 3, resto 20</td><td><b>3 h 20 min</b>: o resto são os minutos</td></tr></table></div>
+    <div class="box tip"><span class="lbl">Ligação com o tempo</span><p>Minutos para horas e segundos para minutos é sempre <b>÷ 60</b>. O quociente é a unidade maior e o resto é o que sobra na menor: 150 s ÷ 60 = 2, resto 30 → <b>2 min 30 s</b>.</p></div>
+    <details class="try"><summary>Tente você: 180 alunos vão em ônibus de 45 lugares. Quantos ônibus?</summary><p>180 ÷ 45 = <b>4</b> (45 × 4 = 180), divisão exata: 4 ônibus.</p></details>`]]},
   {id:"tempo",cap:"Cap. 11 · Foco",t:"Medidas de tempo: hora, minuto e segundo",q:"mat/tempo",steps:[
    ["As unidades de tempo",`<p>Medimos o tempo com várias unidades. As três que mais caem na prova são <b>hora (h)</b>, <b>minuto (min)</b> e <b>segundo (s)</b>.</p>
     <div class="tbl"><table><tr><th>Unidade</th><th>Vale</th></tr>
@@ -1599,7 +1648,7 @@ const LESSONS = {
 };
 
 const TOPICS = {
-  mat:[["tempo","Cap. 11 · Tempo: hora, minuto e segundo"],["plano","Cap. 9 · Plano cartesiano e vistas"],["poliedros","Cap. 10 · Poliedros e planificações"],["algebra","Cap. 10 · Noções de álgebra"],["medidas","Cap. 11 · Volume, capacidade, massa e temperatura"]],
+  mat:[["tempo","Cap. 11 · Tempo: hora, minuto e segundo"],["plano","Cap. 9 · Plano cartesiano e vistas"],["poliedros","Cap. 10 · Poliedros e planificações"],["algebra","Cap. 10 · Noções de álgebra"],["medidas","Cap. 11 · Volume, capacidade, massa e temperatura"],["divisao","Base · Divisão (reforço)"]],
   port:[["cap8","Cap. 8 · Para convencer"],["cap9","Cap. 9 · O consumidor atento"]],
   hist:[["islamico","Cap. 10 · Mundo islâmico"],["altaidade","Cap. 11 · Alta Idade Média"]],
   geo:[["rural","Cap. 10 · Espaço rural"],["urbano","Cap. 11 · Espaço urbano"]],
@@ -1620,7 +1669,9 @@ const LESSON_NOW = {
   hist:["islamico","altaidade"], geo:["rural","urbano"], cien:["ambiente","transformacoes"]
 };
 const curLessons=s=>LESSON_NOW[s]?LESSON_NOW[s].map(id=>findLesson(s,id)):LESSONS[s];
-const oldLessons=s=>LESSON_NOW[s]?LESSONS[s].filter(l=>!LESSON_NOW[s].includes(l.id)):[];
+/* Reforço de base pedido pela família: aparece em destaque na matéria, fora da trilha e da revisão antiga. */
+const LESSON_BASE = {mat:["divisao"]};
+const oldLessons=s=>LESSON_NOW[s]?LESSONS[s].filter(l=>!LESSON_NOW[s].includes(l.id)&&!(LESSON_BASE[s]||[]).includes(l.id)):[];
 
 /* Cada questão: [pergunta, [5 alternativas — a certa sempre primeiro, elas são embaralhadas], 0, explicação, nível]
    nível: 1 = fácil · 2 = média · 3 = difícil. Questões novas entram sempre no FIM da lista do assunto,
@@ -2156,6 +2207,89 @@ const Q = {
   ["Unscramble: \"he / do / magic / tricks / Does\"",["Does he do magic tricks?","He does do magic tricks?","Do he does magic tricks?","Does do he magic tricks?","Magic tricks does he do?"],0,"Does + sujeito + verbo: Does he do magic tricks?",3],
   ["What do a message exchange and an interview have in common?",["They have questions and answers","They are always very long","They are only on paper","They have no people","They always have a signature"],0,"Os dois têm perguntas e respostas entre pessoas.",3]
  ],
+ "mat/divisao":[
+  ["Quanto é 24 ÷ 6?",["4","3","5","6","18"],0,"Tabuada do 6 ao contrário: 6 × 4 = 24. Então 24 ÷ 6 = 4.",1],
+  ["Quanto é 56 ÷ 7?",["8","7","9","6","49"],0,"7 × 8 = 56. Então 56 ÷ 7 = 8.",1],
+  ["Quanto é 72 ÷ 8?",["9","8","7","6","64"],0,"8 × 9 = 72. Então 72 ÷ 8 = 9.",1],
+  ["Quanto é 45 ÷ 5?",["9","8","7","10","40"],0,"5 × 9 = 45. Então 45 ÷ 5 = 9.",1],
+  ["Quanto é 63 ÷ 9?",["7","6","8","9","54"],0,"9 × 7 = 63. Então 63 ÷ 9 = 7.",1],
+  ["Quanto é 48 ÷ 6?",["8","7","6","9","42"],0,"6 × 8 = 48. Então 48 ÷ 6 = 8.",1],
+  ["Quanto é 81 ÷ 9?",["9","8","7","11","72"],0,"9 × 9 = 81. Então 81 ÷ 9 = 9.",1],
+  ["Quanto é 42 ÷ 7?",["6","7","5","8","35"],0,"7 × 6 = 42. Então 42 ÷ 7 = 6.",1],
+  ["Quanto é 54 ÷ 6?",["9","8","7","6","48"],0,"6 × 9 = 54. Então 54 ÷ 6 = 9.",1],
+  ["Quanto é 36 ÷ 4?",["9","8","6","7","32"],0,"4 × 9 = 36. Então 36 ÷ 4 = 9.",1],
+  ["Na divisão 35 ÷ 5 = 7, qual número é o dividendo?",["35","5","7","0","12"],0,"O dividendo é o número que está sendo dividido: 35. O 5 é o divisor e o 7 é o quociente.",1],
+  ["Na divisão 35 ÷ 5 = 7, qual número é o divisor?",["5","35","7","0","40"],0,"O divisor é o número pelo qual dividimos: 5.",1],
+  ["Na divisão 40 ÷ 8 = 5, como se chama o 5?",["Quociente","Dividendo","Divisor","Resto","Produto"],0,"O resultado da divisão se chama quociente.",1],
+  ["Na divisão 17 ÷ 5, o quociente é 3 e sobra 2. Como se chama o 2?",["Resto","Quociente","Divisor","Dividendo","Fator"],0,"O que sobra na divisão se chama resto. Ele é sempre menor que o divisor.",1],
+  ["Qual multiplicação ajuda a resolver 28 ÷ 4?",["4 × 7 = 28","4 × 6 = 24","28 × 4 = 112","2 × 8 = 16","4 × 8 = 32"],0,"Divisão é a tabuada ao contrário: 4 vezes quanto dá 28? 4 × 7 = 28, então 28 ÷ 4 = 7.",1],
+  ["Ana tem 20 balas e vai repartir igualmente entre 4 amigas. Quantas balas cada uma recebe?",["5","4","6","16","24"],0,"Repartir em partes iguais é dividir: 20 ÷ 4 = 5, porque 4 × 5 = 20.",1],
+  ["Um pacote tem 30 figurinhas. Colando 6 figurinhas por página, quantas páginas ela vai usar?",["5","6","4","24","36"],0,"Quantas vezes o 6 cabe no 30? 30 ÷ 6 = 5, porque 6 × 5 = 30.",1],
+  ["Quanto é 100 ÷ 10?",["10","1","100","1000","90"],0,"Dividir por 10 tira um zero: 100 ÷ 10 = 10.",1],
+  ["Quanto é 0 ÷ 7?",["0","7","1","Não dá para fazer","70"],0,"Zero dividido por qualquer número (diferente de zero) dá 0: se não há nada para repartir, cada um recebe nada.",1],
+  ["Quanto é 9 ÷ 1?",["9","1","0","10","8"],0,"Qualquer número dividido por 1 dá ele mesmo.",1],
+  ["Quanto é 12 ÷ 12?",["1","0","12","24","144"],0,"Um número dividido por ele mesmo dá 1.",1],
+  ["Qual destas divisões é exata (não tem resto)?",["18 ÷ 3","19 ÷ 3","20 ÷ 3","22 ÷ 3","17 ÷ 3"],0,"3 × 6 = 18, então 18 ÷ 3 = 6 e não sobra nada. As outras deixam resto.",1],
+  ["Quanto é a metade de 46?",["23","22","24","26","92"],0,"Metade é dividir por 2: 40 ÷ 2 = 20 e 6 ÷ 2 = 3, então 46 ÷ 2 = 23.",1],
+  ["Quanto é 60 ÷ 3?",["20","30","18","2","57"],0,"6 ÷ 3 = 2, então 60 ÷ 3 = 20. Confere: 3 × 20 = 60.",1],
+  ["Quanto é 80 ÷ 4?",["20","40","2","24","16"],0,"8 ÷ 4 = 2, então 80 ÷ 4 = 20. Confere: 4 × 20 = 80.",1],
+  ["Quanto é 13 ÷ 4?",["3 e resto 1","4 e resto 1","3 e resto 4","2 e resto 5","3 e resto 0"],0,"4 × 3 = 12 e sobra 13 − 12 = 1. O resto (1) é menor que o divisor (4), então está certo.",1],
+  ["Quanto é 27 ÷ 3?",["9","8","7","24","30"],0,"3 × 9 = 27. Então 27 ÷ 3 = 9.",1],
+  ["Quanto é 64 ÷ 8?",["8","7","9","6","56"],0,"8 × 8 = 64. Então 64 ÷ 8 = 8.",1],
+  ["Resolva com a conta armada: 84 ÷ 4.",["21","20","22","12","24"],0,"8 ÷ 4 = 2; baixa o 4: 4 ÷ 4 = 1. Resultado 21. Confere: 4 × 21 = 84.",2],
+  ["Quanto é 96 ÷ 3?",["32","31","33","23","30"],0,"9 ÷ 3 = 3; baixa o 6: 6 ÷ 3 = 2. Resultado 32. Confere: 3 × 32 = 96.",2],
+  ["Quanto é 72 ÷ 4?",["18","17","16","19","28"],0,"7 ÷ 4 = 1, sobra 3. Baixa o 2: 32 ÷ 4 = 8. Resultado 18. Confere: 4 × 18 = 72.",2],
+  ["Quanto é 85 ÷ 5?",["17","16","18","15","80"],0,"8 ÷ 5 = 1, sobra 3. Baixa o 5: 35 ÷ 5 = 7. Resultado 17. Confere: 5 × 17 = 85.",2],
+  ["Quanto é 91 ÷ 7?",["13","12","14","11","17"],0,"9 ÷ 7 = 1, sobra 2. Baixa o 1: 21 ÷ 7 = 3. Resultado 13. Confere: 7 × 13 = 91.",2],
+  ["Quanto é 252 ÷ 4?",["63","62","64","53","73"],0,"2 não dá para dividir por 4, então use 25: 25 ÷ 4 = 6, sobra 1. Baixa o 2: 12 ÷ 4 = 3. Resultado 63. Confere: 4 × 63 = 252.",2],
+  ["Quanto é 369 ÷ 3?",["123","122","132","113","121"],0,"3 ÷ 3 = 1; 6 ÷ 3 = 2; 9 ÷ 3 = 3. Resultado 123.",2],
+  ["Quanto é 456 ÷ 6?",["76","75","77","66","86"],0,"45 ÷ 6 = 7 (42), sobra 3. Baixa o 6: 36 ÷ 6 = 6. Resultado 76. Confere: 6 × 76 = 456.",2],
+  ["Quanto é 315 ÷ 5?",["63","62","64","53","65"],0,"31 ÷ 5 = 6 (30), sobra 1. Baixa o 5: 15 ÷ 5 = 3. Resultado 63. Confere: 5 × 63 = 315.",2],
+  ["Quanto é 248 ÷ 8?",["31","30","32","21","41"],0,"24 ÷ 8 = 3; baixa o 8: 8 ÷ 8 = 1. Resultado 31. Confere: 8 × 31 = 248.",2],
+  ["Quanto é 47 ÷ 5?",["9 e resto 2","9 e resto 3","8 e resto 7","10 e resto 3","9 e resto 1"],0,"5 × 9 = 45 e sobra 47 − 45 = 2. Cuidado: \"8 e resto 7\" está errado porque o resto não pode ser maior que o divisor.",2],
+  ["Quanto é 58 ÷ 7?",["8 e resto 2","8 e resto 3","7 e resto 9","9 e resto 2","8 e resto 1"],0,"7 × 8 = 56 e sobra 58 − 56 = 2.",2],
+  ["Quanto é 100 ÷ 8?",["12 e resto 4","12 e resto 6","13 e resto 4","11 e resto 12","12 e resto 2"],0,"10 ÷ 8 = 1, sobra 2. Baixa o 0: 20 ÷ 8 = 2 (16), sobra 4. Resultado 12 e resto 4. Confere: 8 × 12 + 4 = 100.",2],
+  ["Numa divisão, o divisor é 6, o quociente é 9 e o resto é 4. Qual é o dividendo?",["58","54","60","50","64"],0,"Prova real: divisor × quociente + resto = dividendo → 6 × 9 + 4 = 54 + 4 = 58.",2],
+  ["Para conferir se 135 ÷ 5 = 27 está certo, qual conta fazemos?",["5 × 27, que deve dar 135","135 + 5, que deve dar 27","27 − 5, que deve dar 135","135 × 5, que deve dar 27","27 ÷ 5, que deve dar 135"],0,"Prova real: divisor × quociente = dividendo. 5 × 27 = 135, então está certo.",2],
+  ["Numa divisão por 7, qual destes números NÃO pode ser o resto?",["7","0","3","5","6"],0,"O resto é sempre menor que o divisor. Se sobrassem 7, daria para fazer mais um grupo de 7.",2],
+  ["Uma professora tem 96 lápis para repartir igualmente entre 8 alunos. Quantos lápis cada aluno recebe?",["12","11","13","14","88"],0,"96 ÷ 8: 9 ÷ 8 = 1, sobra 1; baixa o 6: 16 ÷ 8 = 2. Resultado 12. Confere: 8 × 12 = 96.",2],
+  ["Uma escola vai levar 180 alunos em ônibus de 45 lugares. Quantos ônibus são necessários?",["4","3","5","6","135"],0,"180 ÷ 45 = 4, porque 45 × 4 = 180. A divisão é exata: 4 ônibus cheios.",2],
+  ["Uma caixa leva 6 ovos. Quantas caixas são necessárias para guardar 78 ovos?",["13","12","14","11","72"],0,"78 ÷ 6: 7 ÷ 6 = 1, sobra 1; baixa o 8: 18 ÷ 6 = 3. Resultado 13. Confere: 6 × 13 = 78.",2],
+  ["Comprei 5 cadernos iguais e paguei R$ 65,00. Quanto custou cada caderno?",["R$ 13,00","R$ 12,00","R$ 15,00","R$ 60,00","R$ 11,00"],0,"65 ÷ 5 = 13, porque 5 × 13 = 65.",2],
+  ["Um livro de 144 páginas vai ser lido em 6 dias, a mesma quantidade por dia. Quantas páginas por dia?",["24","22","26","23","138"],0,"144 ÷ 6: 14 ÷ 6 = 2 (12), sobra 2; baixa o 4: 24 ÷ 6 = 4. Resultado 24. Confere: 6 × 24 = 144.",2],
+  ["Quantas semanas completas cabem em 50 dias, e quantos dias sobram?",["7 semanas e sobra 1 dia","7 semanas e sobram 2 dias","6 semanas e sobram 8 dias","8 semanas e sobra 1 dia","5 semanas e não sobra nada"],0,"Uma semana tem 7 dias: 50 ÷ 7 = 7 (49) e sobra 1.",2],
+  ["180 minutos são quantas horas?",["3 h","2 h","4 h","30 h","18 h"],0,"Minutos para horas: divida por 60. 180 ÷ 60 = 3 (pense 18 ÷ 6 = 3).",2],
+  ["240 segundos são quantos minutos?",["4 min","3 min","24 min","40 min","2 min"],0,"Segundos para minutos: divida por 60. 240 ÷ 60 = 4 (pense 24 ÷ 6 = 4).",2],
+  ["Quanto é 600 ÷ 10?",["60","6","600","61","590"],0,"Dividir por 10 tira um zero: 600 ÷ 10 = 60.",2],
+  ["Quanto é 4 200 ÷ 100?",["42","420","4 200","402","24"],0,"Dividir por 100 tira dois zeros: 4 200 ÷ 100 = 42.",2],
+  ["Quanto é 128 ÷ 4?",["32","31","33","23","42"],0,"12 ÷ 4 = 3; baixa o 8: 8 ÷ 4 = 2. Resultado 32. Confere: 4 × 32 = 128.",2],
+  ["Quanto é 9 ÷ 2?",["4 e resto 1","4 e resto 2","5 e resto 1","3 e resto 3","4 e resto 0"],0,"2 × 4 = 8 e sobra 1. Todo número ímpar dividido por 2 deixa resto 1.",2],
+  ["Um pai repartiu R$ 84,00 igualmente entre 3 filhos. Quanto cada um recebeu?",["R$ 28,00","R$ 27,00","R$ 26,00","R$ 81,00","R$ 24,00"],0,"84 ÷ 3: 8 ÷ 3 = 2 (6), sobra 2; baixa o 4: 24 ÷ 3 = 8. Resultado 28. Confere: 3 × 28 = 84.",2],
+  ["Quanto é 618 ÷ 6?",["103","13","130","113","1 003"],0,"6 ÷ 6 = 1. Baixa o 1: 1 ÷ 6 não dá → escreva 0 no quociente. Baixa o 8: 18 ÷ 6 = 3. Resultado 103. Esquecer o zero dá 13, e 6 × 13 = 78, bem longe de 618.",3],
+  ["Quanto é 824 ÷ 4?",["206","26","260","216","2 006"],0,"8 ÷ 4 = 2. Baixa o 2: 2 ÷ 4 não dá → 0. Baixa o 4: 24 ÷ 4 = 6. Resultado 206. Confere: 4 × 206 = 824.",3],
+  ["Quanto é 545 ÷ 5?",["109","19","190","119","108"],0,"5 ÷ 5 = 1. Baixa o 4: 4 ÷ 5 não dá → 0. Baixa o 5: 45 ÷ 5 = 9. Resultado 109. Confere: 5 × 109 = 545.",3],
+  ["Quanto é 912 ÷ 3?",["304","34","340","314","303"],0,"9 ÷ 3 = 3. Baixa o 1: 1 ÷ 3 não dá → 0. Baixa o 2: 12 ÷ 3 = 4. Resultado 304. Confere: 3 × 304 = 912.",3],
+  ["Quanto é 156 ÷ 12?",["13","12","14","15","11"],0,"15 ÷ 12 = 1, sobra 3. Baixa o 6: 36 ÷ 12 = 3. Resultado 13. Confere: 12 × 13 = 156.",3],
+  ["Quanto é 384 ÷ 16?",["24","23","26","22","34"],0,"38 ÷ 16 = 2 (32), sobra 6. Baixa o 4: 64 ÷ 16 = 4. Resultado 24. Confere: 16 × 24 = 384.",3],
+  ["Quanto é 525 ÷ 25?",["21","20","25","12","22"],0,"52 ÷ 25 = 2 (50), sobra 2. Baixa o 5: 25 ÷ 25 = 1. Resultado 21. Confere: 25 × 21 = 525.",3],
+  ["Quanto é 1 236 ÷ 4?",["309","39","390","319","308"],0,"12 ÷ 4 = 3. Baixa o 3: 3 ÷ 4 não dá → 0. Baixa o 6: 36 ÷ 4 = 9. Resultado 309. Confere: 4 × 309 = 1 236.",3],
+  ["Quanto é 2 345 ÷ 5?",["469","468","479","459","470"],0,"23 ÷ 5 = 4 (20), sobra 3. Baixa o 4: 34 ÷ 5 = 6 (30), sobra 4. Baixa o 5: 45 ÷ 5 = 9. Resultado 469.",3],
+  ["Quanto é 1 728 ÷ 8?",["216","206","226","215","218"],0,"17 ÷ 8 = 2 (16), sobra 1. Baixa o 2: 12 ÷ 8 = 1 (8), sobra 4. Baixa o 8: 48 ÷ 8 = 6. Resultado 216.",3],
+  ["Quanto é 735 ÷ 7?",["105","15","150","115","104"],0,"7 ÷ 7 = 1. Baixa o 3: 3 ÷ 7 não dá → 0. Baixa o 5: 35 ÷ 7 = 5. Resultado 105. Confere: 7 × 105 = 735.",3],
+  ["Uma excursão tem 130 pessoas e cada van leva 12. Quantas vans são necessárias para levar todo mundo?",["11","10","12","9","118"],0,"130 ÷ 12 = 10 e sobram 10 pessoas. Essas 10 também precisam ir, então é preciso mais uma van: 11.",3],
+  ["Uma costureira tem 100 botões e usa 8 em cada camisa. Quantas camisas ela consegue completar?",["12","13","11","92","4"],0,"100 ÷ 8 = 12 e sobram 4 botões. Com 4 botões não dá para completar outra camisa, então são 12.",3],
+  ["Numa divisão, o divisor é 9, o quociente é 15 e o resto é 7. Qual é o dividendo?",["142","135","144","152","131"],0,"Prova real: 9 × 15 + 7 = 135 + 7 = 142.",3],
+  ["200 minutos são quantas horas e minutos?",["3 h 20 min","2 h 20 min","3 h 2 min","2 h 50 min","20 h"],0,"200 ÷ 60 = 3 (180) e sobram 20. O quociente são as horas e o resto são os minutos: 3 h 20 min.",3],
+  ["150 segundos são quantos minutos e segundos?",["2 min 30 s","1 min 50 s","2 min 50 s","15 min","1 min 30 s"],0,"150 ÷ 60 = 2 (120) e sobram 30: 2 min 30 s.",3],
+  ["7 200 segundos são quantas horas?",["2 h","72 h","20 h","120 h","12 h"],0,"7 200 ÷ 60 = 120 minutos. 120 ÷ 60 = 2 horas. (Ou direto: 1 h = 3 600 s, e 7 200 ÷ 3 600 = 2.)",3],
+  ["Pedro dividiu um número por 8 e encontrou quociente 23 e resto 5. Que número ele dividiu?",["189","184","193","176","180"],0,"Prova real: 8 × 23 + 5 = 184 + 5 = 189.",3],
+  ["Quantas semanas completas há em 365 dias, e quantos dias sobram?",["52 semanas e sobra 1 dia","52 semanas e sobram 2 dias","51 semanas e sobram 8 dias","53 semanas e não sobra nada","50 semanas e sobram 15 dias"],0,"365 ÷ 7 = 52 (364) e sobra 1 dia.",3],
+  ["Qual é o maior resto possível numa divisão por 12?",["11","12","10","1","0"],0,"O resto é sempre menor que o divisor. Então, dividindo por 12, o maior resto é 11.",3],
+  ["Um prêmio de R$ 1 500,00 será dividido igualmente entre 12 pessoas. Quanto cada uma recebe?",["R$ 125,00","R$ 120,00","R$ 150,00","R$ 115,00","R$ 1 488,00"],0,"15 ÷ 12 = 1, sobra 3. Baixa o 0: 30 ÷ 12 = 2 (24), sobra 6. Baixa o 0: 60 ÷ 12 = 5. Resultado 125. Confere: 12 × 125 = 1 500.",3],
+  ["Uma fábrica embala 1 000 lápis em caixas de 24. Quantas caixas ficam completas e quantos lápis sobram?",["41 caixas e sobram 16 lápis","41 caixas e sobram 6 lápis","40 caixas e sobram 40 lápis","42 caixas e não sobra nada","4 caixas e sobram 16 lápis"],0,"100 ÷ 24 = 4 (96), sobra 4. Baixa o 0: 40 ÷ 24 = 1, sobra 16. Resultado 41 e resto 16. Confere: 24 × 41 + 16 = 984 + 16 = 1 000.",3],
+  ["Quanto é 4 818 ÷ 6?",["803","83","830","813","802"],0,"48 ÷ 6 = 8. Baixa o 1: 1 ÷ 6 não dá → 0. Baixa o 8: 18 ÷ 6 = 3. Resultado 803. Confere: 6 × 803 = 4 818.",3],
+  ["Quanto é 3 600 ÷ 60?",["60","6","600","36","50"],0,"Corte um zero dos dois: 360 ÷ 6 = 60. É por isso que 1 hora (3 600 s) tem 60 minutos.",2],
+  ["Uma pista de 420 metros foi dividida em 6 partes iguais. Quanto mede cada parte?",["70 m","60 m","80 m","7 m","414 m"],0,"42 ÷ 6 = 7, então 420 ÷ 6 = 70. Confere: 6 × 70 = 420.",2]],
  "mat/tempo":[
   ["1 hora tem quantos minutos?",["60","100","30","24","3 600"],0,"1 h = 60 min.",1],
   ["1 minuto tem quantos segundos?",["60","100","10","30","3 600"],0,"1 min = 60 s.",1],
@@ -2684,8 +2818,12 @@ function vMateria({s}){
   const head=`<button class="back" data-nav2="materias">${ICON.left} Matérias</button>
     <section class="subj-head" style="--c:${SUBJ[s].c}"><span class="eyebrow">Prova ${dLong(e.d).toLowerCase()} · ${examDone(e.d)?"feita":whenTxt(e.d)}</span><h1>${SUBJ[s].n}</h1>
     ${s==="mat"?`<p>Estas são as lições da prova. Comece pela de <b>tempo</b>: é o foco do professor.</p>`:`<p>Estude cada lição e treine no final.</p>`}</section>`;
+  const BL=(LESSON_BASE[s]||[]).map(id=>findLesson(s,id)), base=BL.map(l=>{const k=lessonKey(s,l.id), qn=(Q[l.q]||[]).length;
+    return `<div class="card base-card" style="--c:${SUBJ[s].c}"><span class="eyebrow">Reforço de base${doneNow(k)?" · estudada":""}</span><h3>${l.t}</h3>
+      <p class="muted">Lição com vídeo de apoio e ${qn} questões, das fáceis às difíceis.</p>
+      <div class="row2"><button class="btn${doneNow(k)?"":" primary"}" data-lesson="${s}/${l.id}">${doneNow(k)?"Rever a lição":"Começar a lição"}</button><button class="btn${doneNow(k)?" primary":""}" data-open="Q:${l.q}">Treinar ${qn} questões</button></div></div>`}).join("");
   if(!L.length) return head+`<div class="card"><h3>Conteúdo em breve</h3><p class="muted" style="margin-top:6px">A escola ainda vai informar o que cai na prova de Inglês. Assim que chegar, as lições e questões aparecem aqui.</p></div>`;
-  return head+`<ol class="path" style="--c:${SUBJ[s].c}">${L.map((l,i)=>{
+  return head+base+`<ol class="path" style="--c:${SUBJ[s].c}">${L.map((l,i)=>{
       const k=lessonKey(s,l.id), done=doneNow(k);
       return `<li class="${done?"done":""}"><span class="num">${done?ICON.check:i+1}</span>
         <button class="lcard" style="--c:${SUBJ[s].c}" data-lesson="${s}/${l.id}"><span>${l.cap} · ${l.steps.length} passos</span><b>${l.t}</b><span>${done?"Estudada":doneBefore(k)?"Estudada na prova anterior · vale revisar":"Começar lição"}</span></button></li>`}).join("")}</ol>
@@ -3043,7 +3181,7 @@ const GAMES=[
   {id:"sorte",cap:"Cap. 8 · Probabilidade",t:"Laboratório da sorte",ic:"?",c:"var(--cien)",d:"Descubra a chance de cada sorteio."},
   {id:"tesouro",cap:"Cap. 9 · Plano cartesiano",t:"Caça ao tesouro",ic:"x,y",c:"var(--hist)",d:"Encontre os pontos no mapa."}
 ];
-const GAMES_FOR={tempo:["relogio"],base:["tabuada"],decimais:["reta","mercado"],porcentagem:["pinta","liquida"],probabilidade:["sorte"],plano:["tesouro"]};
+const GAMES_FOR={tempo:["relogio"],base:["tabuada"],divisao:["tabuada"],decimais:["reta","mercado"],porcentagem:["pinta","liquida"],probabilidade:["sorte"],plano:["tesouro"]};
 const STAR='<svg viewBox="0 0 24 24" class="star"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
 const starsHtml=(n,of=3)=>`<span class="stars">${[...Array(of)].map((x,i)=>`<i class="${i<n?"on":""}">${STAR}</i>`).join("")}</span>`;
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
